@@ -1,3 +1,4 @@
+import { TypographyH1 } from "@/components/typography/h1";
 import { TypographyMuted } from "@/components/typography/muted";
 import { TypographyP } from "@/components/typography/p";
 import { Button } from "@/components/ui/button";
@@ -6,6 +7,9 @@ import Link from "next/link";
 export default function ReasoningPage() {
   return (
     <main className="mx-auto max-w-[850px] px-8 pt-20">
+      <TypographyH1>
+        Por que fazer um treinamento de avaliação perceptivo-auditiva da voz?
+      </TypographyH1>
       <TypographyP>
         A avaliação perceptivo-auditiva é o principal instrumento de avaliação
         da clínica vocal. Por essa avaliação, as vozes são analisadas a partir

@@ -61,16 +61,6 @@ export default function PresentationPage() {
           <Link href="/">Voltar</Link>
         </Button>
       </div>
-      <TypographyMuted>
-        *Santos PCM, Vieira MN, Sansão JPH e Gama ACC. Effect of
-        Auditory-Perceptual Training whith Natural Voice Anchors on Vocal
-        Quality Evaluation. J Voice. 2017; 33(2):220-225. Santos PCM, Vieira MN,
-        Sansão JPH e Gama ACC. Efeito de emissões âncoras de vozes sintetizadas
-        na avaliação perceptivo-auditivo da voz. CoDAS. 2021; 33(1):e20190197.
-        Gama ACC, Mata SM, Santos PCM, Vieira MN, Sansão JPH e Quinino RC.
-        Auditory Training with Synthesized Voice Anchors: Effect on Rater
-        Agreement
-      </TypographyMuted>
     </main>
   );
 }
