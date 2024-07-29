@@ -55,7 +55,7 @@ export default function PresentationPage() {
       <div className="h-[10px]" />
       <div className="flex justify-center gap-4 py-8">
         <Button asChild>
-          <Link href="/terms">Iniciar</Link>
+          <Link href="/reasoning">Continuar</Link>
         </Button>
         <Button asChild>
           <Link href="/">Voltar</Link>

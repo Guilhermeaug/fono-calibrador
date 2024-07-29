@@ -56,10 +56,10 @@ export default function ReasoningPage() {
       <div className="h-[10px]" />
       <div className="flex justify-center gap-4 py-8">
         <Button asChild>
-          <Link href="/">Iniciar</Link>
+          <Link href="/startup">Iniciar</Link>
         </Button>
         <Button asChild>
-          <Link href="/">Voltar</Link>
+          <Link href="/presentation">Voltar</Link>
         </Button>
       </div>
       <TypographyMuted>
