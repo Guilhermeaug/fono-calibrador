@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export function Footer() {
   return (
-    <footer className="grid grid-cols-3 space-x-4 px-4 md:grid-cols-6 md:px-8">
+    <footer className="grid items-center grid-cols-3 space-x-4 px-4 md:grid-cols-6 md:px-8">
       <div className="relative h-12">
         <Image
           src="/images/medicina.png"

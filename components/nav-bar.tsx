@@ -34,7 +34,7 @@ export function Navbar({ className }: Props) {
     <header className={style}>
       <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
         <Link
-          href="#"
+          href="/"
           className="flex items-center text-lg font-semibold text-muted-foreground transition-colors md:text-base"
           prefetch={false}
         >
@@ -48,14 +48,14 @@ export function Navbar({ className }: Props) {
           <span className="mr-5 whitespace-nowrap">Calibrador Auditivo</span>
         </Link>
         <Link
-          href="#"
+          href="/presentation"
           className="text-muted-foreground transition-colors hover:text-foreground"
           prefetch={false}
         >
           Apresentação
         </Link>
         <Link
-          href="#"
+          href="/reasoning"
           className="text-muted-foreground transition-colors hover:text-foreground"
           prefetch={false}
         >
@@ -86,12 +86,12 @@ export function Navbar({ className }: Props) {
         <SheetContent side="left">
           <nav className="grid gap-6 text-lg font-medium">
             <Link
-              href="#"
+              href="/"
               className="flex items-center text-sm font-semibold"
               prefetch={false}
             >
               <Image
-                className="max-w-full flex-grow"
+                className="max-w-[40px] flex-grow"
                 src="/images/logo-only.png"
                 alt=""
                 width={30}
@@ -102,14 +102,14 @@ export function Navbar({ className }: Props) {
               </span>
             </Link>
             <Link
-              href="#"
+              href="/presentation"
               className="text-muted-foreground hover:text-foreground"
               prefetch={false}
             >
               Apresentação
             </Link>
             <Link
-              href="#"
+              href="/reasoning"
               className="text-muted-foreground hover:text-foreground"
               prefetch={false}
             >
