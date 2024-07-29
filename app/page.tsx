@@ -9,9 +9,8 @@ export default function Home() {
     <React.Fragment>
       <div className="h-[48px] bg-secondary" />
       <Navbar className="bg-secondary" />
-      <div className="relative h-[100px] bg-secondary md:h-[150px]"></div>
-      <div className="h-[48px]" />
-      <main className="mx-auto flex max-w-[850px] flex-row-reverse items-center gap-8 px-4 md:px-8">
+      <div className="relative h-[100px] bg-secondary md:h-[250px]" />
+      <main className="relative top-[-55px] mx-auto flex max-w-[850px] flex-col items-center gap-8 px-4 md:top-[-90px] md:flex-row-reverse md:px-8">
         <Image
           className="max-w-full"
           src="/images/logo.png"

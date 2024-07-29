@@ -21,7 +21,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <head />
       <body
         className={cn(
-          "flex min-h-screen flex-col bg-background pb-2 font-sans antialiased",
+          "flex min-h-screen flex-col bg-background pb-4 font-sans antialiased",
           fontSans.variable,
         )}
       >
