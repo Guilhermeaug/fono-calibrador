@@ -9,7 +9,7 @@ import Image from "next/image";
 
 export default function TermsPage() {
   return (
-    <main className="mx-auto max-w-[850px] px-8 pt-28">
+    <main className="mx-auto max-w-[850px] px-8 pt-20">
       <TypographyH1 className="text-center">
         TERMO DE CONSENTIMENTO LIVRE E ESCLARECIDO​
       </TypographyH1>

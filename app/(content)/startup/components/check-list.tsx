@@ -6,7 +6,11 @@ const items = [
     href: "/terms",
     done: true,
   },
-  { text: "2. Teste do Processamento Auditivo", href: "", done: true },
+  {
+    text: "2. Teste do Processamento Auditivo",
+    href: "/pac/begin",
+    done: true,
+  },
   {
     text: "3. Treinamento de Avaliação Perceptivo-Auditiva da Voz",
     href: "",

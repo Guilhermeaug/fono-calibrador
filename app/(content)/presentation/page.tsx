@@ -7,7 +7,7 @@ import Link from "next/link";
 
 export default function PresentationPage() {
   return (
-    <main className="mx-auto max-w-[850px] px-8 pt-28">
+    <main className="mx-auto max-w-[850px] px-8 pt-20">
       <TypographyH1 className="text-center">
         Seja bem vindo ao Calibrador Auditivo!
       </TypographyH1>

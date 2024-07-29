@@ -19,7 +19,7 @@ export function Footer() {
           objectFit="contain"
         />
       </div>
-      <div className="relative h-12">
+      <div className="relative h-14">
         <Image
           src="/images/gp-voz.png"
           alt="GP Voz"
