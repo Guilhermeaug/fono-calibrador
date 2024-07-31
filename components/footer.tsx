@@ -8,7 +8,7 @@ export function Footer() {
           className="object-contain"
           src="/images/medicina.png"
           alt="Medicina"
-          layout="fill"
+          fill
         />
       </div>
       <div className="relative h-12">
@@ -16,7 +16,7 @@ export function Footer() {
           className="object-contain"
           src="/images/ufmg.png"
           alt="UFMG"
-          layout="fill"
+          fill
         />
       </div>
       <div className="relative h-16">
@@ -24,7 +24,7 @@ export function Footer() {
           className="object-contain"
           src="/images/gp-voz.png"
           alt="GP Voz"
-          layout="fill"
+          fill
         />
       </div>
       <div className="relative h-12">
@@ -32,7 +32,7 @@ export function Footer() {
           className="object-contain"
           src="/images/cnpq.png"
           alt="CNPq"
-          layout="fill"
+          fill
         />
       </div>
       <div className="relative h-12">
@@ -40,7 +40,7 @@ export function Footer() {
           className="object-contain"
           src="/images/capes.png"
           alt="CAPES"
-          layout="fill"
+          fill
         />
       </div>
       <div className="relative h-12">
@@ -48,7 +48,7 @@ export function Footer() {
           className="object-contain"
           src="/images/audbility.png"
           alt="Audbility"
-          layout="fill"
+          fill
         />
       </div>
     </footer>
