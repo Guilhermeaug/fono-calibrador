@@ -41,16 +41,17 @@ const formSchema = z
       ])
       .optional(),
     isVoiceSpecialist: z.enum(["yes", "no"], { required_error: FILL_FIELD }),
-    auditoryPerceptualAssessmentExperience: z
-      .enum([
+    auditoryPerceptualAssessmentExperience: z.enum(
+      [
         "0-5 years",
         "6-10 years",
         "11-15 years",
         "16-20 years",
         "21+ years",
         "0 years",
-      ])
-      .optional(),
+      ],
+      { required_error: FILL_FIELD },
+    ),
     isAuditoryPerceptualAssessmentTrained: z.enum(["yes", "no"], {
       required_error: FILL_FIELD,
     }),
