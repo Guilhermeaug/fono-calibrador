@@ -1,13 +1,15 @@
-import { TypographyH1 } from "@/components/typography/h1";
-import { TypographyH4 } from "@/components/typography/h4";
-import { TypographyMuted } from "@/components/typography/muted";
-import { TypographyP } from "@/components/typography/p";
+import {
+  TypographyH1,
+  TypographyMuted,
+  TypographyP,
+  TypographyH4,
+} from "@/components/typography";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 export default function PresentationPage() {
   return (
-    <main className="mx-auto max-w-[850px] px-8 pt-20">
+    <main className="mx-auto max-w-[850px] px-8 pt-16">
       <TypographyH1 className="text-center">
         Seja bem vindo ao Calibrador Auditivo!
       </TypographyH1>

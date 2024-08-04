@@ -37,7 +37,7 @@ function AudioForm({
 
   return (
     <div className="flex flex-grow flex-col space-y-4">
-      {View}
+      <div className="mx-auto">{View}</div>
       <div className="grid flex-shrink gap-2">
         <Button
           disabled={disabled}

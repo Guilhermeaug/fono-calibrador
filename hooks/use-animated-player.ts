@@ -8,6 +8,12 @@ type Props = {
 };
 
 export function useAnimatedPlayer({ play }: Props) {
+  const [clickedTimes, setClickedTimes] = React.useState(0);
+
+  function resetClickedTimes() {
+    setClickedTimes(0);
+  }
+
   const {
     View,
     play: playAnimation,
@@ -17,12 +23,14 @@ export function useAnimatedPlayer({ play }: Props) {
     animationData: Animation,
     loop: true,
     onClick: () => {
+      setClickedTimes((prev) => prev + 1);
+
+      stop();
       play();
       playAnimation();
     },
     style: {
-      width: 60,
-      margin: "0 auto",
+      width: 40,
       cursor: "pointer",
     },
   });
@@ -36,5 +44,7 @@ export function useAnimatedPlayer({ play }: Props) {
     View,
     playAnimation,
     stopAnimation,
+    clickedTimes,
+    resetClickedTimes
   };
 }

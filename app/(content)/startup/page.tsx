@@ -1,11 +1,10 @@
 import * as React from "react";
-import { TypographyH1 } from "@/components/typography/h1";
-import { TypographyP } from "@/components/typography/p";
 import { CheckList } from "./components/check-list";
+import { TypographyH1, TypographyP } from "@/components/typography";
 
 export default function StartupPage() {
   return (
-    <main className="mx-auto max-w-[850px] px-8 pt-20">
+    <main className="mx-auto max-w-[850px] px-8 pt-16">
       <TypographyH1 className="text-center">
         Seja bem vindo ao Calibrador Auditivo!
       </TypographyH1>
