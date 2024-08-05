@@ -42,3 +42,18 @@ export type ProgramTraining = {
   roughnessAnchor: Audio[];
   breathinessAnchor: Audio[];
 } & StrapiDefaultAttributes;
+
+export type LoginPayload = {
+  identifier: string;
+  password: string;
+};
+
+export type StrapiError = {
+  data: any;
+  error: {
+    status: number;
+    name: string;
+    message: string;
+    details: {};
+  };
+};

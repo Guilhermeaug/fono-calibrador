@@ -97,3 +97,4 @@ const DEFAULT_VALUES = {
 };
 
 export { formSchema, DEFAULT_VALUES };
+export type FORM_TYPE = z.infer<typeof formSchema>;

@@ -34,6 +34,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { AUTH } from "@/server/auth";
+import { toast } from "sonner";
+import { signIn } from "next-auth/react";
 
 export function RegisterForm() {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -42,11 +45,48 @@ export function RegisterForm() {
     defaultValues: DEFAULT_VALUES,
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-  }
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const res = await AUTH.signUp(values);
 
-  console.log(form.formState.errors);
+    if ("error" in res) {
+      switch (res.error.message) {
+        case "Email or Username are already taken": {
+          toast.error("Email ou identificador de usuário já estão em uso.");
+          form.setError("email", {
+            type: "required",
+          });
+          form.setError("username", {
+            type: "required",
+          });
+          break;
+        }
+        default:
+          toast.error("Erro desconhecido");
+          break;
+      }
+      return;
+    }
+
+    const loginResponse = await signIn("credentials", {
+      identifier: values.email,
+      password: values.password,
+      redirect: false,
+    });
+
+    if (loginResponse?.ok) {
+      window.location.replace("/");
+      return;
+    }
+
+    switch (loginResponse?.error) {
+      case "Your account email is not confirmed":
+        toast.message("Seu email ainda não foi confirmado.");
+        break;
+      default:
+        toast.error("Erro desconhecido");
+        break;
+    }
+  }
 
   const isMusician = form.watch("isMusician") === "yes";
   const isStudent = form.watch("job") === "student";
@@ -790,7 +830,9 @@ export function RegisterForm() {
                   </FormItem>
                 )}
               />
-              <Button type="submit">Submit</Button>
+              <Button className="block w-full" type="submit">
+                Enviar
+              </Button>
             </form>
           </Form>
         </div>

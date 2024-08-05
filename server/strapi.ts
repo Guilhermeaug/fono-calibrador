@@ -1,6 +1,12 @@
 import { explodeStrapiData } from "@/lib/utils";
-import { FullProgram, ProgramAssessment, ProgramTraining } from "./types";
+import {
+  FullProgram,
+  LoginPayload,
+  ProgramAssessment,
+  ProgramTraining,
+} from "./types";
 import qs from "qs";
+import { FORM_TYPE } from "@/app/(content)/register/constants";
 
 export const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL;
 const TOKEN = process.env.NEXT_PUBLIC_TOKEN;
@@ -33,7 +39,12 @@ function fetchStrapiApi({
     body: JSON.stringify(body),
     headers,
     cache: CACHE,
-  }).then((res) => res.json());
+  }).then((res) => {
+    if (!res.ok) {
+      throw res.json();
+    }
+    return res.json();
+  });
 }
 
 async function getFullProgram({ id }: { id: number }) {
@@ -116,9 +127,28 @@ async function checkAnswer({
   return data.result;
 }
 
+async function login(loginPayload: LoginPayload) {
+  const data = await fetchStrapiApi({
+    path: "/auth/local",
+    body: loginPayload,
+    method: "POST",
+  });
+  return data;
+}
+
+async function signUp(data: FORM_TYPE) {
+  return await fetchStrapiApi({
+    path: "/auth/local/register",
+    body: data,
+    method: "POST",
+  });
+}
+
 export const STRAPI = {
   getFullProgram,
   getProgramAssessment,
   getProgramTraining,
   checkAnswer,
+  login,
+  signUp,
 };
