@@ -1,7 +1,8 @@
 import { TypographyH2 } from "@/components/typography";
 import { STRAPI } from "@/server/strapi";
-import { TrainingForm } from "./components/TrainingForm";
+import { shuffle } from "fast-shuffle";
 import { AnchorAside } from "./components/AnchorAside";
+import { TrainingForm } from "./components/TrainingForm";
 
 type Props = {
   params: {
@@ -21,6 +22,7 @@ export default async function Page({
   }
 
   const program = await STRAPI.getProgramTraining({ id: 1 });
+  program.training = shuffle(program.training);
 
   const title = `Sessão ${session} - Treinamento`;
   return (

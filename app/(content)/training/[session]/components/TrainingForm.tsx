@@ -1,16 +1,7 @@
 "use client";
 
-import * as React from "react";
-import { TypographyP } from "@/components/typography";
-import { Button } from "@/components/ui/button";
-import { useAnimatedPlayer } from "@/hooks/use-animated-player";
-import { ProgramTraining } from "@/server/types";
-import useSound from "use-sound";
-import { STRAPI, STRAPI_URL } from "@/server/strapi";
 import { VoiceSlider } from "@/components/VoiceSlider";
-import { ArrowRight } from "lucide-react";
-import { TraningEvaluationData } from "@/types";
-import useElapsedTime from "@/hooks/use-elapsed-time";
+import { TypographyP } from "@/components/typography";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -22,8 +13,17 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { options } from "../constants";
+import { Button } from "@/components/ui/button";
+import { useAnimatedPlayer } from "@/hooks/use-animated-player";
+import useElapsedTime from "@/hooks/use-elapsed-time";
+import { STRAPI, STRAPI_URL } from "@/server/strapi";
+import { ProgramTraining } from "@/server/types";
+import { TraningEvaluationData } from "@/types";
+import { ArrowRight } from "lucide-react";
+import * as React from "react";
 import { toast } from "sonner";
+import useSound from "use-sound";
+import { options } from "../constants";
 
 type Props = {
   program: ProgramTraining;

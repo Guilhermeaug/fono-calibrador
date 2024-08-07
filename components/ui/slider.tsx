@@ -43,10 +43,10 @@ const Slider = React.forwardRef<
     }, []);
 
     const markerElements = markers?.map((position, index) => (
-      <div className="relative px-1">
+      <div className="relative">
         <div
           key={index}
-          className="absolute h-2 w-[6px] bg-primary"
+          className="absolute h-2 w-[6px] bg-accent"
           style={{ left: `${position}%`, transform: "translateX(-50%)" }}
         />
       </div>
@@ -62,7 +62,7 @@ const Slider = React.forwardRef<
         onPointerDown={handlePointerDown}
         {...props}
       >
-        <SliderPrimitive.Track className="relative h-2 w-full grow overflow-hidden rounded-full bg-gradient-to-r from-sky-500 via-yellow-500 to-red-600 px-1">
+        <SliderPrimitive.Track className="relative h-2 w-full grow overflow-hidden rounded-full bg-gradient-to-r from-sky-500 via-yellow-500 to-red-600 px-[0.1rem]">
           {markerElements}
           <SliderPrimitive.Range className="absolute h-full bg-transparent" />
         </SliderPrimitive.Track>

@@ -1,4 +1,6 @@
-const sounds = [
+import { shuffle } from "fast-shuffle";
+
+const sounds = shuffle([
   {
     path: "/audios/Apito.wav",
     answer: "Apito",
@@ -11,6 +13,6 @@ const sounds = [
     path: "/audios/Sino.wav",
     answer: "Sino",
   },
-];
+]);
 
 export { sounds };

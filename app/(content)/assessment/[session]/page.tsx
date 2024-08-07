@@ -1,8 +1,7 @@
 import { TypographyH2 } from "@/components/typography";
-import { Slider } from "@/components/ui/slider";
-import { VoiceSlider } from "@/components/VoiceSlider";
 import { STRAPI } from "@/server/strapi";
 import { AsssessmentForm } from "./components/AssessmentForm";
+import { shuffle } from "fast-shuffle";
 
 type Props = {
   params: {
@@ -18,6 +17,7 @@ export default async function Page({
   searchParams: { step },
 }: Props) {
   const program = await STRAPI.getProgramAssessment({ id: 1 });
+  program.assessment = shuffle(program.assessment);
 
   const title = `Sessão ${session} - Avaliação ${step}`;
   return (

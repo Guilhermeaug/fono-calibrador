@@ -32,7 +32,7 @@ import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import { ptBR } from "date-fns/locale";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Select } from "@radix-ui/react-select";
+import { Select, SelectGroup } from "@radix-ui/react-select";
 import {
   SelectContent,
   SelectItem,
@@ -573,12 +573,14 @@ export function RegisterForm() {
                             <SelectValue placeholder="Selecione seu período atual na faculdade" />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent>
-                          {Array.from({ length: 10 }, (_, i) => (
-                            <SelectItem key={i} value={`${i + 1}`}>
-                              {i + 1}º período
-                            </SelectItem>
-                          ))}
+                        <SelectContent className="overflow-y-auto">
+                          <SelectGroup>
+                            {Array.from({ length: 10 }, (_, i) => (
+                              <SelectItem key={i} value={`${i + 1}`}>
+                                {i + 1}º período
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
                         </SelectContent>
                       </Select>
                       <FormMessage />
