@@ -67,7 +67,7 @@ export function LoginForm() {
                 <FormItem className="flex flex-col">
                   <FormLabel>Identificador</FormLabel>
                   <FormControl>
-                    <Input placeholder="Seu nome ou e-mail" {...field} />
+                    <Input placeholder="Seu usuário ou email" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -82,7 +82,7 @@ export function LoginForm() {
                 render={({ field }) => (
                   <FormItem className="flex flex-1 flex-col">
                     <div className="flex items-center">
-                      <FormLabel>Identificador</FormLabel>
+                      <FormLabel>Senha</FormLabel>
                       <Link
                         href="/forgot-password"
                         className="ml-auto inline-block text-sm underline"

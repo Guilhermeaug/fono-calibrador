@@ -7,8 +7,9 @@ import { anchors } from "../constants";
 import useSound from "use-sound";
 import { useLottie } from "lottie-react";
 import Animation from "@/public/animations/sound-animation.json";
-import { min, max } from "simple-statistics";
 import { STRAPI_URL } from "@/server/strapi";
+import { Slider } from "@/components/ui/slider";
+import { VoiceSlider } from "@/components/VoiceSlider";
 
 type Props = {
   feature: "roughness" | "breathiness";
@@ -23,22 +24,29 @@ export function AnchorAside({
     feature === "roughness" ? roughnessAnchor : breathinessAnchor;
 
   return (
-    <aside className="md:sticky">
+    <aside className="min-w-[300px] md:sticky">
       <div className="grid gap-4">
         {anchorsData.map((anchor) => {
           const values = anchor[feature];
           const [min, max] = [values[0], values[values.length - 1]];
 
           return (
-            <div key={anchor.identifier} className="">
-              <TypographyP>
-                {anchors[anchor.identifier as keyof typeof anchors]}
-              </TypographyP>
+            <div key={anchor.identifier}>
               <div className="flex items-center gap-4">
+                <TypographyP>
+                  {anchors[anchor.identifier as keyof typeof anchors]}
+                </TypographyP>
                 <AudioButton url={anchor.file.url} />
-                <span>
-                  {min}mm - {max}mm
-                </span>
+              </div>
+              <div className="mt-3 flex w-full flex-1 flex-col items-center gap-4">
+                <VoiceSlider
+                  showTooltip={false}
+                  showThumb={false}
+                  value={[33, 22]}
+                  max={100}
+                  step={1}
+                  markers={[min, max]}
+                />
               </div>
             </div>
           );

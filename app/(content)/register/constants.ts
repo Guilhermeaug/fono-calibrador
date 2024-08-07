@@ -16,14 +16,22 @@ const formSchema = z
       ),
     birthDate: z.date({ required_error: FILL_FIELD }),
     isMusician: z.enum(["yes", "no"], { required_error: FILL_FIELD }),
-    musicianType: z
-      .enum(["professional", "amateur", "singer", "instrumentalist"])
-      .optional(),
+    musicianType: z.enum(["professional", "amateur"]).optional(),
+    musicianRole: z
+      .array(z.string())
+      .refine((value) => value.some((item) => item), {
+        message: "Você deve selecionar pelo menos uma opção",
+      }),
     musicianTime: z
       .enum(["1-year", "1-3 years", "3-5 years", "5-10 years", "10+ years"])
       .optional(),
-    job: z.enum(["professional", "student"], { required_error: FILL_FIELD }),
+    job: z.enum(["professional", "student", "teacher"], {
+      required_error: FILL_FIELD,
+    }),
+    workUniversity: z.string().min(3, FILL_FIELD).optional(),
     university: z.string().min(3, FILL_FIELD),
+    courseLevel: z.array(z.string()).optional(),
+    voiceAreaDisciplines: z.enum(["yes", "no"]).optional(),
     graduationPeriod: z
       .enum(["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"])
       .optional(),
@@ -69,9 +77,25 @@ const formSchema = z
     message: FILL_FIELD,
     path: ["musicianType"],
   })
+  .refine((data) => !(data.isMusician === "yes" && !data.musicianRole.length), {
+    message: FILL_FIELD,
+    path: ["musicianRole"],
+  })
   .refine((data) => !(data.isMusician === "yes" && !data.musicianTime), {
     message: FILL_FIELD,
     path: ["musicianTime"],
+  })
+  .refine((data) => !(data.job === "teacher" && !data.workUniversity), {
+    message: FILL_FIELD,
+    path: ["workUniversity"],
+  })
+  .refine((data) => !(data.job === "teacher" && !data.courseLevel?.length), {
+    message: FILL_FIELD,
+    path: ["courseLevel"],
+  })
+  .refine((data) => !(data.job === "teacher" && !data.voiceAreaDisciplines), {
+    message: FILL_FIELD,
+    path: ["voiceAreaDisciplines"],
   })
   .refine((data) => !(data.job === "student" && !data.graduationPeriod), {
     message: FILL_FIELD,
@@ -94,7 +118,31 @@ const DEFAULT_VALUES = {
   email: "",
   username: "",
   password: "",
+  musicianRole: [],
+  courseLevel: [],
 };
 
-export { formSchema, DEFAULT_VALUES };
+const musicianRoles = [
+  {
+    id: "singer",
+    label: "Cantor",
+  },
+  {
+    id: "instrumentalist",
+    label: "Instrumentista",
+  },
+] as const;
+
+const courseLevels = [
+  {
+    id: "graduate",
+    label: "Graduação",
+  },
+  {
+    id: "postgraduate",
+    label: "Pós-graduação",
+  },
+] as const;
+
+export { formSchema, DEFAULT_VALUES, musicianRoles, courseLevels };
 export type FORM_TYPE = z.infer<typeof formSchema>;

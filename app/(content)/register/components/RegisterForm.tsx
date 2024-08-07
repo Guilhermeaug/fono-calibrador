@@ -5,7 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { DEFAULT_VALUES, formSchema } from "../constants";
+import {
+  courseLevels,
+  DEFAULT_VALUES,
+  formSchema,
+  musicianRoles,
+} from "../constants";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
@@ -37,6 +42,7 @@ import {
 import { AUTH } from "@/server/auth";
 import { toast } from "sonner";
 import { signIn } from "next-auth/react";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export function RegisterForm() {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -90,6 +96,7 @@ export function RegisterForm() {
 
   const isMusician = form.watch("isMusician") === "yes";
   const isStudent = form.watch("job") === "student";
+  const isTeacher = form.watch("job") === "teacher";
   const hasExperienceInAuditoryPerceptualAssessment =
     form.watch("hasExperienceInAuditoryPerceptualAssessment") === "yes";
 
@@ -109,7 +116,7 @@ export function RegisterForm() {
                       <Input placeholder="Seu nome" {...field} />
                     </FormControl>
                     <FormDescription>
-                      Esse nome será exibido para seus avaliadores.
+                      Esse nome será exibido para os administradores.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -120,9 +127,9 @@ export function RegisterForm() {
                 name="username"
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
-                    <FormLabel>Identificador de usuário</FormLabel>
+                    <FormLabel>Usuário</FormLabel>
                     <FormControl>
-                      <Input placeholder="Seu identificador" {...field} />
+                      <Input placeholder="Seu usuário" {...field} />
                     </FormControl>
                     <FormDescription>
                       Permite que você acesse sua conta de forma mais rápida.
@@ -271,24 +278,60 @@ export function RegisterForm() {
                               Amador
                             </FormLabel>
                           </FormItem>
-                          <FormItem className="flex items-center space-x-3 space-y-0">
-                            <FormControl>
-                              <RadioGroupItem value="singer" />
-                            </FormControl>
-                            <FormLabel className="font-normal">
-                              Cantor
-                            </FormLabel>
-                          </FormItem>
-                          <FormItem className="flex items-center space-x-3 space-y-0">
-                            <FormControl>
-                              <RadioGroupItem value="instrumentalist" />
-                            </FormControl>
-                            <FormLabel className="font-normal">
-                              Instrumentista
-                            </FormLabel>
-                          </FormItem>
                         </RadioGroup>
                       </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
+              {isMusician && (
+                <FormField
+                  control={form.control}
+                  name="musicianRole"
+                  render={() => (
+                    <FormItem>
+                      <div className="mb-4">
+                        <FormLabel>Qual é o seu papel na música?</FormLabel>
+                      </div>
+                      <div className="grid grid-cols-2">
+                        {musicianRoles.map((item) => (
+                          <FormField
+                            key={item.id}
+                            control={form.control}
+                            name="musicianRole"
+                            render={({ field }) => {
+                              return (
+                                <FormItem
+                                  key={item.id}
+                                  className="flex flex-row items-start space-x-3 space-y-0"
+                                >
+                                  <FormControl>
+                                    <Checkbox
+                                      checked={field.value?.includes(item.id)}
+                                      onCheckedChange={(checked) => {
+                                        return checked
+                                          ? field.onChange([
+                                              ...field.value,
+                                              item.id,
+                                            ])
+                                          : field.onChange(
+                                              field.value?.filter(
+                                                (value) => value !== item.id,
+                                              ),
+                                            );
+                                      }}
+                                    />
+                                  </FormControl>
+                                  <FormLabel className="font-normal">
+                                    {item.label}
+                                  </FormLabel>
+                                </FormItem>
+                              );
+                            }}
+                          />
+                        ))}
+                      </div>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -359,7 +402,7 @@ export function RegisterForm() {
                 name="job"
                 render={({ field }) => (
                   <FormItem className="space-y-3">
-                    <FormLabel>O que melhor te define?</FormLabel>
+                    <FormLabel>Na fonoaudiologia você é:</FormLabel>
                     <FormControl>
                       <RadioGroup
                         onValueChange={field.onChange}
@@ -380,6 +423,14 @@ export function RegisterForm() {
                           </FormControl>
                           <FormLabel className="font-normal">
                             Estudante de graduação em fonoaudiologia
+                          </FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="teacher" />
+                          </FormControl>
+                          <FormLabel className="font-normal">
+                            Professor em curso de fonoaudiologia
                           </FormLabel>
                         </FormItem>
                       </RadioGroup>
@@ -403,6 +454,109 @@ export function RegisterForm() {
                   </FormItem>
                 )}
               />
+              {isTeacher && (
+                <FormField
+                  control={form.control}
+                  name="workUniversity"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel>
+                        Você é professor em qual universidade?
+                      </FormLabel>
+                      <FormControl>
+                        <Input placeholder="Sua resposta" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
+              {isTeacher && (
+                <FormField
+                  control={form.control}
+                  name="courseLevel"
+                  render={() => (
+                    <FormItem>
+                      <div className="mb-4">
+                        <FormLabel>Você leciona para qual curso?</FormLabel>
+                      </div>
+                      <div className="grid grid-cols-2">
+                        {courseLevels.map((item) => (
+                          <FormField
+                            key={item.id}
+                            control={form.control}
+                            name="courseLevel"
+                            render={({ field }) => {
+                              return (
+                                <FormItem
+                                  key={item.id}
+                                  className="flex flex-row items-start space-x-3 space-y-0"
+                                >
+                                  <FormControl>
+                                    <Checkbox
+                                      checked={field.value?.includes(item.id)}
+                                      onCheckedChange={(checked) => {
+                                        return checked
+                                          ? field.onChange([
+                                              ...(field.value ?? []),
+                                              item.id,
+                                            ])
+                                          : field.onChange(
+                                              field.value?.filter(
+                                                (value) => value !== item.id,
+                                              ),
+                                            );
+                                      }}
+                                    />
+                                  </FormControl>
+                                  <FormLabel className="font-normal">
+                                    {item.label}
+                                  </FormLabel>
+                                </FormItem>
+                              );
+                            }}
+                          />
+                        ))}
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
+              {isTeacher && (
+                <FormField
+                  control={form.control}
+                  name="voiceAreaDisciplines"
+                  render={({ field }) => (
+                    <FormItem className="space-y-3">
+                      <FormLabel>
+                        Você leciona disciplinas da área de voz?
+                      </FormLabel>
+                      <FormControl>
+                        <RadioGroup
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                          className="flex space-x-1"
+                        >
+                          <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="yes" />
+                            </FormControl>
+                            <FormLabel className="font-normal">Sim</FormLabel>
+                          </FormItem>
+                          <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="no" />
+                            </FormControl>
+                            <FormLabel className="font-normal">Não</FormLabel>
+                          </FormItem>
+                        </RadioGroup>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              )}
               {isStudent && (
                 <FormField
                   control={form.control}
@@ -567,7 +721,6 @@ export function RegisterForm() {
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={form.control}
                 name="auditoryPerceptualAssessmentExperience"
