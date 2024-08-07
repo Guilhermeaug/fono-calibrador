@@ -1,9 +1,9 @@
-import { Navbar } from "@/components/nav-bar";
-import * as React from "react";
+import { Navbar } from '@/components/nav-bar'
+import * as React from 'react'
 
 type Props = {
-  children: React.ReactNode;
-};
+  children: React.ReactNode
+}
 
 export default function ContentLayout({ children }: Props) {
   return (
@@ -11,5 +11,5 @@ export default function ContentLayout({ children }: Props) {
       <Navbar />
       <div className="relative flex-grow">{children}</div>
     </React.Fragment>
-  );
+  )
 }

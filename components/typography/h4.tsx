@@ -1,14 +1,14 @@
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils'
 
 type Props = {
-  children: React.ReactNode;
-  className?: string;
-};
+  children: React.ReactNode
+  className?: string
+}
 
 export function TypographyH4({ children, className }: Props) {
   const style = cn(
-    "scroll-m-20 text-xl font-semibold tracking-tight [&:not(:first-child)]:mt-6",
+    'scroll-m-20 text-xl font-semibold tracking-tight [&:not(:first-child)]:mt-6',
     className,
-  );
-  return <h4 className={style}>{children}</h4>;
+  )
+  return <h4 className={style}>{children}</h4>
 }

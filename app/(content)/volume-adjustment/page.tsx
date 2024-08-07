@@ -1,5 +1,5 @@
-import { TypographyH1, TypographyP } from "@/components/typography";
-import { AdjustmentForm } from "./components/adjustment-form";
+import { TypographyH1, TypographyP } from '@/components/typography'
+import { AdjustmentForm } from './components/adjustment-form'
 
 export default function VolumeAdjustmentPage() {
   return (
@@ -14,5 +14,5 @@ export default function VolumeAdjustmentPage() {
       <div className="h-[30px]" />
       <AdjustmentForm />
     </main>
-  );
+  )
 }

@@ -1,8 +1,8 @@
-import * as React from "react";
-import Image from "next/image";
-import { Navbar } from "@/components/nav-bar";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import Link from "next/link";
+import { Navbar } from '@/components/nav-bar'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import Image from 'next/image'
+import Link from 'next/link'
+import * as React from 'react'
 
 export default function Home() {
   return (
@@ -24,20 +24,14 @@ export default function Home() {
           </CardHeader>
           <CardContent>
             <p>
-              Quer conhecer este instrumento?{" "}
-              <Link
-                className="text-sky-600 hover:underline"
-                href="/presentation"
-              >
+              Quer conhecer este instrumento?{' '}
+              <Link className="text-sky-600 hover:underline" href="/presentation">
                 Clique aqui
               </Link>
             </p>
             <p>
-              Preparado para iniciar seu treinamento?{" "}
-              <Link
-                className="text-sky-600 hover:underline"
-                href="/presentation"
-              >
+              Preparado para iniciar seu treinamento?{' '}
+              <Link className="text-sky-600 hover:underline" href="/presentation">
                 Clique aqui
               </Link>
             </p>
@@ -45,5 +39,5 @@ export default function Home() {
         </Card>
       </main>
     </React.Fragment>
-  );
+  )
 }

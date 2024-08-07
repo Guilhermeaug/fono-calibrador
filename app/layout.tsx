@@ -1,30 +1,30 @@
-import "./globals.css";
-import { Inter as FontSans } from "next/font/google";
+import { Inter as FontSans } from 'next/font/google'
+import './globals.css'
 
-import { cn } from "@/lib/utils";
-import { ThemeProvider } from "@/components/theme-provider";
-import { Footer } from "@/components/footer";
-import { Toaster } from "@/components/ui/sonner";
-import { AUTH } from "@/server/auth";
-import { SessionProvider } from "@/contexts/SessionProvider";
+import { Footer } from '@/components/footer'
+import { ThemeProvider } from '@/components/theme-provider'
+import { Toaster } from '@/components/ui/sonner'
+import { SessionProvider } from '@/contexts/SessionProvider'
+import { cn } from '@/lib/utils'
+import { AUTH } from '@/server/auth'
 
 const fontSans = FontSans({
-  subsets: ["latin"],
-  variable: "--font-sans",
-});
+  subsets: ['latin'],
+  variable: '--font-sans',
+})
 
 type RootLayoutProps = {
-  children: React.ReactNode;
-};
+  children: React.ReactNode
+}
 
 export default async function RootLayout({ children }: RootLayoutProps) {
-  const session = await AUTH.getServerSession();
+  const session = await AUTH.getServerSession()
 
   return (
     <html lang="pt-BR" suppressHydrationWarning>
       <body
         className={cn(
-          "flex min-h-screen flex-col bg-background pb-4 font-sans antialiased",
+          'flex min-h-screen flex-col bg-background pb-4 font-sans antialiased',
           fontSans.variable,
         )}
       >
@@ -42,5 +42,5 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         </SessionProvider>
       </body>
     </html>
-  );
+  )
 }

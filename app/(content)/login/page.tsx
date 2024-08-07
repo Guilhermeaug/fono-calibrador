@@ -1,10 +1,7 @@
-import Image from "next/image";
-import Link from "next/link";
+import Image from 'next/image'
+import Link from 'next/link'
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { LoginForm } from "./components/LoginForm";
+import { LoginForm } from './components/LoginForm'
 
 export default function Page() {
   return (
@@ -19,7 +16,7 @@ export default function Page() {
           </div>
           <LoginForm />
           <div className="mt-4 text-center text-sm">
-            Não tem uma conta?{"  "}
+            Não tem uma conta?{'  '}
             <Link href="/register" className="underline">
               Se cadastre
             </Link>
@@ -36,5 +33,5 @@ export default function Page() {
         />
       </div>
     </div>
-  );
+  )
 }

@@ -1,17 +1,8 @@
-"use client";
+'use client'
 
-import * as React from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import {
-  courseLevels,
-  DEFAULT_VALUES,
-  formSchema,
-  musicianRoles,
-} from "../constants";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from '@/components/ui/button'
+import { Calendar } from '@/components/ui/calendar'
+import { Checkbox } from '@/components/ui/checkbox'
 import {
   Form,
   FormControl,
@@ -20,85 +11,80 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
-import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
-import { Calendar } from "@/components/ui/calendar";
-import { ptBR } from "date-fns/locale";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Select, SelectGroup } from "@radix-ui/react-select";
-import {
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { AUTH } from "@/server/auth";
-import { toast } from "sonner";
-import { signIn } from "next-auth/react";
-import { Checkbox } from "@/components/ui/checkbox";
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { cn } from '@/lib/utils'
+import { AUTH } from '@/server/auth'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Select, SelectGroup } from '@radix-ui/react-select'
+import { format } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
+import { CalendarIcon } from 'lucide-react'
+import { signIn } from 'next-auth/react'
+import * as React from 'react'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
+import { z } from 'zod'
+import { courseLevels, DEFAULT_VALUES, formSchema, musicianRoles } from '../constants'
 
 export function RegisterForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    mode: "onBlur",
+    mode: 'onBlur',
     defaultValues: DEFAULT_VALUES,
-  });
+  })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const res = await AUTH.signUp(values);
+    const res = await AUTH.signUp(values)
 
-    if ("error" in res) {
+    if ('error' in res) {
       switch (res.error.message) {
-        case "Email or Username are already taken": {
-          toast.error("Email ou identificador de usuário já estão em uso.");
-          form.setError("email", {
-            type: "required",
-          });
-          form.setError("username", {
-            type: "required",
-          });
-          break;
+        case 'Email or Username are already taken': {
+          toast.error('Email ou identificador de usuário já estão em uso.')
+          form.setError('email', {
+            type: 'required',
+          })
+          form.setError('username', {
+            type: 'required',
+          })
+          break
         }
         default:
-          toast.error("Erro desconhecido");
-          break;
+          toast.error('Erro desconhecido')
+          break
       }
-      return;
+      return
     }
 
-    const loginResponse = await signIn("credentials", {
+    const loginResponse = await signIn('credentials', {
       identifier: values.email,
       password: values.password,
       redirect: false,
-    });
+    })
 
     if (loginResponse?.ok) {
-      window.location.replace("/");
-      return;
+      window.location.replace('/')
+      return
     }
 
     switch (loginResponse?.error) {
-      case "Your account email is not confirmed":
-        toast.message("Seu email ainda não foi confirmado.");
-        break;
+      case 'Your account email is not confirmed':
+        toast.message('Seu email ainda não foi confirmado.')
+        break
       default:
-        toast.error("Erro desconhecido");
-        break;
+        toast.error('Erro desconhecido')
+        break
     }
   }
 
-  const isMusician = form.watch("isMusician") === "yes";
-  const isStudent = form.watch("job") === "student";
-  const isTeacher = form.watch("job") === "teacher";
+  const isMusician = form.watch('isMusician') === 'yes'
+  const isStudent = form.watch('job') === 'student'
+  const isTeacher = form.watch('job') === 'teacher'
   const hasExperienceInAuditoryPerceptualAssessment =
-    form.watch("hasExperienceInAuditoryPerceptualAssessment") === "yes";
+    form.watch('hasExperienceInAuditoryPerceptualAssessment') === 'yes'
 
   return (
     <React.Fragment>
@@ -148,9 +134,8 @@ export function RegisterForm() {
                       <Input placeholder="Uma senha segura" {...field} />
                     </FormControl>
                     <FormDescription>
-                      Deve conter pelo menos 8 caracteres, com uma letra
-                      maiúscula, uma letra minúscula, um número e um caractere
-                      especial.
+                      Deve conter pelo menos 8 caracteres, com uma letra maiúscula, uma letra
+                      minúscula, um número e um caractere especial.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -166,8 +151,7 @@ export function RegisterForm() {
                       <Input type="email" placeholder="Seu email" {...field} />
                     </FormControl>
                     <FormDescription>
-                      Esse email será utilizado para enviar notificações e
-                      documentos.
+                      Esse email será utilizado para enviar notificações e documentos.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -183,14 +167,14 @@ export function RegisterForm() {
                       <PopoverTrigger asChild>
                         <FormControl>
                           <Button
-                            variant={"outline"}
+                            variant={'outline'}
                             className={cn(
-                              "w-[240px] pl-3 text-left font-normal",
-                              !field.value && "text-muted-foreground",
+                              'w-[240px] pl-3 text-left font-normal',
+                              !field.value && 'text-muted-foreground',
                             )}
                           >
                             {field.value ? (
-                              format(field.value, "PPP", { locale: ptBR })
+                              format(field.value, 'PPP', { locale: ptBR })
                             ) : (
                               <span>Sua data de nascimento</span>
                             )}
@@ -206,9 +190,7 @@ export function RegisterForm() {
                           toYear={new Date().getFullYear()}
                           selected={field.value}
                           onSelect={field.onChange}
-                          disabled={(date) =>
-                            date > new Date() || date < new Date("1900-01-01")
-                          }
+                          disabled={(date) => date > new Date() || date < new Date('1900-01-01')}
                           initialFocus
                         />
                       </PopoverContent>
@@ -222,9 +204,7 @@ export function RegisterForm() {
                 name="isMusician"
                 render={({ field }) => (
                   <FormItem className="space-y-3">
-                    <FormLabel>
-                      Você é musicista? (cantor ou instrumental)
-                    </FormLabel>
+                    <FormLabel>Você é musicista? (cantor ou instrumental)</FormLabel>
                     <FormControl>
                       <RadioGroup
                         onValueChange={field.onChange}
@@ -266,17 +246,13 @@ export function RegisterForm() {
                             <FormControl>
                               <RadioGroupItem value="professional" />
                             </FormControl>
-                            <FormLabel className="font-normal">
-                              Profissional
-                            </FormLabel>
+                            <FormLabel className="font-normal">Profissional</FormLabel>
                           </FormItem>
                           <FormItem className="flex items-center space-x-3 space-y-0">
                             <FormControl>
                               <RadioGroupItem value="amateur" />
                             </FormControl>
-                            <FormLabel className="font-normal">
-                              Amador
-                            </FormLabel>
+                            <FormLabel className="font-normal">Amador</FormLabel>
                           </FormItem>
                         </RadioGroup>
                       </FormControl>
@@ -311,23 +287,16 @@ export function RegisterForm() {
                                       checked={field.value?.includes(item.id)}
                                       onCheckedChange={(checked) => {
                                         return checked
-                                          ? field.onChange([
-                                              ...field.value,
-                                              item.id,
-                                            ])
+                                          ? field.onChange([...field.value, item.id])
                                           : field.onChange(
-                                              field.value?.filter(
-                                                (value) => value !== item.id,
-                                              ),
-                                            );
+                                              field.value?.filter((value) => value !== item.id),
+                                            )
                                       }}
                                     />
                                   </FormControl>
-                                  <FormLabel className="font-normal">
-                                    {item.label}
-                                  </FormLabel>
+                                  <FormLabel className="font-normal">{item.label}</FormLabel>
                                 </FormItem>
-                              );
+                              )
                             }}
                           />
                         ))}
@@ -354,41 +323,31 @@ export function RegisterForm() {
                             <FormControl>
                               <RadioGroupItem value="1-year" />
                             </FormControl>
-                            <FormLabel className="font-normal">
-                              Até um ano
-                            </FormLabel>
+                            <FormLabel className="font-normal">Até um ano</FormLabel>
                           </FormItem>
                           <FormItem className="flex items-center space-x-3 space-y-0">
                             <FormControl>
                               <RadioGroupItem value="1-3 years" />
                             </FormControl>
-                            <FormLabel className="font-normal">
-                              1 a 3 anos
-                            </FormLabel>
+                            <FormLabel className="font-normal">1 a 3 anos</FormLabel>
                           </FormItem>
                           <FormItem className="flex items-center space-x-3 space-y-0">
                             <FormControl>
                               <RadioGroupItem value="3-5 years" />
                             </FormControl>
-                            <FormLabel className="font-normal">
-                              3 a 5 anos
-                            </FormLabel>
+                            <FormLabel className="font-normal">3 a 5 anos</FormLabel>
                           </FormItem>
                           <FormItem className="flex items-center space-x-3 space-y-0">
                             <FormControl>
                               <RadioGroupItem value="5-10 years" />
                             </FormControl>
-                            <FormLabel className="font-normal">
-                              5 a 10 anos
-                            </FormLabel>
+                            <FormLabel className="font-normal">5 a 10 anos</FormLabel>
                           </FormItem>
                           <FormItem className="flex items-center space-x-3 space-y-0">
                             <FormControl>
                               <RadioGroupItem value="10+ years" />
                             </FormControl>
-                            <FormLabel className="font-normal">
-                              Mais de 10 anos
-                            </FormLabel>
+                            <FormLabel className="font-normal">Mais de 10 anos</FormLabel>
                           </FormItem>
                         </RadioGroup>
                       </FormControl>
@@ -413,9 +372,7 @@ export function RegisterForm() {
                           <FormControl>
                             <RadioGroupItem value="professional" />
                           </FormControl>
-                          <FormLabel className="font-normal">
-                            Profissional formado
-                          </FormLabel>
+                          <FormLabel className="font-normal">Profissional formado</FormLabel>
                         </FormItem>
                         <FormItem className="flex items-center space-x-3 space-y-0">
                           <FormControl>
@@ -444,9 +401,7 @@ export function RegisterForm() {
                 name="university"
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
-                    <FormLabel>
-                      Você é/foi estudante de qual universidade?
-                    </FormLabel>
+                    <FormLabel>Você é/foi estudante de qual universidade?</FormLabel>
                     <FormControl>
                       <Input placeholder="Sua universidade" {...field} />
                     </FormControl>
@@ -460,9 +415,7 @@ export function RegisterForm() {
                   name="workUniversity"
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
-                      <FormLabel>
-                        Você é professor em qual universidade?
-                      </FormLabel>
+                      <FormLabel>Você é professor em qual universidade?</FormLabel>
                       <FormControl>
                         <Input placeholder="Sua resposta" {...field} />
                       </FormControl>
@@ -497,23 +450,16 @@ export function RegisterForm() {
                                       checked={field.value?.includes(item.id)}
                                       onCheckedChange={(checked) => {
                                         return checked
-                                          ? field.onChange([
-                                              ...(field.value ?? []),
-                                              item.id,
-                                            ])
+                                          ? field.onChange([...(field.value ?? []), item.id])
                                           : field.onChange(
-                                              field.value?.filter(
-                                                (value) => value !== item.id,
-                                              ),
-                                            );
+                                              field.value?.filter((value) => value !== item.id),
+                                            )
                                       }}
                                     />
                                   </FormControl>
-                                  <FormLabel className="font-normal">
-                                    {item.label}
-                                  </FormLabel>
+                                  <FormLabel className="font-normal">{item.label}</FormLabel>
                                 </FormItem>
-                              );
+                              )
                             }}
                           />
                         ))}
@@ -529,9 +475,7 @@ export function RegisterForm() {
                   name="voiceAreaDisciplines"
                   render={({ field }) => (
                     <FormItem className="space-y-3">
-                      <FormLabel>
-                        Você leciona disciplinas da área de voz?
-                      </FormLabel>
+                      <FormLabel>Você leciona disciplinas da área de voz?</FormLabel>
                       <FormControl>
                         <RadioGroup
                           onValueChange={field.onChange}
@@ -564,10 +508,7 @@ export function RegisterForm() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Você está em qual período?</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Selecione seu período atual na faculdade" />
@@ -594,8 +535,8 @@ export function RegisterForm() {
                 render={({ field }) => (
                   <FormItem className="space-y-3">
                     <FormLabel>
-                      Você tem experiência em avaliação perceptivo-auditiva
-                      (treinamento em aula ou experiência em atendimento)?
+                      Você tem experiência em avaliação perceptivo-auditiva (treinamento em aula ou
+                      experiência em atendimento)?
                     </FormLabel>
                     <FormControl>
                       <RadioGroup
@@ -627,9 +568,7 @@ export function RegisterForm() {
                   name="auditoryPerceptualAssessmentTime"
                   render={({ field }) => (
                     <FormItem className="space-y-3">
-                      <FormLabel>
-                        Considera que tem quanto tempo de treinamento
-                      </FormLabel>
+                      <FormLabel>Considera que tem quanto tempo de treinamento</FormLabel>
                       <FormControl>
                         <RadioGroup
                           onValueChange={field.onChange}
@@ -640,49 +579,37 @@ export function RegisterForm() {
                             <FormControl>
                               <RadioGroupItem value="0-2 hours" />
                             </FormControl>
-                            <FormLabel className="font-normal">
-                              0 a 2h
-                            </FormLabel>
+                            <FormLabel className="font-normal">0 a 2h</FormLabel>
                           </FormItem>
                           <FormItem className="flex items-center space-x-3 space-y-0">
                             <FormControl>
                               <RadioGroupItem value="2-4 hours" />
                             </FormControl>
-                            <FormLabel className="font-normal">
-                              2 a 4h
-                            </FormLabel>
+                            <FormLabel className="font-normal">2 a 4h</FormLabel>
                           </FormItem>
                           <FormItem className="flex items-center space-x-3 space-y-0">
                             <FormControl>
                               <RadioGroupItem value="4-6 hours" />
                             </FormControl>
-                            <FormLabel className="font-normal">
-                              4 a 6h
-                            </FormLabel>
+                            <FormLabel className="font-normal">4 a 6h</FormLabel>
                           </FormItem>
                           <FormItem className="flex items-center space-x-3 space-y-0">
                             <FormControl>
                               <RadioGroupItem value="6-8 hours" />
                             </FormControl>
-                            <FormLabel className="font-normal">
-                              6 a 8h
-                            </FormLabel>
+                            <FormLabel className="font-normal">6 a 8h</FormLabel>
                           </FormItem>
                           <FormItem className="flex items-center space-x-3 space-y-0">
                             <FormControl>
                               <RadioGroupItem value="8-10 hours" />
                             </FormControl>
-                            <FormLabel className="font-normal">
-                              8 a 10h
-                            </FormLabel>
+                            <FormLabel className="font-normal">8 a 10h</FormLabel>
                           </FormItem>
                           <FormItem className="flex items-center space-x-3 space-y-0">
                             <FormControl>
                               <RadioGroupItem value="10+ hours" />
                             </FormControl>
-                            <FormLabel className="font-normal">
-                              Mais de 10h
-                            </FormLabel>
+                            <FormLabel className="font-normal">Mais de 10h</FormLabel>
                           </FormItem>
                         </RadioGroup>
                       </FormControl>
@@ -696,9 +623,7 @@ export function RegisterForm() {
                 name="isVoiceSpecialist"
                 render={({ field }) => (
                   <FormItem className="space-y-3">
-                    <FormLabel>
-                      Você possui especialização na área de voz?
-                    </FormLabel>
+                    <FormLabel>Você possui especialização na área de voz?</FormLabel>
                     <FormControl>
                       <RadioGroup
                         onValueChange={field.onChange}
@@ -729,8 +654,8 @@ export function RegisterForm() {
                 render={({ field }) => (
                   <FormItem className="space-y-3">
                     <FormLabel>
-                      Você considera que possui quanto tempo de experiência em
-                      avaliação perceptivo-auditiva da voz?
+                      Você considera que possui quanto tempo de experiência em avaliação
+                      perceptivo-auditiva da voz?
                     </FormLabel>
                     <FormControl>
                       <RadioGroup
@@ -742,49 +667,37 @@ export function RegisterForm() {
                           <FormControl>
                             <RadioGroupItem value="0-5 years" />
                           </FormControl>
-                          <FormLabel className="font-normal">
-                            Até 5 anos
-                          </FormLabel>
+                          <FormLabel className="font-normal">Até 5 anos</FormLabel>
                         </FormItem>
                         <FormItem className="flex items-center space-x-3 space-y-0">
                           <FormControl>
                             <RadioGroupItem value="6-10 years" />
                           </FormControl>
-                          <FormLabel className="font-normal">
-                            6 a 10 anos
-                          </FormLabel>
+                          <FormLabel className="font-normal">6 a 10 anos</FormLabel>
                         </FormItem>
                         <FormItem className="flex items-center space-x-3 space-y-0">
                           <FormControl>
                             <RadioGroupItem value="11-15 years" />
                           </FormControl>
-                          <FormLabel className="font-normal">
-                            11 a 15 anos
-                          </FormLabel>
+                          <FormLabel className="font-normal">11 a 15 anos</FormLabel>
                         </FormItem>
                         <FormItem className="flex items-center space-x-3 space-y-0">
                           <FormControl>
                             <RadioGroupItem value="16-20 years" />
                           </FormControl>
-                          <FormLabel className="font-normal">
-                            16 a 20 anos
-                          </FormLabel>
+                          <FormLabel className="font-normal">16 a 20 anos</FormLabel>
                         </FormItem>
                         <FormItem className="flex items-center space-x-3 space-y-0">
                           <FormControl>
                             <RadioGroupItem value="21+ years" />
                           </FormControl>
-                          <FormLabel className="font-normal">
-                            Mais de 21 anos
-                          </FormLabel>
+                          <FormLabel className="font-normal">Mais de 21 anos</FormLabel>
                         </FormItem>
                         <FormItem className="flex items-center space-x-3 space-y-0">
                           <FormControl>
                             <RadioGroupItem value="0 years" />
                           </FormControl>
-                          <FormLabel className="font-normal">
-                            Não possuo experiência
-                          </FormLabel>
+                          <FormLabel className="font-normal">Não possuo experiência</FormLabel>
                         </FormItem>
                       </RadioGroup>
                     </FormControl>
@@ -798,8 +711,7 @@ export function RegisterForm() {
                 render={({ field }) => (
                   <FormItem className="space-y-3">
                     <FormLabel>
-                      Já realizou algum treinamento em avaliação
-                      perceptivo-auditiva da voz?
+                      Já realizou algum treinamento em avaliação perceptivo-auditiva da voz?
                     </FormLabel>
                     <FormControl>
                       <RadioGroup
@@ -830,9 +742,7 @@ export function RegisterForm() {
                 name="hasMasterDegree"
                 render={({ field }) => (
                   <FormItem className="space-y-3">
-                    <FormLabel>
-                      Possui mestrado com dissertação na área de voz?
-                    </FormLabel>
+                    <FormLabel>Possui mestrado com dissertação na área de voz?</FormLabel>
                     <FormControl>
                       <RadioGroup
                         onValueChange={field.onChange}
@@ -862,9 +772,7 @@ export function RegisterForm() {
                 name="hasDoctorateDegree"
                 render={({ field }) => (
                   <FormItem className="space-y-3">
-                    <FormLabel>
-                      Possui doutorado com tese na área de voz?
-                    </FormLabel>
+                    <FormLabel>Possui doutorado com tese na área de voz?</FormLabel>
                     <FormControl>
                       <RadioGroup
                         onValueChange={field.onChange}
@@ -894,9 +802,7 @@ export function RegisterForm() {
                 name="hasResearchExperience"
                 render={({ field }) => (
                   <FormItem className="space-y-3">
-                    <FormLabel>
-                      Realiza ou realizou pesquisas na área de voz?
-                    </FormLabel>
+                    <FormLabel>Realiza ou realizou pesquisas na área de voz?</FormLabel>
                     <FormControl>
                       <RadioGroup
                         onValueChange={field.onChange}
@@ -926,9 +832,7 @@ export function RegisterForm() {
                 name="hasAcademicArticle"
                 render={({ field }) => (
                   <FormItem className="space-y-3">
-                    <FormLabel>
-                      Possui artigo publicado na área de voz em periódico ≥ B2?
-                    </FormLabel>
+                    <FormLabel>Possui artigo publicado na área de voz em periódico ≥ B2?</FormLabel>
                     <FormControl>
                       <RadioGroup
                         onValueChange={field.onChange}
@@ -975,9 +879,7 @@ export function RegisterForm() {
                           <FormControl>
                             <RadioGroupItem value="changed" />
                           </FormControl>
-                          <FormLabel className="font-normal">
-                            Alterada
-                          </FormLabel>
+                          <FormLabel className="font-normal">Alterada</FormLabel>
                         </FormItem>
                       </RadioGroup>
                     </FormControl>
@@ -993,5 +895,5 @@ export function RegisterForm() {
         </div>
       </div>
     </React.Fragment>
-  );
+  )
 }

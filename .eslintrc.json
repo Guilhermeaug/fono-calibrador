@@ -1,3 +1,41 @@
 {
-  "extends": "next/core-web-vitals"
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "extends": ["plugin:react-hooks/recommended", "prettier", "next"],
+  "plugins": ["prettier"],
+  "parser": "@babel/eslint-parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "babelOptions": {
+      "presets": ["next/babel"]
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "requireConfigFile": false
+  },
+  "settings": {
+    "import/resolver": {
+      "typescript": {}
+    }
+  },
+  "rules": {
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto",
+        "semi": false,
+        "singleQuote": true
+      }
+    ],
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/forbid-prop-types": "off",
+    "react/require-default-props": "off",
+    "react/prop-types": "off"
+  }
 }

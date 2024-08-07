@@ -1,16 +1,12 @@
-import * as React from "react";
-import { CheckList } from "./components/check-list";
-import { TypographyH1, TypographyP } from "@/components/typography";
+import { TypographyH1, TypographyP } from '@/components/typography'
+import { CheckList } from './components/check-list'
 
 export default function StartupPage() {
   return (
     <main className="mx-auto max-w-[850px] px-8 pt-16">
-      <TypographyH1 className="text-center">
-        Seja bem vindo ao Calibrador Auditivo!
-      </TypographyH1>
+      <TypographyH1 className="text-center">Seja bem vindo ao Calibrador Auditivo!</TypographyH1>
       <TypographyP className="text-center">
-        As atividades do treinamento devem ser realizadas respeitando a ordem
-        abaixo.
+        As atividades do treinamento devem ser realizadas respeitando a ordem abaixo.
       </TypographyP>
       <TypographyP className="text-center">
         Clique na etapa em que parou para continuar.
@@ -22,5 +18,5 @@ export default function StartupPage() {
       </TypographyP>
       <div className="h-[30px]" />
     </main>
-  );
+  )
 }

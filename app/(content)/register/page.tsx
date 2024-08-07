@@ -1,7 +1,6 @@
-import Image from "next/image";
-import Link from "next/link";
+import Link from 'next/link'
 
-import { RegisterForm } from "./components/RegisterForm";
+import { RegisterForm } from './components/RegisterForm'
 
 export default function Page() {
   return (
@@ -12,7 +11,7 @@ export default function Page() {
           Preencha os campos abaixo para criar sua conta no Calibrador Auditivo
         </p>
         <div className="mt-1 text-center text-sm">
-          Já possui cadastro?{"  "}
+          Já possui cadastro?{'  '}
           <Link href="/login" className="underline">
             Entre com sua conta
           </Link>
@@ -20,5 +19,5 @@ export default function Page() {
       </div>
       <RegisterForm />
     </main>
-  );
+  )
 }

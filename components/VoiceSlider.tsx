@@ -1,8 +1,8 @@
-import { Slider, SliderProps } from "@/components/ui/slider";
+import { Slider, SliderProps } from '@/components/ui/slider'
 
 type Props = {
-  showTooltip?: boolean;
-} & SliderProps;
+  showTooltip?: boolean
+} & SliderProps
 
 export function VoiceSlider({ ...props }: Props) {
   return (
@@ -13,5 +13,5 @@ export function VoiceSlider({ ...props }: Props) {
       </div>
       <Slider {...props} />
     </div>
-  );
+  )
 }

@@ -1,17 +1,6 @@
-"use client";
+'use client'
 
-import * as React from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { DEFAULT_VALUES, formSchema } from "../constants";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { AUTH } from "@/server/auth";
-import { toast } from "sonner";
-import { signIn } from "next-auth/react";
-import { Label } from "@/components/ui/label";
-import Link from "next/link";
+import { Button } from '@/components/ui/button'
 import {
   Form,
   FormControl,
@@ -19,38 +8,47 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { signIn } from 'next-auth/react'
+import Link from 'next/link'
+import * as React from 'react'
+import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
+import { z } from 'zod'
+import { DEFAULT_VALUES, formSchema } from '../constants'
 
 export function LoginForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    mode: "onBlur",
+    mode: 'onBlur',
     defaultValues: DEFAULT_VALUES,
-  });
+  })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const res = await signIn("credentials", {
+    const res = await signIn('credentials', {
       identifier: values.identifier,
       password: values.password,
       redirect: false,
-    }).catch((e) => console.error("Error", e));
+    }).catch((e) => console.error('Error', e))
 
     if (res?.ok) {
-      window.location.replace("/");
-      return;
+      window.location.replace('/')
+      return
     }
 
     switch (res?.error) {
-      case "Your account email is not confirmed": {
-        toast.error("Sua conta de e-mail não foi confirmada");
-        break;
+      case 'Your account email is not confirmed': {
+        toast.error('Sua conta de e-mail não foi confirmada')
+        break
       }
-      case "Invalid identifier or password": {
-        toast.error("Identificador ou senha inválidos");
-        break;
+      case 'Invalid identifier or password': {
+        toast.error('Identificador ou senha inválidos')
+        break
       }
       default: {
-        toast.error("Erro desconhecido");
+        toast.error('Erro desconhecido')
       }
     }
   }
@@ -105,5 +103,5 @@ export function LoginForm() {
         </form>
       </Form>
     </React.Fragment>
-  );
+  )
 }

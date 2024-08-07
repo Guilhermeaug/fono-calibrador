@@ -1,6 +1,6 @@
-import { z } from "zod";
+import { z } from 'zod'
 
-const FILL_FIELD = "Campo obrigatório";
+const FILL_FIELD = 'Campo obrigatório'
 
 const formSchema = z
   .object({
@@ -12,137 +12,119 @@ const formSchema = z
       .min(6, FILL_FIELD)
       .regex(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d])[A-Za-z\d\S]{6,}$/,
-        "Senha deve conter pelo menos 6 caracteres, uma letra maiúscula, uma letra minúscula, um número e um caractere especial",
+        'Senha deve conter pelo menos 6 caracteres, uma letra maiúscula, uma letra minúscula, um número e um caractere especial',
       ),
     birthDate: z.date({ required_error: FILL_FIELD }),
-    isMusician: z.enum(["yes", "no"], { required_error: FILL_FIELD }),
-    musicianType: z.enum(["professional", "amateur"]).optional(),
-    musicianRole: z
-      .array(z.string())
-      .refine((value) => value.some((item) => item), {
-        message: "Você deve selecionar pelo menos uma opção",
-      }),
+    isMusician: z.enum(['yes', 'no'], { required_error: FILL_FIELD }),
+    musicianType: z.enum(['professional', 'amateur']).optional(),
+    musicianRole: z.array(z.string()).refine((value) => value.some((item) => item), {
+      message: 'Você deve selecionar pelo menos uma opção',
+    }),
     musicianTime: z
-      .enum(["1-year", "1-3 years", "3-5 years", "5-10 years", "10+ years"])
+      .enum(['1-year', '1-3 years', '3-5 years', '5-10 years', '10+ years'])
       .optional(),
-    job: z.enum(["professional", "student", "teacher"], {
+    job: z.enum(['professional', 'student', 'teacher'], {
       required_error: FILL_FIELD,
     }),
     workUniversity: z.string().min(3, FILL_FIELD).optional(),
     university: z.string().min(3, FILL_FIELD),
     courseLevel: z.array(z.string()).optional(),
-    voiceAreaDisciplines: z.enum(["yes", "no"]).optional(),
-    graduationPeriod: z
-      .enum(["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"])
-      .optional(),
-    hasExperienceInAuditoryPerceptualAssessment: z.enum(["yes", "no"], {
+    voiceAreaDisciplines: z.enum(['yes', 'no']).optional(),
+    graduationPeriod: z.enum(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']).optional(),
+    hasExperienceInAuditoryPerceptualAssessment: z.enum(['yes', 'no'], {
       required_error: FILL_FIELD,
     }),
     auditoryPerceptualAssessmentTime: z
-      .enum([
-        "0-2 hours",
-        "2-4 hours",
-        "4-6 hours",
-        "6-8 hours",
-        "8-10 hours",
-        "10+ hours",
-      ])
+      .enum(['0-2 hours', '2-4 hours', '4-6 hours', '6-8 hours', '8-10 hours', '10+ hours'])
       .optional(),
-    isVoiceSpecialist: z.enum(["yes", "no"], { required_error: FILL_FIELD }),
+    isVoiceSpecialist: z.enum(['yes', 'no'], { required_error: FILL_FIELD }),
     auditoryPerceptualAssessmentExperience: z.enum(
-      [
-        "0-5 years",
-        "6-10 years",
-        "11-15 years",
-        "16-20 years",
-        "21+ years",
-        "0 years",
-      ],
+      ['0-5 years', '6-10 years', '11-15 years', '16-20 years', '21+ years', '0 years'],
       { required_error: FILL_FIELD },
     ),
-    isAuditoryPerceptualAssessmentTrained: z.enum(["yes", "no"], {
+    isAuditoryPerceptualAssessmentTrained: z.enum(['yes', 'no'], {
       required_error: FILL_FIELD,
     }),
-    hasMasterDegree: z.enum(["yes", "no"], { required_error: FILL_FIELD }),
-    hasDoctorateDegree: z.enum(["yes", "no"], { required_error: FILL_FIELD }),
-    hasResearchExperience: z.enum(["yes", "no"], {
+    hasMasterDegree: z.enum(['yes', 'no'], { required_error: FILL_FIELD }),
+    hasDoctorateDegree: z.enum(['yes', 'no'], { required_error: FILL_FIELD }),
+    hasResearchExperience: z.enum(['yes', 'no'], {
       required_error: FILL_FIELD,
     }),
-    hasAcademicArticle: z.enum(["yes", "no"], { required_error: FILL_FIELD }),
-    hearing: z.enum(["normal", "changed"], {
+    hasAcademicArticle: z.enum(['yes', 'no'], { required_error: FILL_FIELD }),
+    hearing: z.enum(['normal', 'changed'], {
       required_error: FILL_FIELD,
     }),
   })
-  .refine((data) => !(data.isMusician === "yes" && !data.musicianType), {
+  .refine((data) => !(data.isMusician === 'yes' && !data.musicianType), {
     message: FILL_FIELD,
-    path: ["musicianType"],
+    path: ['musicianType'],
   })
-  .refine((data) => !(data.isMusician === "yes" && !data.musicianRole.length), {
+  .refine((data) => !(data.isMusician === 'yes' && !data.musicianRole.length), {
     message: FILL_FIELD,
-    path: ["musicianRole"],
+    path: ['musicianRole'],
   })
-  .refine((data) => !(data.isMusician === "yes" && !data.musicianTime), {
+  .refine((data) => !(data.isMusician === 'yes' && !data.musicianTime), {
     message: FILL_FIELD,
-    path: ["musicianTime"],
+    path: ['musicianTime'],
   })
-  .refine((data) => !(data.job === "teacher" && !data.workUniversity), {
+  .refine((data) => !(data.job === 'teacher' && !data.workUniversity), {
     message: FILL_FIELD,
-    path: ["workUniversity"],
+    path: ['workUniversity'],
   })
-  .refine((data) => !(data.job === "teacher" && !data.courseLevel?.length), {
+  .refine((data) => !(data.job === 'teacher' && !data.courseLevel?.length), {
     message: FILL_FIELD,
-    path: ["courseLevel"],
+    path: ['courseLevel'],
   })
-  .refine((data) => !(data.job === "teacher" && !data.voiceAreaDisciplines), {
+  .refine((data) => !(data.job === 'teacher' && !data.voiceAreaDisciplines), {
     message: FILL_FIELD,
-    path: ["voiceAreaDisciplines"],
+    path: ['voiceAreaDisciplines'],
   })
-  .refine((data) => !(data.job === "student" && !data.graduationPeriod), {
+  .refine((data) => !(data.job === 'student' && !data.graduationPeriod), {
     message: FILL_FIELD,
-    path: ["graduationPeriod"],
+    path: ['graduationPeriod'],
   })
   .refine(
     (data) =>
       !(
-        data.hasExperienceInAuditoryPerceptualAssessment === "yes" &&
+        data.hasExperienceInAuditoryPerceptualAssessment === 'yes' &&
         !data.auditoryPerceptualAssessmentTime
       ),
     {
       message: FILL_FIELD,
-      path: ["auditoryPerceptualAssessmentTime"],
+      path: ['auditoryPerceptualAssessmentTime'],
     },
-  );
+  )
 
 const DEFAULT_VALUES = {
-  name: "",
-  email: "",
-  username: "",
-  password: "",
+  name: '',
+  email: '',
+  username: '',
+  password: '',
   musicianRole: [],
   courseLevel: [],
-};
+}
 
 const musicianRoles = [
   {
-    id: "singer",
-    label: "Cantor",
+    id: 'singer',
+    label: 'Cantor',
   },
   {
-    id: "instrumentalist",
-    label: "Instrumentista",
+    id: 'instrumentalist',
+    label: 'Instrumentista',
   },
-] as const;
+] as const
 
 const courseLevels = [
   {
-    id: "graduate",
-    label: "Graduação",
+    id: 'graduate',
+    label: 'Graduação',
   },
   {
-    id: "postgraduate",
-    label: "Pós-graduação",
+    id: 'postgraduate',
+    label: 'Pós-graduação',
   },
-] as const;
+] as const
 
-export { formSchema, DEFAULT_VALUES, musicianRoles, courseLevels };
-export type FORM_TYPE = z.infer<typeof formSchema>;
+export { courseLevels, DEFAULT_VALUES, formSchema, musicianRoles }
+export type FORM_TYPE = z.infer<typeof formSchema>

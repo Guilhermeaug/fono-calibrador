@@ -1,14 +1,9 @@
-import { cn } from "@/lib/utils";
-import {
-  CircleUserIcon,
-  MenuIcon,
-  Package2Icon,
-  SearchIcon,
-} from "lucide-react";
-import Link from "next/link";
-import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
+import { cn } from '@/lib/utils'
+import { CircleUserIcon, MenuIcon } from 'lucide-react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { ModeToggle } from './mode-toggle'
+import { Button } from './ui/button'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,19 +11,15 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
-import Image from "next/image";
-import { ModeToggle } from "./mode-toggle";
+} from './ui/dropdown-menu'
+import { Sheet, SheetContent, SheetTrigger } from './ui/sheet'
 
 type Props = {
-  className?: string;
-};
+  className?: string
+}
 
 export function Navbar({ className }: Props) {
-  const style = cn(
-    "flex h-16 items-center gap-4 bg-background px-4 md:px-8",
-    className,
-  );
+  const style = cn('flex h-16 items-center gap-4 bg-background px-4 md:px-8', className)
 
   return (
     <header className={style}>
@@ -85,11 +76,7 @@ export function Navbar({ className }: Props) {
         </SheetTrigger>
         <SheetContent side="left">
           <nav className="grid gap-6 text-lg font-medium">
-            <Link
-              href="/"
-              className="flex items-center text-sm font-semibold"
-              prefetch={false}
-            >
+            <Link href="/" className="flex items-center text-sm font-semibold" prefetch={false}>
               <Image
                 className="max-w-[40px] flex-grow"
                 src="/images/logo-only.png"
@@ -97,9 +84,7 @@ export function Navbar({ className }: Props) {
                 width={30}
                 height={30}
               />
-              <span className="mr-5 whitespace-nowrap">
-                Calibrador Auditivo
-              </span>
+              <span className="mr-5 whitespace-nowrap">Calibrador Auditivo</span>
             </Link>
             <Link
               href="/presentation"
@@ -115,18 +100,10 @@ export function Navbar({ className }: Props) {
             >
               Fundamentação
             </Link>
-            <Link
-              href="#"
-              className="text-muted-foreground hover:text-foreground"
-              prefetch={false}
-            >
+            <Link href="#" className="text-muted-foreground hover:text-foreground" prefetch={false}>
               Login
             </Link>
-            <Link
-              href="#"
-              className="text-muted-foreground hover:text-foreground"
-              prefetch={false}
-            >
+            <Link href="#" className="text-muted-foreground hover:text-foreground" prefetch={false}>
               Contato
             </Link>
           </nav>
@@ -149,5 +126,5 @@ export function Navbar({ className }: Props) {
         </DropdownMenu>
       </div>
     </header>
-  );
+  )
 }

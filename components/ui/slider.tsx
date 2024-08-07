@@ -1,64 +1,49 @@
-"use client";
+'use client'
 
-import * as React from "react";
-import * as SliderPrimitive from "@radix-ui/react-slider";
-import { cn } from "@/lib/utils";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import { cn } from '@/lib/utils'
+import * as SliderPrimitive from '@radix-ui/react-slider'
+import * as React from 'react'
 
-export interface SliderProps
-  extends React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root> {
-  showTooltip?: boolean;
-  showThumb?: boolean;
-  markers?: number[];
+export interface SliderProps extends React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root> {
+  showTooltip?: boolean
+  showThumb?: boolean
+  markers?: number[]
 }
 
-const Slider = React.forwardRef<
-  React.ElementRef<typeof SliderPrimitive.Root>,
-  SliderProps
->(
-  (
-    { className, markers, showTooltip = true, showThumb = true, ...props },
-    ref,
-  ) => {
-    const [showTooltipState, setShowTooltipState] = React.useState(false);
+const Slider = React.forwardRef<React.ElementRef<typeof SliderPrimitive.Root>, SliderProps>(
+  ({ className, markers, showTooltip = true, showThumb = true, ...props }, ref) => {
+    const [showTooltipState, setShowTooltipState] = React.useState(false)
 
     const handlePointerDown = () => {
-      setShowTooltipState(true);
-    };
+      setShowTooltipState(true)
+    }
 
     const handlePointerUp = () => {
-      setShowTooltipState(false);
-    };
+      setShowTooltipState(false)
+    }
 
     React.useEffect(() => {
-      document.addEventListener("pointerup", handlePointerUp);
+      document.addEventListener('pointerup', handlePointerUp)
       return () => {
-        document.removeEventListener("pointerup", handlePointerUp);
-      };
-    }, []);
+        document.removeEventListener('pointerup', handlePointerUp)
+      }
+    }, [])
 
     const markerElements = markers?.map((position, index) => (
       <div className="relative">
         <div
           key={index}
           className="absolute h-2 w-[6px] bg-accent"
-          style={{ left: `${position}%`, transform: "translateX(-50%)" }}
+          style={{ left: `${position}%`, transform: 'translateX(-50%)' }}
         />
       </div>
-    ));
+    ))
 
     return (
       <SliderPrimitive.Root
         ref={ref}
-        className={cn(
-          "relative flex w-full touch-none select-none items-center",
-          className,
-        )}
+        className={cn('relative flex w-full touch-none select-none items-center', className)}
         onPointerDown={handlePointerDown}
         {...props}
       >
@@ -83,10 +68,10 @@ const Slider = React.forwardRef<
           </Tooltip>
         </TooltipProvider>
       </SliderPrimitive.Root>
-    );
+    )
   },
-);
+)
 
-Slider.displayName = SliderPrimitive.Root.displayName as string;
+Slider.displayName = SliderPrimitive.Root.displayName as string
 
-export { Slider };
+export { Slider }
