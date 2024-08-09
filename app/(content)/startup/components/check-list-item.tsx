@@ -12,7 +12,7 @@ export function CheckListItem({ text, href, done }: Props) {
   const Icon = done ? Check : XIcon
 
   return (
-    <li className={`${bgColor} rounded-md`}>
+    <li className={`${bgColor} rounded-md `}>
       <Link href={href}>
         <div className="flex items-center gap-3 p-2">
           <div className="">
