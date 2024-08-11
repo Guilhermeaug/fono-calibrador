@@ -17,9 +17,7 @@ type RootLayoutProps = {
   children: React.ReactNode
 }
 
-export default async function RootLayout({ children }: RootLayoutProps) {
-  const session = await AUTH.getServerSession()
-
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="pt-BR" suppressHydrationWarning>
       <body
@@ -28,7 +26,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           fontSans.variable,
         )}
       >
-        <SessionProvider session={session}>
+        <SessionProvider>
           <ThemeProvider
             attribute="class"
             defaultTheme="light"

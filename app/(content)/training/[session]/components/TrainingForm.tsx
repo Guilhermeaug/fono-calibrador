@@ -2,17 +2,6 @@
 
 import { VoiceSlider } from '@/components/VoiceSlider'
 import { TypographyP } from '@/components/typography'
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 import { useAnimatedPlayer } from '@/hooks/use-animated-player'
 import useElapsedTime from '@/hooks/use-elapsed-time'
@@ -20,6 +9,7 @@ import { STRAPI, STRAPI_URL } from '@/server/strapi'
 import { ProgramTraining } from '@/server/types'
 import { TraningEvaluationData } from '@/types'
 import { ArrowRight } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import * as React from 'react'
 import { toast } from 'sonner'
 import useSound from 'use-sound'
@@ -32,6 +22,8 @@ type Props = {
 }
 
 export function TrainingForm({ program: { id, training }, feature, session }: Props) {
+  const router = useRouter()
+
   const { elapsedTime, startTimer, resetTimer } = useElapsedTime()
   const [evaluations, setEvaluations] = React.useState<TraningEvaluationData[]>(
     training.map((voice) => ({
@@ -57,14 +49,11 @@ export function TrainingForm({ program: { id, training }, feature, session }: Pr
     },
   })
 
-  const { View, stopAnimation, clickedTimes, resetClickedTimes } = useAnimatedPlayer({ play })
+  const { View, stopAnimation, clickedTimes, resetClickedTimes } = useAnimatedPlayer({
+    play,
+  })
 
-  function stopVoiceAndAnimation() {
-    stop()
-    stopAnimation()
-  }
-
-  function saveEvaluation() {
+  function saveTraining() {
     const newEvaluations = [...evaluations]
     newEvaluations[currentIndex] = {
       ...currentEvaluation,
@@ -75,22 +64,13 @@ export function TrainingForm({ program: { id, training }, feature, session }: Pr
     setEvaluations(newEvaluations)
   }
 
-  function handlePrevious() {
-    stopVoiceAndAnimation()
-
-    if (currentIndex - 1 >= 0) {
-      setCurrentIndex((prev) => prev - 1)
-    }
-  }
-
   async function handleNext() {
-    saveEvaluation()
+    saveTraining()
 
     setIsLoading(true)
     const isCorrect = await STRAPI.checkAnswer({
       fileIdentifier: voice.identifier,
       answer: value,
-      section: 'training',
       programId: id,
       feature,
       session,
@@ -101,14 +81,13 @@ export function TrainingForm({ program: { id, training }, feature, session }: Pr
       toast.success('Resposta correta! Prossiga.')
       if (currentIndex + 1 < training.length) {
         setCurrentIndex((prev) => prev + 1)
+      } else {
+        toast.success('Treinamento finalizado! Retornando para a tela principal.')
+        router.push('/')
       }
     } else {
       toast.error('Resposta incorreta! Escute as âncoras e tente novamente.')
     }
-  }
-
-  function endAssessment() {
-    saveEvaluation()
   }
 
   React.useEffect(() => {
@@ -130,39 +109,25 @@ export function TrainingForm({ program: { id, training }, feature, session }: Pr
         <TypographyP>Voz {currentIndex + 1}:</TypographyP>
         {View}
       </div>
-      <div className="grid gap-8">
-        <div className="flex flex-col items-center gap-6 md:flex-row">
-          <span className="w-24 text-center text-sm leading-none md:mt-4 md:text-start">
+      <div className="gap-8 grid">
+        <div className="flex md:flex-row flex-col items-center gap-6">
+          <span className="md:mt-4 w-24 text-center text-sm md:text-start leading-none">
             {options[feature].name}
           </span>
           <VoiceSlider value={[value]} onValueChange={(value) => setValue(value[0])} />
         </div>
       </div>
       <div className="h-[12px]" />
-      <div className="mx-auto flex justify-center gap-4">
-        {isNextDisabled ? (
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button size="lg">Finalizar avaliação</Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Deseja enviar a avaliação?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  Ao clicar em continuar, você não poderá alterar as respostas.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancelar</AlertDialogCancel>
-                <AlertDialogAction onClick={endAssessment}>Continuar</AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-        ) : (
-          <Button size="lg" disabled={isLoading} onClick={handleNext}>
-            Próxima <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
-        )}
+      <div className="flex justify-center gap-4 mx-auto">
+        <Button size="lg" disabled={isLoading} onClick={handleNext}>
+          {isNextDisabled ? (
+            'Enviar treinamento e voltar para tela principal'
+          ) : (
+            <>
+              Próxima <ArrowRight className="ml-2 w-4 h-4" />{' '}
+            </>
+          )}
+        </Button>
       </div>
     </section>
   )

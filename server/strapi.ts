@@ -1,7 +1,8 @@
 import { FORM_TYPE } from '@/app/(content)/register/constants'
 import { explodeStrapiData } from '@/lib/utils'
 import qs from 'qs'
-import { FullProgram, LoginPayload, ProgramAssessment, ProgramTraining } from './types'
+import { FullProgram, LoginPayload, ProgramAssessment, ProgramTraining, UserProgress } from './types'
+import { AUTH } from './auth'
 
 export const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL
 const TOKEN = process.env.NEXT_PUBLIC_TOKEN
@@ -15,17 +16,20 @@ const CACHE = process.env.NEXT_PUBLIC_CACHE as
 function fetchStrapiApi({
   path,
   body,
+  jwt,
   method = 'GET',
   headers: propsHeaders = {},
 }: {
   path: string
   body?: Record<string, any>
+  jwt?: string
   method?: string
   headers?: Record<string, string>
 }) {
+  const token = jwt ? jwt : TOKEN
   const headers = {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${TOKEN}`,
+    Authorization: `Bearer ${token}`,
     ...propsHeaders,
   }
 
@@ -34,9 +38,9 @@ function fetchStrapiApi({
     body: JSON.stringify(body),
     headers,
     cache: CACHE,
-  }).then((res) => {
+  }).then(async (res) => {
     if (!res.ok) {
-      throw res.json()
+      throw await res.json()
     }
     return res.json()
   })
@@ -101,20 +105,18 @@ async function getUserProgress({ id }: { id: number }) {
     await fetchStrapiApi({
       path: `/users-progress/${id}?${query}`,
     }),
-  ) as any
+  ) as UserProgress
   return data
 }
 
 async function checkAnswer({
   programId,
-  section,
   session,
   feature,
   fileIdentifier,
   answer,
 }: {
   programId: number
-  section: 'assessment' | 'training'
   session: number
   feature: 'roughness' | 'breathiness'
   fileIdentifier: string
@@ -124,7 +126,6 @@ async function checkAnswer({
     path: '/answer',
     body: {
       programId,
-      section,
       feature,
       fileIdentifier,
       answer,
@@ -152,6 +153,13 @@ async function signUp(data: FORM_TYPE) {
   })
 }
 
+async function getCurrentUser(jwt: string) {
+  return await fetchStrapiApi({
+    path: '/users/me',
+    jwt,
+  })  
+}
+
 export const STRAPI = {
   getFullProgram,
   getProgramAssessment,
@@ -161,4 +169,5 @@ export const STRAPI = {
   /////////
   login,
   signUp,
+  getCurrentUser,
 }

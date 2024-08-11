@@ -5,11 +5,21 @@ declare module "next-auth" {
     user: {
       id: string;
       jwt: string;
-      isTeacher: boolean;
     } & DefaultSession["user"];
   }
 
   interface User {
     jwt: string;
+    user: {
+      id: number;
+      username: string;
+      email: string;
+      provider: string;
+      confirmed: boolean;
+      blocked: boolean;
+      createdAt: string;
+      updatedAt: string;
+      hasAcceptedTerms: boolean;
+    },
   }
 }

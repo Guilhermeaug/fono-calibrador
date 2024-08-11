@@ -1,15 +1,30 @@
-import { Check, XIcon } from 'lucide-react'
+import { CheckIcon, ClockIcon, PlayIcon, XIcon } from 'lucide-react'
 import Link from 'next/link'
+import { CheckListItemType } from '../helpers'
 
-type Props = {
-  text: string
-  href: string
-  done: boolean
+const icons = {
+  READY: PlayIcon,
+  WAITING_TIME: ClockIcon,
+  UNAVAILABLE: XIcon,
+  DONE: CheckIcon,
 }
 
-export function CheckListItem({ text, href, done }: Props) {
-  const bgColor = done ? 'bg-green-500 dark:bg-green-700' : 'bg-gray-300 dark:bg-gray-700'
-  const Icon = done ? Check : XIcon
+const colors = {
+  READY: 'bg-amber-500 dark:bg-amber-700',
+  WAITING_TIME: 'bg-yellow-500 dark:bg-yellow-700',
+  UNAVAILABLE: 'bg-gray-300 dark:bg-gray-700',
+  DONE: 'bg-green-500 dark:bg-green-700',
+}
+
+export function CheckListItem({
+  text,
+  status,
+  canClickIf,
+  href: hrefProp,
+}: CheckListItemType) {
+  const bgColor = colors[status]
+  const Icon = icons[status]
+  const href = canClickIf ? hrefProp : '#'
 
   return (
     <li className={`${bgColor} rounded-md `}>

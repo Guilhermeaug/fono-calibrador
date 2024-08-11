@@ -26,6 +26,37 @@ type Audio = {
   file: File
 }
 
+export type Status = 'NOT_NEEDED' | 'WAITING' | 'READY' | 'DONE'
+
+type Result = {
+  duration: number
+}
+
+type AudioResult = {
+  identifier: string
+  answer: number
+  duration: number
+  numberOfAttempts: number
+}
+
+type SessionResults = {
+  assessmentResults?: {
+    duration: number
+    audios: AudioResult[]
+  }
+  trainingRoughnessResults?: {
+    duration: number
+    audios: AudioResult[]
+  }
+  trainingBreathinessResults?: {
+    duration: number
+    audios: AudioResult[]
+  }
+  assessmentStatus: Status
+  trainingRoughnessStatus: Status
+  trainingBreathinessStatus: Status
+} & StrapiDefaultAttributes
+
 export type FullProgram = {
   assessment: Audio[]
   training: Audio[]
@@ -44,7 +75,8 @@ export type ProgramTraining = {
 } & StrapiDefaultAttributes
 
 export type UserProgress = {
-  
+  sessions: SessionResults[]
+  status: "READY" | "DONE" | "WAITING_TIME"
 } & StrapiDefaultAttributes
 
 export type LoginPayload = {
@@ -52,8 +84,19 @@ export type LoginPayload = {
   password: string
 }
 
+export type UserInfo = {
+  id: number
+  username: string
+  email: string
+  provider: string
+  confirmed: boolean
+  blocked: boolean
+  hasAcceptedTerms: boolean
+  hasCompletedPac: boolean
+} & StrapiDefaultAttributes
+
 export type StrapiError = {
-  data: any
+  data: null
   error: {
     status: number
     name: string

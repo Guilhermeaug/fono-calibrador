@@ -59,25 +59,12 @@ export function RegisterForm() {
       return
     }
 
-    const loginResponse = await signIn('credentials', {
+    await signIn('credentials', {
       identifier: values.email,
       password: values.password,
       redirect: false,
     })
-
-    if (loginResponse?.ok) {
-      window.location.replace('/')
-      return
-    }
-
-    switch (loginResponse?.error) {
-      case 'Your account email is not confirmed':
-        toast.message('Seu email ainda não foi confirmado.')
-        break
-      default:
-        toast.error('Erro desconhecido')
-        break
-    }
+    window.location.replace('/')
   }
 
   const isMusician = form.watch('isMusician') === 'yes'
@@ -88,8 +75,8 @@ export function RegisterForm() {
 
   return (
     <React.Fragment>
-      <div className="flex items-center justify-center py-12">
-        <div className="mx-auto grid w-[500px] gap-4">
+      <div className="flex justify-center items-center py-12">
+        <div className="gap-4 grid mx-auto w-[500px]">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               <FormField
@@ -178,11 +165,11 @@ export function RegisterForm() {
                             ) : (
                               <span>Sua data de nascimento</span>
                             )}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            <CalendarIcon className="opacity-50 ml-auto w-4 h-4" />
                           </Button>
                         </FormControl>
                       </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
+                      <PopoverContent className="p-0 w-auto" align="start">
                         <Calendar
                           mode="single"
                           captionLayout="dropdown-buttons"

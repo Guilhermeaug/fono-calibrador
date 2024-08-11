@@ -1,7 +1,7 @@
 import { AuthOptions, getServerSession, User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { revalidatePath } from "next/cache";
-import { LoginPayload, StrapiError } from "./types";
+import { LoginPayload, StrapiError, UserInfo } from "./types";
 import { STRAPI } from "./strapi";
 import { FORM_TYPE } from "@/app/(content)/register/constants";
 
@@ -16,8 +16,7 @@ export const authOptions: AuthOptions = {
       async authorize(credentials, req) {
         try {
           if (credentials == null) return null;
-          const { user, jwt, ...rest } = await login(credentials);
-          console.warn({ user, jwt, ...rest });
+          const { user, jwt } = await login(credentials);
           revalidatePath("/", "layout");
           return { ...user, jwt };
         } catch (e) {
@@ -34,7 +33,6 @@ export const authOptions: AuthOptions = {
       session.user.id = token.id as string;
       session.user.jwt = token.jwt as string;
       session.user.name = token.name as string;
-      session.user.isTeacher = token.isTeacher as boolean;
       return Promise.resolve(session);
     },
     jwt: async ({ token, user }) => {
@@ -53,29 +51,35 @@ async function login(loginPayload: LoginPayload) {
 }
 
 async function signUp(data: FORM_TYPE) {
+  const dataCopy: any = { ...data };
+  for (const key in dataCopy) {
+    if (dataCopy[key] === "yes") {
+      dataCopy[key] = true;
+    } else if (dataCopy[key] === "no") {
+      dataCopy[key] = false;
+    }
+  }
+  dataCopy.musicianRole = dataCopy.musicianRole.join(";");
+  dataCopy.courseLevel = dataCopy.courseLevel.join(";");
+
   try {
-    const res = await STRAPI.signUp(data);
+    const res = await STRAPI.signUp(dataCopy);
     return res as User;
   } catch (error: any) {
     return error;
-    // const status = error.status;
-    // if (status === 400) {
-    //   return error;
-    // }
-    // return {
-    //   data: null,
-    //   error: {
-    //     status: status,
-    //     name: "UnknownError",
-    //     message: "An Unknown Error Occurred",
-    //     details: {},
-    //   },
-    // };
   }
+}
+
+async function getCurrentUser() {
+  const session = await getServerSession(authOptions);
+  const jwt = session?.user.jwt;
+  if (jwt == null) return null;
+  return STRAPI.getCurrentUser(jwt) as Promise<UserInfo>
 }
 
 export const AUTH = {
   getServerSession: () => getServerSession(authOptions),
   login,
   signUp,
+  getCurrentUser,
 };
