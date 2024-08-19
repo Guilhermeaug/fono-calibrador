@@ -17,20 +17,25 @@ import {
 } from '@/components/ui/sheet'
 import { UserProgress } from '@/server/types'
 import { Play } from 'lucide-react'
-import { redirect, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import * as React from 'react'
 import { status } from '../constants'
 
 type Props = {
   progress: UserProgress
+  isLastSession: boolean
 } & React.ComponentPropsWithoutRef<typeof Sheet>
 
-export function ProgressSheet({ progress: { sessions }, ...props }: Props) {
+export function ProgressSheet({
+  progress: { sessions },
+  isLastSession,
+  ...props
+}: Props) {
   const router = useRouter()
 
   function handleOpenChange(open: boolean) {
     if (open === false) {
-      redirect('/startup')
+      router.replace('/startup')
     }
   }
 
@@ -48,7 +53,7 @@ export function ProgressSheet({ progress: { sessions }, ...props }: Props) {
         </SheetHeader>
         <div className="h-[30px]" />
         <div className="gap-4 grid">
-          <Accordion type="multiple" defaultValue={['0']}>
+          <Accordion type="multiple" defaultValue={[String(sessions.length - 1)]}>
             {sessions.map(
               (
                 {
@@ -68,7 +73,9 @@ export function ProgressSheet({ progress: { sessions }, ...props }: Props) {
                           <TypographyLarge className="font-bold text-lg">
                             Avaliação
                           </TypographyLarge>
-                          <p>Status: {status[assessmentStatus]}</p>
+                          <p className="text-violet-500">
+                            Status: {status[assessmentStatus]}
+                          </p>
                         </div>
                         {assessmentStatus === 'READY' && (
                           <Button
@@ -76,7 +83,9 @@ export function ProgressSheet({ progress: { sessions }, ...props }: Props) {
                             variant="outline"
                             size="icon"
                             onClick={() =>
-                              router.replace(`/assessment/${index + 1}?step=${index + 1}`)
+                              router.replace(
+                                `/startup/instructions/overview/assessment?session=${index + 1}`,
+                              )
                             }
                           >
                             <Play className="w-4 h-4" />
@@ -84,54 +93,70 @@ export function ProgressSheet({ progress: { sessions }, ...props }: Props) {
                         )}
                       </div>
                     )}
-                    {['DONE', 'NOT_NEEDED'].includes(assessmentStatus) && (
-                      <React.Fragment>
-                        <div className="flex justify-between">
-                          <div className="flex justify-between">
-                            <div>
-                              <h3 className="font-bold text-lg">
-                                Treinamento - Rugosidade
-                              </h3>
-                              <p>Status: {status[trainingRoughnessStatus]}</p>
-                            </div>
-                          </div>
-                          {trainingRoughnessStatus === 'READY' && (
-                            <Button
-                              className="flex-shrink-0"
-                              variant="outline"
-                              size="icon"
-                              onClick={() =>
-                                router.replace(`/training/${index + 1}?feature=roughness`)
-                              }
-                            >
-                              <Play className="w-4 h-4" />
-                            </Button>
-                          )}
-                        </div>
+                    <React.Fragment>
+                      <div className="flex justify-between">
                         <div className="flex justify-between">
                           <div>
                             <h3 className="font-bold text-lg">
-                              Treinamento - Soprosidade
+                              Treinamento - Rugosidade
                             </h3>
-                            <p>Status: {status[trainingBreathinessStatus]}</p>
+                            {['DONE', 'NOT_NEEDED'].includes(assessmentStatus) ? (
+                              <p className="text-violet-500">
+                                Status: {status[trainingRoughnessStatus]}
+                              </p>
+                            ) : (
+                              <p className="text-destructive">
+                                Status: Aguardando o término da avaliação
+                              </p>
+                            )}
                           </div>
-                          {trainingBreathinessStatus === 'READY' && (
-                            <Button
-                              className="flex-shrink-0"
-                              variant="outline"
-                              size="icon"
-                              onClick={() =>
-                                router.replace(
-                                  `/training/${index + 1}?feature=breathiness`,
-                                )
-                              }
-                            >
-                              <Play className="w-4 h-4" />
-                            </Button>
+                        </div>
+                        {trainingRoughnessStatus === 'READY' && (
+                          <Button
+                            className="flex-shrink-0"
+                            variant="outline"
+                            size="icon"
+                            onClick={() => {
+                              const feature = isLastSession ? 'both' : 'roughness'
+                              router.replace(
+                                `/startup/instructions/overview/training?feature=${feature}&session=${index + 1}`,
+                              )
+                            }}
+                          >
+                            <Play className="w-4 h-4" />
+                          </Button>
+                        )}
+                      </div>
+                      <div className="flex justify-between">
+                        <div>
+                          <h3 className="font-bold text-lg">Treinamento - Soprosidade</h3>
+                          {['DONE', 'NOT_NEEDED'].includes(assessmentStatus) ? (
+                            <p className="text-violet-500">
+                              Status: {status[trainingBreathinessStatus]}
+                            </p>
+                          ) : (
+                            <p className="text-destructive">
+                              Status: Aguardando o término da avaliação
+                            </p>
                           )}
                         </div>
-                      </React.Fragment>
-                    )}
+                        {trainingBreathinessStatus === 'READY' && (
+                          <Button
+                            className="flex-shrink-0"
+                            variant="outline"
+                            size="icon"
+                            onClick={() => {
+                              const feature = isLastSession ? 'both' : 'breathiness'
+                              router.replace(
+                                `/startup/instructions/overview/training?feature=${feature}&session=${index + 1}`,
+                              )
+                            }}
+                          >
+                            <Play className="w-4 h-4" />
+                          </Button>
+                        )}
+                      </div>
+                    </React.Fragment>
                   </AccordionContent>
                 </AccordionItem>
               ),

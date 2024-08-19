@@ -1,29 +1,27 @@
-import * as React from "react";
+import * as React from 'react'
 
 export function useElapsedTime() {
-  const [elapsedTime, setElapsedTime] = React.useState(0);
-  const [isRunning, setIsRunning] = React.useState(false);
+  const [elapsedTime, setElapsedTime] = React.useState(0)
+  const [isRunning, setIsRunning] = React.useState(false)
 
   React.useEffect(() => {
-    let timer: NodeJS.Timeout;
+    let timer: NodeJS.Timeout
 
     if (isRunning) {
       timer = setInterval(() => {
-        setElapsedTime((prevTime) => prevTime + 1);
-      }, 1000);
+        setElapsedTime((prevTime) => prevTime + 1)
+      }, 1000)
     }
 
-    return () => clearInterval(timer);
-  }, [isRunning]);
+    return () => clearInterval(timer)
+  }, [isRunning])
 
-  const startTimer = () => setIsRunning(true);
-  const stopTimer = () => setIsRunning(false);
-  const resetTimer = () => {
-    setIsRunning(false);
-    setElapsedTime(0);
-  };
+  const startTimer = React.useCallback(() => setIsRunning(true), [setIsRunning])
+  const stopTimer = React.useCallback(() => setIsRunning(false), [setIsRunning])
+  const resetTimer = React.useCallback(() => {
+    setIsRunning(false)
+    setElapsedTime(0)
+  }, [setIsRunning, setElapsedTime])
 
-  return { elapsedTime, startTimer, stopTimer, resetTimer };
+  return { elapsedTime, startTimer, stopTimer, resetTimer }
 }
-
-export default useElapsedTime;

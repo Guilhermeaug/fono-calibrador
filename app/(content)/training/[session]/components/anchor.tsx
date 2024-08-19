@@ -15,11 +15,14 @@ type Props = {
   program: ProgramTraining
 }
 
-export function AnchorAside({ feature, program: { roughnessAnchor, breathinessAnchor } }: Props) {
+export function Anchor({
+  feature,
+  program: { roughnessAnchor, breathinessAnchor },
+}: Props) {
   const anchorsData = feature === 'roughness' ? roughnessAnchor : breathinessAnchor
 
   return (
-    <aside className="min-w-[300px] md:sticky">
+    <div className="min-w-[300px]">
       <div className="grid gap-4">
         {anchorsData.map((anchor) => {
           const values = anchor[feature]
@@ -28,7 +31,9 @@ export function AnchorAside({ feature, program: { roughnessAnchor, breathinessAn
           return (
             <div key={anchor.identifier}>
               <div className="flex items-center gap-4">
-                <TypographyP>{anchors[anchor.identifier as keyof typeof anchors]}</TypographyP>
+                <TypographyP>
+                  {anchors[anchor.identifier as keyof typeof anchors]}
+                </TypographyP>
                 <AudioButton url={anchor.file.url} />
               </div>
               <div className="mt-3 flex w-full flex-1 flex-col items-center gap-4">
@@ -45,7 +50,7 @@ export function AnchorAside({ feature, program: { roughnessAnchor, breathinessAn
           )
         })}
       </div>
-    </aside>
+    </div>
   )
 }
 
@@ -80,7 +85,7 @@ function AudioButton({ url }: { url: string }) {
   React.useEffect(() => {
     setSpeed(0.7)
     stopAnimation()
-  }, [])
+  }, [setSpeed, stopAnimation])
 
   return <>{View}</>
 }

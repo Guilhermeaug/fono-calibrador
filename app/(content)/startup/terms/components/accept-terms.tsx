@@ -3,21 +3,29 @@
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { STRAPI } from '@/server/strapi'
 import { useRouter } from 'next/navigation'
 import * as React from 'react'
 import { toast } from 'sonner'
 
-export function AcceptTerms() {
+type Props = {
+  userId: number
+  jwt: string
+}
+
+export function AcceptTerms({ userId, jwt }: Props) {
   const router = useRouter()
   const [accepted, setAccepted] = React.useState(false)
 
-  function handleSubmit() {
+  async function handleSubmit() {
     if (accepted) {
-      router.replace('/startup')
+      await STRAPI.acceptTerms({ userId, jwt })
+      setTimeout(() => {
+        router.replace('/startup')
+      }, 2000)
     } else {
       toast.error(
-        'Para seguir para as próximas etapas, é necessário ter realizado o Teste do Processamento Auditivo e concordar com o termo de conclusão do mesmo. Favor dar continuidade ao treinamento após a realização do teste e aceite do termo.',
-        { duration: 10000 },
+        'Para seguir para as próximas etapas, é necessário estar de acordo com o Termo de Consentimento Livre e Esclarecido.',
       )
     }
   }
@@ -27,15 +35,19 @@ export function AcceptTerms() {
       <div className="grid place-content-center gap-4">
         <RadioGroup
           defaultValue="not-accepted"
-          onValueChange={(value: string) => setAccepted(value === 'accepted' ? true : false)}
+          onValueChange={(value: string) =>
+            setAccepted(value === 'accepted' ? true : false)
+          }
         >
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="accepted" id="accepted" />
-            <Label htmlFor="accepted">Estou de acordo</Label>
+            <Label htmlFor="accepted">Estou de acordo em participar da pesquisa</Label>
           </div>
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="not-accepted" id="not-accepted" />
-            <Label htmlFor="not-accepted">Não estou de acordo</Label>
+            <Label htmlFor="not-accepted">
+              Não estou de acordo em participar da pesquisa
+            </Label>
           </div>
         </RadioGroup>
         <Button onClick={handleSubmit}>Enviar</Button>

@@ -18,7 +18,7 @@ type File = {
   url: string
 } & StrapiDefaultAttributes
 
-type Audio = {
+export type Audio = {
   id: number
   identifier: string
   roughness: number[]
@@ -28,19 +28,21 @@ type Audio = {
 
 export type Status = 'NOT_NEEDED' | 'WAITING' | 'READY' | 'DONE'
 
-type Result = {
-  duration: number
-}
-
 type AudioResult = {
   identifier: string
   answer: number
   duration: number
   numberOfAttempts: number
+  score: number;
+  numberOfAudioClicks: number
 }
 
 type SessionResults = {
-  assessmentResults?: {
+  assessmentRoughnessResults?: {
+    duration: number
+    audios: AudioResult[]
+  }
+  assessmentBreathinessResults?: {
     duration: number
     audios: AudioResult[]
   }
@@ -62,10 +64,12 @@ export type FullProgram = {
   training: Audio[]
   roughnessAnchor: Audio[]
   breathinessAnchor: Audio[]
+  numberOfSessions: number
 } & StrapiDefaultAttributes
 
 export type ProgramAssessment = {
   assessment: Audio[]
+  numberOfSessions: number
 } & StrapiDefaultAttributes
 
 export type ProgramTraining = {
@@ -76,7 +80,9 @@ export type ProgramTraining = {
 
 export type UserProgress = {
   sessions: SessionResults[]
-  status: "READY" | "DONE" | "WAITING_TIME"
+  status: 'READY' | 'DONE' | 'WAITING' | 'INVALID'
+  nextDueDate?: string
+  timeoutEndDate?: string
 } & StrapiDefaultAttributes
 
 export type LoginPayload = {
@@ -93,7 +99,37 @@ export type UserInfo = {
   blocked: boolean
   hasAcceptedTerms: boolean
   hasCompletedPac: boolean
+  hasCompletedFinalPac: boolean
+  jwt: string
+  pacLink?: string
 } & StrapiDefaultAttributes
+
+export type SubmitAssessmentPayload = {
+  programId: number
+  startDate: string
+  endDate: string
+  audios: {
+    duration: number
+    identifier: string
+    roughness: number
+    breathiness: number
+    numberOfAudioClicks: number
+  }[]
+}
+
+export type SubmitTrainingPayload = {
+  programId: number
+  feature: 'roughness' | 'breathiness'
+  startDate: string
+  endDate: string
+  audios: {
+    duration: number
+    identifier: string
+    value: number
+    numberOfAttempts: number
+    numberOfAudioClicks: number
+  }[]
+}
 
 export type StrapiError = {
   data: null

@@ -1,7 +1,7 @@
-import { Status } from "@/server/types"
+import { Status } from '@/server/types'
 
 const status: Record<Status, string> = {
-  WAITING: 'Aguardando o tempo entre treinamentos',
+  WAITING: 'Ainda não disponível',
   READY: 'Etapa disponível',
   DONE: 'Etapa concluída',
   NOT_NEEDED: '',

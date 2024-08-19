@@ -89,7 +89,7 @@ export function LoginForm() {
                       </Link>
                     </div>
                     <FormControl>
-                      <Input placeholder="Sua senha" {...field} />
+                      <Input type="password" placeholder="Sua senha" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>

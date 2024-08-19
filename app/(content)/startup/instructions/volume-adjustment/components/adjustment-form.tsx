@@ -6,15 +6,58 @@ import { toast } from 'sonner'
 import useSound from 'use-sound'
 
 import { useAnimatedPlayer } from '@/hooks/use-animated-player'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { sounds } from '../constants'
+
+export function AdjustmentForm() {
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const [done, setDone] = React.useState(sounds.map(() => false))
+
+  const isDone = done.every((value) => value)
+
+  return (
+    <React.Fragment>
+      <section className="flex gap-2">
+        {sounds.map((sound, index) => (
+          <AudioForm
+            key={sound.path}
+            onSuccessSubmit={() => {
+              setDone((prev) => prev.map((value, i) => (i === index ? true : value)))
+            }}
+            sound={sound}
+          />
+        ))}
+      </section>
+      <div className="h-[30px]" />
+      <Button
+        className="block mx-auto"
+        disabled={!isDone}
+        size="lg"
+        onClick={() => {
+          const step = searchParams.get('step')
+          const session = searchParams.get('session')
+          const feature = searchParams.get('feature')
+
+          const pathName = `/${step}/${session}${feature ? `?feature=${feature}` : ''}`
+          router.push(pathName)
+        }}
+      >
+        Continuar
+      </Button>
+    </React.Fragment>
+  )
+}
 
 function AudioForm({
   sound: { path, answer },
+  onSuccessSubmit,
 }: {
   sound: {
     path: string
     answer: string
   }
+  onSuccessSubmit: () => void
 }) {
   const [disabled, setDisabled] = React.useState(false)
 
@@ -30,6 +73,7 @@ function AudioForm({
     if (value === answer) {
       toast.success('Correto. Continue com os próximos testes.')
       setDisabled(true)
+      onSuccessSubmit()
     } else {
       toast.warning('Incorreto. Continue ajustando o volume do seu fone.')
     }
@@ -50,15 +94,5 @@ function AudioForm({
         </Button>
       </div>
     </div>
-  )
-}
-
-export function AdjustmentForm() {
-  return (
-    <section className="flex gap-2">
-      {sounds.map((sound) => (
-        <AudioForm key={sound.path} sound={sound} />
-      ))}
-    </section>
   )
 }

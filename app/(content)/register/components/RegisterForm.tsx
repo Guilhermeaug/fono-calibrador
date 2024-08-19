@@ -15,7 +15,12 @@ import {
 import { Input } from '@/components/ui/input'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import {
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import { cn } from '@/lib/utils'
 import { AUTH } from '@/server/auth'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -121,8 +126,8 @@ export function RegisterForm() {
                       <Input placeholder="Uma senha segura" {...field} />
                     </FormControl>
                     <FormDescription>
-                      Deve conter pelo menos 8 caracteres, com uma letra maiúscula, uma letra
-                      minúscula, um número e um caractere especial.
+                      Deve conter pelo menos 8 caracteres, com uma letra maiúscula, uma
+                      letra minúscula, um número e um caractere especial.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -177,7 +182,9 @@ export function RegisterForm() {
                           toYear={new Date().getFullYear()}
                           selected={field.value}
                           onSelect={field.onChange}
-                          disabled={(date) => date > new Date() || date < new Date('1900-01-01')}
+                          disabled={(date) =>
+                            date > new Date() || date < new Date('1900-01-01')
+                          }
                           initialFocus
                         />
                       </PopoverContent>
@@ -276,12 +283,16 @@ export function RegisterForm() {
                                         return checked
                                           ? field.onChange([...field.value, item.id])
                                           : field.onChange(
-                                              field.value?.filter((value) => value !== item.id),
+                                              field.value?.filter(
+                                                (value) => value !== item.id,
+                                              ),
                                             )
                                       }}
                                     />
                                   </FormControl>
-                                  <FormLabel className="font-normal">{item.label}</FormLabel>
+                                  <FormLabel className="font-normal">
+                                    {item.label}
+                                  </FormLabel>
                                 </FormItem>
                               )
                             }}
@@ -359,7 +370,9 @@ export function RegisterForm() {
                           <FormControl>
                             <RadioGroupItem value="professional" />
                           </FormControl>
-                          <FormLabel className="font-normal">Profissional formado</FormLabel>
+                          <FormLabel className="font-normal">
+                            Profissional formado
+                          </FormLabel>
                         </FormItem>
                         <FormItem className="flex items-center space-x-3 space-y-0">
                           <FormControl>
@@ -437,14 +450,21 @@ export function RegisterForm() {
                                       checked={field.value?.includes(item.id)}
                                       onCheckedChange={(checked) => {
                                         return checked
-                                          ? field.onChange([...(field.value ?? []), item.id])
+                                          ? field.onChange([
+                                              ...(field.value ?? []),
+                                              item.id,
+                                            ])
                                           : field.onChange(
-                                              field.value?.filter((value) => value !== item.id),
+                                              field.value?.filter(
+                                                (value) => value !== item.id,
+                                              ),
                                             )
                                       }}
                                     />
                                   </FormControl>
-                                  <FormLabel className="font-normal">{item.label}</FormLabel>
+                                  <FormLabel className="font-normal">
+                                    {item.label}
+                                  </FormLabel>
                                 </FormItem>
                               )
                             }}
@@ -522,8 +542,8 @@ export function RegisterForm() {
                 render={({ field }) => (
                   <FormItem className="space-y-3">
                     <FormLabel>
-                      Você tem experiência em avaliação perceptivo-auditiva (treinamento em aula ou
-                      experiência em atendimento)?
+                      Você tem experiência em avaliação perceptivo-auditiva (treinamento
+                      em aula ou experiência em atendimento)?
                     </FormLabel>
                     <FormControl>
                       <RadioGroup
@@ -684,7 +704,9 @@ export function RegisterForm() {
                           <FormControl>
                             <RadioGroupItem value="0 years" />
                           </FormControl>
-                          <FormLabel className="font-normal">Não possuo experiência</FormLabel>
+                          <FormLabel className="font-normal">
+                            Não possuo experiência
+                          </FormLabel>
                         </FormItem>
                       </RadioGroup>
                     </FormControl>
@@ -698,7 +720,8 @@ export function RegisterForm() {
                 render={({ field }) => (
                   <FormItem className="space-y-3">
                     <FormLabel>
-                      Já realizou algum treinamento em avaliação perceptivo-auditiva da voz?
+                      Já realizou algum treinamento em avaliação perceptivo-auditiva da
+                      voz?
                     </FormLabel>
                     <FormControl>
                       <RadioGroup
@@ -819,7 +842,9 @@ export function RegisterForm() {
                 name="hasAcademicArticle"
                 render={({ field }) => (
                   <FormItem className="space-y-3">
-                    <FormLabel>Possui artigo publicado na área de voz em periódico ≥ B2?</FormLabel>
+                    <FormLabel>
+                      Possui artigo publicado na área de voz em periódico ≥ B2?
+                    </FormLabel>
                     <FormControl>
                       <RadioGroup
                         onValueChange={field.onChange}

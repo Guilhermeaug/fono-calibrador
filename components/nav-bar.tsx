@@ -53,14 +53,14 @@ export function Navbar({ className }: Props) {
           Fundamentação
         </Link>
         <Link
-          href="#"
+          href="/login"
           className="text-muted-foreground transition-colors hover:text-foreground"
           prefetch={false}
         >
           Login
         </Link>
         <Link
-          href="#"
+          href="/contact"
           className="text-muted-foreground transition-colors hover:text-foreground"
           prefetch={false}
         >
@@ -76,7 +76,11 @@ export function Navbar({ className }: Props) {
         </SheetTrigger>
         <SheetContent side="left">
           <nav className="grid gap-6 text-lg font-medium">
-            <Link href="/" className="flex items-center text-sm font-semibold" prefetch={false}>
+            <Link
+              href="/"
+              className="flex items-center text-sm font-semibold"
+              prefetch={false}
+            >
               <Image
                 className="max-w-[40px] flex-grow"
                 src="/images/logo-only.png"
@@ -100,10 +104,18 @@ export function Navbar({ className }: Props) {
             >
               Fundamentação
             </Link>
-            <Link href="#" className="text-muted-foreground hover:text-foreground" prefetch={false}>
+            <Link
+              href="/login"
+              className="text-muted-foreground hover:text-foreground"
+              prefetch={false}
+            >
               Login
             </Link>
-            <Link href="#" className="text-muted-foreground hover:text-foreground" prefetch={false}>
+            <Link
+              href="/contact"
+              className="text-muted-foreground hover:text-foreground"
+              prefetch={false}
+            >
               Contato
             </Link>
           </nav>

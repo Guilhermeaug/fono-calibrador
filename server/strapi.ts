@@ -1,8 +1,15 @@
 import { FORM_TYPE } from '@/app/(content)/register/constants'
 import { explodeStrapiData } from '@/lib/utils'
 import qs from 'qs'
-import { FullProgram, LoginPayload, ProgramAssessment, ProgramTraining, UserProgress } from './types'
-import { AUTH } from './auth'
+import {
+  FullProgram,
+  LoginPayload,
+  ProgramAssessment,
+  ProgramTraining,
+  SubmitAssessmentPayload,
+  SubmitTrainingPayload,
+  UserProgress,
+} from './types'
 
 export const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL
 const TOKEN = process.env.NEXT_PUBLIC_TOKEN
@@ -27,11 +34,11 @@ function fetchStrapiApi({
   headers?: Record<string, string>
 }) {
   const token = jwt ? jwt : TOKEN
-  const headers = {
+  const headers: Record<string, string> = {
     'Content-Type': 'application/json',
-    Authorization: `Bearer ${token}`,
     ...propsHeaders,
   }
+  token && (headers['Authorization'] = `Bearer ${token}`)
 
   return fetch(`${STRAPI_URL}/api${path}`, {
     method,
@@ -96,17 +103,82 @@ async function getProgramTraining({ id }: { id: number }) {
   return data
 }
 
-async function getUserProgress({ id }: { id: number }) {
+async function getUserProgress({
+  programId,
+  userId,
+  jwt,
+}: {
+  userId: number
+  programId: number
+  jwt: string
+}) {
   const query = qs.stringify({
+    filters: {
+      program: {
+        $eq: programId,
+      },
+      user: {
+        $eq: userId,
+      },
+    },
     populate: ['sessions'],
   })
 
   const data = explodeStrapiData(
     await fetchStrapiApi({
-      path: `/users-progress/${id}?${query}`,
+      path: `/users-progress?${query}`,
+      jwt,
     }),
-  ) as UserProgress
-  return data
+  ) as UserProgress[]
+  return data && data[0]
+}
+
+async function updateUserProgress({
+  id,
+  jwt,
+  body,
+}: {
+  id: number
+  jwt: string
+  body: Partial<UserProgress>
+}) {
+  const data = await fetchStrapiApi({
+    path: `/users-progress/${id}`,
+    body: { data: body },
+    jwt,
+    method: 'PUT',
+  })
+  return data as UserProgress
+}
+
+async function getUserResults({
+  programId,
+  userId,
+  jwt,
+}: {
+  userId: number
+  programId: number
+  jwt: string
+}) {
+  const query = qs.stringify({
+    filters: {
+      program: {
+        $eq: programId,
+      },
+      user: {
+        $eq: userId,
+      },
+    },
+    populate: 'deep',
+  })
+
+  const data = explodeStrapiData(
+    await fetchStrapiApi({
+      path: `/users-progress?${query}`,
+      jwt,
+    }),
+  ) as UserProgress[]
+  return data && data[0]
 }
 
 async function checkAnswer({
@@ -136,6 +208,62 @@ async function checkAnswer({
   return data.result
 }
 
+async function submitAssessment({
+  jwt,
+  ...payload
+}: SubmitAssessmentPayload & { jwt: string }) {
+  const data = await fetchStrapiApi({
+    path: '/users-progress/submit/assessment',
+    body: payload,
+    jwt,
+    method: 'POST',
+  })
+  return data as Promise<any>
+}
+
+async function submitTraining({
+  jwt,
+  ...payload
+}: SubmitTrainingPayload & { jwt: string }) {
+  const data = await fetchStrapiApi({
+    path: '/users-progress/submit/training',
+    body: payload,
+    jwt,
+    method: 'POST',
+  })
+  return data as any
+}
+
+async function acceptTerms({ userId, jwt }: { userId: number; jwt: string }) {
+  await fetchStrapiApi({
+    path: '/users-progress/terms',
+    body: {
+      userId: userId,
+      jwt,
+    },
+    method: 'POST',
+  })
+}
+
+async function acceptPac({ userId, jwt }: { userId: number; jwt: string }) {
+  await fetchStrapiApi({
+    path: '/users-progress/pac',
+    body: {
+      userId: userId,
+      jwt,
+    },
+    method: 'POST',
+  })
+}
+
+async function sendContactEmail(data: { email: string; content: string }) {
+  await fetchStrapiApi({
+    path: '/email/contact',
+    body: data,
+    method: 'POST',
+  })
+}
+
 async function login(loginPayload: LoginPayload) {
   const data = await fetchStrapiApi({
     path: '/auth/local',
@@ -157,7 +285,27 @@ async function getCurrentUser(jwt: string) {
   return await fetchStrapiApi({
     path: '/users/me',
     jwt,
-  })  
+  })
+}
+
+async function sendResetPasswordToken(data: { email: string }) {
+  return await fetchStrapiApi({
+    path: '/auth/forgot-password',
+    body: data,
+    method: 'POST',
+  })
+}
+
+async function resetPassword(data: { code: string; password: string }) {
+  return await fetchStrapiApi({
+    path: '/auth/reset-password',
+    body: {
+      code: data.code,
+      password: data.password,
+      passwordConfirmation: data.password,
+    },
+    method: 'POST',
+  })
 }
 
 export const STRAPI = {
@@ -166,8 +314,17 @@ export const STRAPI = {
   getProgramTraining,
   checkAnswer,
   getUserProgress,
+  updateUserProgress,
+  getUserResults,
+  acceptTerms,
+  acceptPac,
+  submitAssessment,
+  submitTraining,
+  sendContactEmail,
   /////////
   login,
   signUp,
   getCurrentUser,
+  sendResetPasswordToken,
+  resetPassword,
 }

@@ -12,7 +12,8 @@ const anchors = {
 const options = {
   roughness: {
     name: 'Rugosidade',
-    title: 'Rugosidade (R): qualquer irregularidade perceptível durante a produção vocal.',
+    title:
+      'Rugosidade (R): qualquer irregularidade perceptível durante a produção vocal.',
   },
   breathiness: {
     name: 'Soprosidade',

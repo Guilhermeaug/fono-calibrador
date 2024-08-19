@@ -4,16 +4,18 @@ import { CheckListItemType } from '../helpers'
 
 const icons = {
   READY: PlayIcon,
-  WAITING_TIME: ClockIcon,
+  WAITING: ClockIcon,
   UNAVAILABLE: XIcon,
   DONE: CheckIcon,
+  INVALID: XIcon,
 }
 
 const colors = {
-  READY: 'bg-amber-500 dark:bg-amber-700',
-  WAITING_TIME: 'bg-yellow-500 dark:bg-yellow-700',
-  UNAVAILABLE: 'bg-gray-300 dark:bg-gray-700',
-  DONE: 'bg-green-500 dark:bg-green-700',
+  READY: 'bg-green-500 dark:bg-green-700',
+  WAITING: 'bg-yellow-500 dark:bg-yellow-700',
+  UNAVAILABLE: 'bg-gray-500 dark:bg-gray-700',
+  DONE: 'bg-blue-500 dark:bg-blue-700',
+  INVALID: 'bg-red-500 dark:bg-red-700',
 }
 
 export function CheckListItem({
@@ -27,7 +29,7 @@ export function CheckListItem({
   const href = canClickIf ? hrefProp : '#'
 
   return (
-    <li className={`${bgColor} rounded-md `}>
+    <li className={`${bgColor} text-white rounded-md `}>
       <Link href={href}>
         <div className="flex items-center gap-3 p-2">
           <div className="">

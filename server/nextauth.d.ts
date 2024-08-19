@@ -1,25 +1,25 @@
-import { DefaultSession } from "next-auth";
+import { DefaultSession } from 'next-auth'
 
-declare module "next-auth" {
+declare module 'next-auth' {
   interface Session {
     user: {
-      id: string;
-      jwt: string;
-    } & DefaultSession["user"];
+      id: number
+      jwt: string
+    } & DefaultSession['user']
   }
 
   interface User {
-    jwt: string;
+    jwt: string
     user: {
-      id: number;
-      username: string;
-      email: string;
-      provider: string;
-      confirmed: boolean;
-      blocked: boolean;
-      createdAt: string;
-      updatedAt: string;
-      hasAcceptedTerms: boolean;
-    },
+      id: number
+      username: string
+      email: string
+      provider: string
+      confirmed: boolean
+      blocked: boolean
+      createdAt: string
+      updatedAt: string
+      hasAcceptedTerms: boolean
+    }
   }
 }

@@ -10,13 +10,13 @@ export default function Home() {
       <div className="h-[48px] bg-secondary" />
       <Navbar className="bg-secondary" />
       <div className="relative h-[100px] bg-secondary md:h-[250px]" />
-      <main className="relative top-[-55px] mx-auto flex max-w-[850px] flex-col items-center gap-8 px-4 md:top-[-90px] md:flex-row-reverse md:px-8">
+      <main className="relative top-[-100px] mx-auto flex max-w-[900px] flex-col items-center gap-8 px-4 md:top-[-90px] md:flex-row-reverse md:px-4">
         <Image
           className="max-w-full"
           src="/images/logo.png"
           alt="Logo do Calibrador Auditivo"
-          width={300}
-          height={250}
+          width={400}
+          height={350}
         />
         <Card>
           <CardHeader>
@@ -31,7 +31,7 @@ export default function Home() {
             </p>
             <p>
               Preparado para iniciar seu treinamento?{' '}
-              <Link className="text-sky-600 hover:underline" href="/presentation">
+              <Link className="text-sky-600 hover:underline" href="/startup">
                 Clique aqui
               </Link>
             </p>

@@ -15,25 +15,36 @@ import {
 import { Button } from '@/components/ui/button'
 import { VoiceSlider } from '@/components/VoiceSlider'
 import { useAnimatedPlayer } from '@/hooks/use-animated-player'
-import useElapsedTime from '@/hooks/use-elapsed-time'
-import { STRAPI_URL } from '@/server/strapi'
-import { ProgramAssessment } from '@/server/types'
+import { useElapsedTime } from '@/hooks/use-elapsed-time'
+import { STRAPI, STRAPI_URL } from '@/server/strapi'
+import { Audio } from '@/server/types'
 import { AssessmentEvaluationData } from '@/types'
+import dayjs from 'dayjs'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
+import { Session } from 'next-auth'
+import { useRouter } from 'next/navigation'
 import * as React from 'react'
 import useSound from 'use-sound'
 
 type Props = {
-  program: ProgramAssessment
+  audios: Audio[]
+  userSession: Session
+  isLastSession: boolean
 }
 
-export function AsssessmentForm({ program: { assessment } }: Props) {
+export function AsssessmentForm({ audios, userSession, isLastSession }: Props) {
+  const {
+    user: { jwt },
+  } = userSession
+  const router = useRouter()
+
   const { elapsedTime, startTimer, resetTimer } = useElapsedTime()
-  const [evaluations, setEvaluations] = React.useState<AssessmentEvaluationData[]>(
-    assessment.map((voice) => ({
+  const startDate = React.useRef(dayjs().toISOString())
+  const [data, setData] = React.useState<AssessmentEvaluationData[]>(
+    audios.map((voice) => ({
       identifier: voice.identifier,
       duration: 0,
-      numberOfAttempts: 0,
+      numberOfAudioClicks: 0,
       roughness: 0,
       breathiness: 0,
     })),
@@ -43,8 +54,8 @@ export function AsssessmentForm({ program: { assessment } }: Props) {
   const [roughness, setRoughness] = React.useState(0)
   const [breathiness, setBreathiness] = React.useState(0)
 
-  const voice = assessment[currentIndex]
-  const currentEvaluation = evaluations[currentIndex]
+  const voice = audios[currentIndex]
+  const currentEvaluation = data[currentIndex]
 
   const url = `${STRAPI_URL}${voice.file.url}`
   const [play, { stop }] = useSound(url, {
@@ -54,27 +65,31 @@ export function AsssessmentForm({ program: { assessment } }: Props) {
     },
   })
 
-  const { View, stopAnimation, clickedTimes, resetClickedTimes } = useAnimatedPlayer({ play })
-
-  function stopVoiceAndAnimation() {
-    stop()
-    stopAnimation()
-  }
+  const {
+    View,
+    stopAnimation,
+    clickedTimes: audioClickedTimes,
+    resetClickedTimes,
+  } = useAnimatedPlayer({
+    play,
+  })
 
   function saveEvaluation() {
-    const newEvaluations = [...evaluations]
+    const newEvaluations = [...data]
     newEvaluations[currentIndex] = {
       ...currentEvaluation,
       duration: currentEvaluation.duration + elapsedTime,
-      numberOfAttempts: currentEvaluation.numberOfAttempts + clickedTimes,
+      numberOfAudioClicks: currentEvaluation.numberOfAudioClicks + audioClickedTimes,
       roughness,
       breathiness,
     }
-    setEvaluations(newEvaluations)
+    setData(newEvaluations)
   }
 
   function handlePrevious() {
-    stopVoiceAndAnimation()
+    stop()
+    stopAnimation()
+    saveEvaluation()
 
     if (currentIndex - 1 >= 0) {
       setCurrentIndex((prev) => prev - 1)
@@ -82,18 +97,30 @@ export function AsssessmentForm({ program: { assessment } }: Props) {
   }
 
   function handleNext() {
-    stopVoiceAndAnimation()
-
+    stop()
+    stopAnimation()
     saveEvaluation()
 
-    if (currentIndex + 1 < assessment.length) {
+    if (currentIndex + 1 < data.length) {
       setCurrentIndex((prev) => prev + 1)
       return
     }
   }
 
-  function endAssessment() {
+  async function endAssessment() {
+    stop()
+    stopAnimation()
     saveEvaluation()
+
+    const endDate = dayjs().toISOString()
+    await STRAPI.submitAssessment({
+      programId: 1,
+      startDate: startDate.current,
+      endDate,
+      jwt,
+      audios: data,
+    })
+    router.replace(`/startup?show=training-selection&isLastSession=${isLastSession}`)
   }
 
   React.useEffect(() => {
@@ -105,10 +132,22 @@ export function AsssessmentForm({ program: { assessment } }: Props) {
       resetTimer()
       resetClickedTimes()
     }
-  }, [currentIndex])
+  }, [
+    currentEvaluation.breathiness,
+    currentEvaluation.roughness,
+    currentIndex,
+    resetClickedTimes,
+    resetTimer,
+    startTimer,
+  ])
 
   const isPreviousDisabled = currentIndex === 0
-  const isNextDisabled = currentIndex === assessment.length - 1
+  const isNextDisabled = currentIndex === data.length - 1
+
+  const sliders = [
+    { label: 'Rugosidade', value: roughness, setValue: setRoughness },
+    { label: 'Soprosidade', value: breathiness, setValue: setBreathiness },
+  ]
 
   return (
     <section>
@@ -118,18 +157,17 @@ export function AsssessmentForm({ program: { assessment } }: Props) {
       </div>
       <div className="h-[30px]" />
       <div className="grid gap-8">
-        <div className="flex flex-col items-center gap-6 md:flex-row">
-          <span className="w-24 text-center text-sm leading-none md:mt-4 md:text-start">
-            Rugosidade
-          </span>
-          <VoiceSlider value={[roughness]} onValueChange={(value) => setRoughness(value[0])} />
-        </div>
-        <div className="flex flex-col items-center gap-6 md:flex-row">
-          <span className="w-24 text-center text-sm leading-none md:mt-4 md:text-start">
-            Soprosidade
-          </span>
-          <VoiceSlider value={[breathiness]} onValueChange={(value) => setBreathiness(value[0])} />
-        </div>
+        {sliders.map((slider, index) => (
+          <div key={index} className="flex flex-col items-center gap-6 md:flex-row">
+            <span className="w-24 text-center text-sm leading-none md:mt-4 md:text-start">
+              {slider.label}
+            </span>
+            <VoiceSlider
+              value={[slider.value]}
+              onValueChange={(value) => slider.setValue(value[0])}
+            />
+          </div>
+        ))}
       </div>
       <div className="h-[50px]" />
       <div className="mx-auto flex justify-center gap-4">

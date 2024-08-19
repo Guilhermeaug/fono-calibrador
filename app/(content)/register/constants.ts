@@ -30,12 +30,21 @@ const formSchema = z
     university: z.string().min(3, FILL_FIELD),
     courseLevel: z.array(z.string()).optional(),
     voiceAreaDisciplines: z.enum(['yes', 'no']).optional(),
-    graduationPeriod: z.enum(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']).optional(),
+    graduationPeriod: z
+      .enum(['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'])
+      .optional(),
     hasExperienceInAuditoryPerceptualAssessment: z.enum(['yes', 'no'], {
       required_error: FILL_FIELD,
     }),
     auditoryPerceptualAssessmentTime: z
-      .enum(['0-2 hours', '2-4 hours', '4-6 hours', '6-8 hours', '8-10 hours', '10+ hours'])
+      .enum([
+        '0-2 hours',
+        '2-4 hours',
+        '4-6 hours',
+        '6-8 hours',
+        '8-10 hours',
+        '10+ hours',
+      ])
       .optional(),
     isVoiceSpecialist: z.enum(['yes', 'no'], { required_error: FILL_FIELD }),
     auditoryPerceptualAssessmentExperience: z.enum(

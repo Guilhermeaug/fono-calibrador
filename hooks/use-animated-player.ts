@@ -1,18 +1,18 @@
-import * as React from "react";
-import { useLottie } from "lottie-react";
+import { useLottie } from 'lottie-react'
+import * as React from 'react'
 
-import Animation from "@/public/animations/sound-animation.json";
+import Animation from '@/public/animations/sound-animation.json'
 
 type Props = {
-  play: () => void;
-};
+  play: () => void
+}
 
 export function useAnimatedPlayer({ play }: Props) {
-  const [clickedTimes, setClickedTimes] = React.useState(0);
+  const [clickedTimes, setClickedTimes] = React.useState(0)
 
-  function resetClickedTimes() {
-    setClickedTimes(0);
-  }
+  const resetClickedTimes = React.useCallback(() => {
+    setClickedTimes(0)
+  }, [setClickedTimes])
 
   const {
     View,
@@ -23,28 +23,28 @@ export function useAnimatedPlayer({ play }: Props) {
     animationData: Animation,
     loop: true,
     onClick: () => {
-      setClickedTimes((prev) => prev + 1);
+      setClickedTimes((prev) => prev + 1)
 
-      stop();
-      play();
-      playAnimation();
+      stop()
+      play()
+      playAnimation()
     },
     style: {
       width: 40,
-      cursor: "pointer",
+      cursor: 'pointer',
     },
-  });
+  })
 
   React.useEffect(() => {
-    setSpeed(0.8);
-    stopAnimation();
-  }, []);
+    setSpeed(0.8)
+    stopAnimation()
+  }, [setSpeed, stopAnimation])
 
   return {
     View,
     playAnimation,
     stopAnimation,
     clickedTimes,
-    resetClickedTimes
-  };
+    resetClickedTimes,
+  }
 }

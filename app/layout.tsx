@@ -6,7 +6,6 @@ import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from '@/components/ui/sonner'
 import { SessionProvider } from '@/contexts/SessionProvider'
 import { cn } from '@/lib/utils'
-import { AUTH } from '@/server/auth'
 
 const fontSans = FontSans({
   subsets: ['latin'],
