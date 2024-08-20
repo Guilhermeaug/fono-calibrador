@@ -256,6 +256,26 @@ async function acceptPac({ userId, jwt }: { userId: number; jwt: string }) {
   })
 }
 
+async function alignProgress({
+  userId,
+  programId,
+  jwt,
+}: {
+  userId: number
+  programId: number
+  jwt: string
+}) {
+  return (await fetchStrapiApi({
+    path: '/users-progress/alignProgress',
+    body: {
+      userId,
+      programId,
+      jwt,
+    },
+    method: 'POST',
+  })) as UserProgress
+}
+
 async function sendContactEmail(data: { email: string; content: string }) {
   await fetchStrapiApi({
     path: '/email/contact',
@@ -318,6 +338,7 @@ export const STRAPI = {
   getUserResults,
   acceptTerms,
   acceptPac,
+  alignProgress,
   submitAssessment,
   submitTraining,
   sendContactEmail,

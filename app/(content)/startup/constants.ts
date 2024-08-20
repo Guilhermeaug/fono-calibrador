@@ -5,6 +5,7 @@ const status: Record<Status, string> = {
   READY: 'Etapa disponível',
   DONE: 'Etapa concluída',
   NOT_NEEDED: '',
+  INVALID: 'Etapa invalidada',
 }
 
 export { status }

@@ -1,5 +1,8 @@
+'use client'
+
 import { cn } from '@/lib/utils'
 import { CircleUserIcon, MenuIcon } from 'lucide-react'
+import { signOut } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { ModeToggle } from './mode-toggle'
@@ -133,7 +136,7 @@ export function Navbar({ className }: Props) {
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Minha conta</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Logout</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => signOut()}>Logout</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

@@ -9,7 +9,6 @@ import { Suspense } from 'react'
 import { CheckList } from './components/check-list'
 import { ProgressSheet } from './components/progress-sheet'
 import { TrainingSelectionModal } from './components/training-selection'
-import { updateProgress } from './validations'
 
 type Props = {
   searchParams: {
@@ -23,13 +22,11 @@ export default async function StartupPage({ searchParams: { show } }: Props) {
     redirect('/login')
   }
 
-  let userProgress =
-    (await STRAPI.getUserProgress({
-      userId: userInfo.id,
-      programId: 1,
-      jwt: userInfo.jwt,
-    })) ?? {}
-  userProgress = await updateProgress(userProgress, userInfo)
+  const userProgress = await STRAPI.alignProgress({
+    userId: userInfo.id,
+    programId: 1,
+    jwt: userInfo.jwt,
+  })
 
   const program = await STRAPI.getFullProgram({ id: 1 })
 

@@ -26,14 +26,14 @@ export type Audio = {
   file: File
 }
 
-export type Status = 'NOT_NEEDED' | 'WAITING' | 'READY' | 'DONE'
+export type Status = 'NOT_NEEDED' | 'WAITING' | 'READY' | 'DONE' | 'INVALID'
 
 type AudioResult = {
   identifier: string
   answer: number
   duration: number
   numberOfAttempts: number
-  score: number;
+  score: number
   numberOfAudioClicks: number
 }
 

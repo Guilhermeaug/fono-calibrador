@@ -51,9 +51,11 @@ export function RegisterForm() {
           toast.error('Email ou identificador de usuário já estão em uso.')
           form.setError('email', {
             type: 'required',
+            message: 'Email ou identificador de usuário já estão em uso.',
           })
           form.setError('username', {
             type: 'required',
+            message: 'Email ou identificador de usuário já estão em uso.',
           })
           break
         }
@@ -123,7 +125,7 @@ export function RegisterForm() {
                   <FormItem className="flex flex-col">
                     <FormLabel>Senha</FormLabel>
                     <FormControl>
-                      <Input placeholder="Uma senha segura" {...field} />
+                      <Input type="password" placeholder="Uma senha segura" {...field} />
                     </FormControl>
                     <FormDescription>
                       Deve conter pelo menos 8 caracteres, com uma letra maiúscula, uma
