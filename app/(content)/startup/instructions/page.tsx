@@ -2,7 +2,7 @@ import { TypographyH2, TypographyP } from '@/components/typography'
 
 export default function InstructionsPage() {
   return (
-    <main className="mx-auto max-w-[850px] px-8 pt-16 space-y-4 text-justify">
+    <main className="mx-auto max-w-[850px] p-8 space-y-4 text-justify">
       <TypographyH2 className="text-center">
         Preparado para iniciar o Treinamento Perceptivo-Auditivo da Voz?
       </TypographyH2>

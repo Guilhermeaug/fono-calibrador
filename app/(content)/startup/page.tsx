@@ -37,7 +37,7 @@ export default async function StartupPage({ searchParams: { show } }: Props) {
 
   return (
     <>
-      <main className="mx-auto px-8 pt-16 max-w-[850px]">
+      <main className="mx-auto p-8 max-w-[850px]">
         <TypographyH1 className="text-center">
           Seja bem vindo ao Calibrador Auditivo!
         </TypographyH1>

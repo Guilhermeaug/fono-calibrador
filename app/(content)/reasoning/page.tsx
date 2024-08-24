@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 export default function ReasoningPage() {
   return (
-    <main className="mx-auto px-8 pt-16 max-w-[850px]">
+    <main className="mx-auto max-w-[850px] p-8">
       <TypographyH1 className="text-center">
         Por que fazer um treinamento de avaliação perceptivo-auditiva da voz?
       </TypographyH1>

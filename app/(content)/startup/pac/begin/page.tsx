@@ -13,7 +13,7 @@ export default async function PacBeginPage() {
   const startPac = pacLink ? pacLink : '#'
 
   return (
-    <main className="mx-auto max-w-[850px] px-8 pt-16">
+    <main className="mx-auto max-w-[850px] p-8">
       <TypographyH1 className="text-center">
         Teste do Processamento Auditivo (PAC)
       </TypographyH1>

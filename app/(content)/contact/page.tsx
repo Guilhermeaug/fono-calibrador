@@ -34,55 +34,52 @@ export default function ContactPage() {
   }
 
   return (
-    <main className="mx-auto max-w-[850px] px-8 pt-16 grid place-content-center">
-      <section>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="w-[600px] space-y-6">
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Seu email principal</FormLabel>
-                  <FormControl>
-                    <Input placeholder="mm@gmail.com" {...field} />
-                  </FormControl>
-                  <FormDescription>Esse será seu email de contato</FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="content"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Conteúdo</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Escreva aqui a sua mensagem"
-                      className="resize-none h-[200px]"
-                      {...field}
-                    />
-                  </FormControl>
-
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button className="block ml-auto" size="lg" type="submit">
-              Enviar
-            </Button>
-          </form>
-        </Form>
-      </section>
-      <div className="h-[50px]" />
+    <main className="mx-auto max-w-[850px] py-8 grid place-content-center">
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 px-4">
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Seu email principal</FormLabel>
+                <FormControl>
+                  <Input placeholder="mm@gmail.com" {...field} />
+                </FormControl>
+                <FormDescription>Esse será seu email de contato</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="content"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Conteúdo</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder="Escreva aqui a sua mensagem"
+                    className="resize-none h-[200px]"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button className="block w-full ml-auto" size="lg" type="submit">
+            Enviar
+          </Button>
+        </form>
+      </Form>
+      <div className="h-[30px]" />
       <Link
-        className="text-center"
-        href="mailto:contato@calibradorauditivo.com"
+        className="text-center text-sm underline"
+        href="mailto:calibradorauditivo@mkt.medicina.ufmg.br"
         target="_blank"
       >
-        Ou envie seu e-mail para <b>contato@calibradorauditivo.com</b>
+        Ou envie seu e-mail para <b>calibradorauditivo@mkt.medicina.ufmg.br</b>
       </Link>
     </main>
   )

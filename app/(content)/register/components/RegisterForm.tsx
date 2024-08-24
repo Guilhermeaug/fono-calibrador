@@ -32,17 +32,22 @@ import { signIn } from 'next-auth/react'
 import * as React from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
-import { z } from 'zod'
-import { courseLevels, DEFAULT_VALUES, formSchema, musicianRoles } from '../constants'
+import {
+  courseLevels,
+  DEFAULT_VALUES,
+  FORM_TYPE,
+  formSchema,
+  musicianRoles,
+} from '../constants'
 
 export function RegisterForm() {
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FORM_TYPE>({
     resolver: zodResolver(formSchema),
     mode: 'onBlur',
     defaultValues: DEFAULT_VALUES,
   })
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: FORM_TYPE) {
     const res = await AUTH.signUp(values)
 
     if ('error' in res) {
@@ -82,10 +87,10 @@ export function RegisterForm() {
 
   return (
     <React.Fragment>
-      <div className="flex justify-center items-center py-12">
+      <div className="flex justify-center items-center py-4">
         <div className="gap-4 grid mx-auto w-[500px]">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 px-4">
               <FormField
                 control={form.control}
                 name="name"
@@ -283,7 +288,10 @@ export function RegisterForm() {
                                       checked={field.value?.includes(item.id)}
                                       onCheckedChange={(checked) => {
                                         return checked
-                                          ? field.onChange([...field.value, item.id])
+                                          ? field.onChange([
+                                              ...(field.value ?? []),
+                                              item.id,
+                                            ])
                                           : field.onChange(
                                               field.value?.filter(
                                                 (value) => value !== item.id,
@@ -366,7 +374,7 @@ export function RegisterForm() {
                       <RadioGroup
                         onValueChange={field.onChange}
                         defaultValue={field.value}
-                        className="flex space-x-1"
+                        className="flex flex-wrap md:flex-nowrap gap-2"
                       >
                         <FormItem className="flex items-center space-x-3 space-y-0">
                           <FormControl>
@@ -902,7 +910,7 @@ export function RegisterForm() {
                 )}
               />
               <Button className="block w-full" type="submit">
-                Enviar
+                Cadastrar
               </Button>
             </form>
           </Form>

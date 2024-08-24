@@ -10,7 +10,7 @@ type Props = {
 
 export default function OverviewAssessment({ searchParams }: Props) {
   return (
-    <main className="mx-auto max-w-[850px] px-8 pt-16 space-y-4 text-justify">
+    <main className="mx-auto max-w-[850px] p-8 space-y-4 text-justify">
       <TypographyH1 className="text-center">Avaliação</TypographyH1>
       <TypographyP>Essa sessão inicia com a Avaliação de 20 vozes.</TypographyP>
       <ul className="list-disc">

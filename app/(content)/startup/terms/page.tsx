@@ -11,11 +11,10 @@ export default async function TermsPage() {
   }
 
   return (
-    <main className="mx-auto max-w-[850px] px-8 py-16">
+    <main className="mx-auto max-w-[850px] p-8">
       <TypographyH1 className="text-center">
-        TERMO DE CONSENTIMENTO LIVRE E ESCLARECIDO​
+        TERMO DE CONSENTIMENTO LIVRE E ESCLARECIDO
       </TypographyH1>
-
       <TypographyP className="font-bold">
         Título da Pesquisa: Instrumentos de treinamento e avaliação perceptivo-auditiva da
         voz referências.

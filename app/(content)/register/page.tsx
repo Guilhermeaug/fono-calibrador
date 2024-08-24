@@ -4,7 +4,7 @@ import { RegisterForm } from './components/RegisterForm'
 
 export default function Page() {
   return (
-    <main className="mx-auto max-w-[900px] px-8 pt-16">
+    <main className="mx-auto max-w-[900px] p-8">
       <div className="grid gap-2 text-center">
         <h1 className="text-3xl font-bold">Cadastro</h1>
         <p className="text-balance text-muted-foreground">

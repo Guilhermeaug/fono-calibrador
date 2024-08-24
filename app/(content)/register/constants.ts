@@ -17,9 +17,7 @@ const formSchema = z
     birthDate: z.date({ required_error: FILL_FIELD }),
     isMusician: z.enum(['yes', 'no'], { required_error: FILL_FIELD }),
     musicianType: z.enum(['professional', 'amateur']).optional(),
-    musicianRole: z.array(z.string()).refine((value) => value.some((item) => item), {
-      message: 'Você deve selecionar pelo menos uma opção',
-    }),
+    musicianRole: z.array(z.string()).optional(),
     musicianTime: z
       .enum(['1-year', '1-3 years', '3-5 years', '5-10 years', '10+ years'])
       .optional(),
@@ -68,7 +66,7 @@ const formSchema = z
     message: FILL_FIELD,
     path: ['musicianType'],
   })
-  .refine((data) => !(data.isMusician === 'yes' && !data.musicianRole.length), {
+  .refine((data) => !(data.isMusician === 'yes' && !data.musicianRole?.length), {
     message: FILL_FIELD,
     path: ['musicianRole'],
   })

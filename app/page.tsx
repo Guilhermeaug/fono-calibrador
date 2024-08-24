@@ -7,10 +7,10 @@ import * as React from 'react'
 export default function Home() {
   return (
     <React.Fragment>
-      <div className="h-[48px] bg-secondary" />
+      <div className="h-[32px] bg-secondary" />
       <Navbar className="bg-secondary" />
-      <div className="relative h-[100px] bg-secondary md:h-[250px]" />
-      <main className="relative top-[-100px] mx-auto flex max-w-[900px] flex-col items-center gap-8 px-4 md:top-[-90px] md:flex-row-reverse md:px-4">
+      <div className="relative h-[100px] bg-secondary md:h-[160px]" />
+      <main className="relative top-[-80px] mx-auto flex max-w-[900px] flex-col items-center gap-8 px-4 md:top-[-110px] md:flex-row-reverse md:px-4">
         <Image
           className="max-w-full"
           src="/images/logo.png"
