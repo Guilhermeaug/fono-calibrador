@@ -15,78 +15,87 @@ export type CheckListItemType = {
   canClickIf: boolean
 }
 
+function getStatusForTerms(hasAcceptedTerms: boolean): CheckListStatus {
+  return hasAcceptedTerms ? CheckListStatus.DONE : CheckListStatus.READY
+}
+
 function getStatusForPac(
   hasAcceptedTerms: boolean,
-  hasCompletedPac: boolean,
+  pacStatus: CheckListStatus,
 ): CheckListStatus {
   if (!hasAcceptedTerms) return CheckListStatus.UNAVAILABLE
-  return hasCompletedPac ? CheckListStatus.DONE : CheckListStatus.READY
+  return pacStatus === CheckListStatus.DONE ? CheckListStatus.DONE : CheckListStatus.READY
+}
+
+function getStatusForTraining(
+  previous: boolean,
+  progress: UserProgress,
+): CheckListStatus {
+  if (!previous) return CheckListStatus.UNAVAILABLE
+  return progress.status === CheckListStatus.DONE
+    ? CheckListStatus.DONE
+    : CheckListStatus.READY
 }
 
 function getStatusForFinalPac(
-  hasCompletedFinalPac: boolean,
-  isProgressDone: boolean,
+  previous: boolean,
+  pacStatus: CheckListStatus,
 ): CheckListStatus {
-  if (hasCompletedFinalPac && isProgressDone) return CheckListStatus.DONE
-  return isProgressDone ? CheckListStatus.READY : CheckListStatus.UNAVAILABLE
+  if (!previous) return CheckListStatus.UNAVAILABLE
+  return pacStatus === CheckListStatus.DONE ? CheckListStatus.DONE : CheckListStatus.READY
 }
 
-export function generateChecklistItems(userInfo: UserInfo, progress: UserProgress) {
-  const { hasAcceptedTerms, hasCompletedPac, hasCompletedFinalPac } = userInfo
-  const isProgressReady = progress.status === CheckListStatus.READY
-  const isProgressDone = progress.status === CheckListStatus.DONE
-  const isProgressInvalid = progress.status === CheckListStatus.INVALID
+export function generateChecklistItems(
+  userInfo: UserInfo,
+  progress: UserProgress,
+): CheckListItemType[] {
+  const { hasAcceptedTerms, firstPacStatus, finalPacStatus } = userInfo
 
-  const items: CheckListItemType[] = [
+  const termsStatus = getStatusForTerms(hasAcceptedTerms)
+  const firstPacChecklistStatus = getStatusForPac(
+    termsStatus === CheckListStatus.DONE,
+    firstPacStatus as CheckListStatus,
+  )
+  const trainingStatus = getStatusForTraining(
+    firstPacChecklistStatus === CheckListStatus.DONE,
+    progress,
+  )
+  const finalPacChecklistStatus = getStatusForFinalPac(
+    trainingStatus === CheckListStatus.DONE,
+    finalPacStatus as CheckListStatus,
+  )
+
+  return [
     {
       text: '1. Termo de Consentimento Livre e Esclarecido',
       href: '/startup/terms',
-      status: hasAcceptedTerms ? CheckListStatus.DONE : CheckListStatus.READY,
+      status: termsStatus,
       canClickIf: true,
     },
     {
       text: '2. Teste do Processamento Auditivo',
       href: '/startup/pac/begin',
-      status: getStatusForPac(hasAcceptedTerms, hasCompletedPac),
+      status: firstPacChecklistStatus,
       canClickIf: false,
     },
     {
       text: '3. Treinamento de Avaliação Perceptivo-Auditiva da Voz',
       href: '?show=progress',
-      status: isProgressReady
-        ? CheckListStatus.READY
-        : isProgressInvalid
-          ? CheckListStatus.INVALID
-          : CheckListStatus.WAITING,
+      status: trainingStatus,
       canClickIf: ['READY', 'WAITING', 'DONE'].includes(progress.status),
     },
     {
       text: '4. Teste do Processamento Auditivo',
       href: '/startup/pac/begin',
-      status: getStatusForFinalPac(hasCompletedFinalPac, isProgressDone),
-      canClickIf: false,
+      status: finalPacChecklistStatus,
+      canClickIf: ['READY', 'WAITING', 'DONE'].includes(finalPacChecklistStatus),
     },
     {
       text: 'Resultados',
       href: '/startup/results',
-      status: hasCompletedPac ? CheckListStatus.DONE : CheckListStatus.UNAVAILABLE,
-      canClickIf: false,
+      status:
+        firstPacStatus === 'DONE' ? CheckListStatus.DONE : CheckListStatus.UNAVAILABLE,
+      canClickIf: firstPacStatus === 'DONE',
     },
   ]
-
-  // Update canClickIf based on the status of the previous item
-  for (let i = 1; i < items.length; i++) {
-    const prevItem = items[i - 1]
-    if (
-      prevItem.status === CheckListStatus.READY ||
-      prevItem.status === CheckListStatus.DONE
-    ) {
-      items[i].canClickIf = true
-    } else {
-      items[i].status = CheckListStatus.UNAVAILABLE
-      items[i].canClickIf = false
-    }
-  }
-
-  return items
 }

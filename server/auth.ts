@@ -16,11 +16,14 @@ export const authOptions: AuthOptions = {
       async authorize(credentials, req) {
         try {
           if (credentials == null) return null
-          const { user, jwt } = await login(credentials)
+          const { user, jwt } = await login({
+            identifier: credentials.identifier,
+            password: credentials.password,
+          })
           revalidatePath('/', 'layout')
           return { ...user, jwt }
         } catch (e) {
-          const error = (e instanceof Promise ? await e : e) as StrapiError
+          const error = e as StrapiError
           throw error.error.message
             ? new Error(error.error.message)
             : new Error('Unknown Error')

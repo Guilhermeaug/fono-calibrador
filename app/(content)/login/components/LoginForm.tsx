@@ -31,7 +31,7 @@ export function LoginForm() {
       identifier: values.identifier,
       password: values.password,
       redirect: false,
-    }).catch((e) => console.error('Error', e))
+    })
 
     if (res?.ok) {
       window.location.replace('/')

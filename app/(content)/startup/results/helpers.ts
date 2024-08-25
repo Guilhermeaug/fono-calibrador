@@ -11,6 +11,13 @@ function computateAssessmentsMeanScores({ sessions }: UserProgress) {
       session.assessmentBreathinessResults?.audios.map((audio) => audio.score) || [],
   )
 
+  if (
+    roughnessAssessmentResults.some((result) => result.length === 0) ||
+    breathinessAssessmentResults.some((result) => result.length === 0)
+  ) {
+    return []
+  }
+
   const chartData: {
     session: string
     roughness: number | null

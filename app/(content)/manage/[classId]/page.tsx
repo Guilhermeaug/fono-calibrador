@@ -1,27 +1,60 @@
-import Link from 'next/link'
+import { AUTH } from '@/server/auth'
+import { STRAPI } from '@/server/strapi'
+import { redirect } from 'next/navigation'
+import { columns, Students } from './components/columns'
+import { DataTable } from './components/data-table'
+import { DetailsSheet } from './components/details-sheet'
 
 type Props = {
   params: {
     classId: string
   }
+  searchParams: {
+    show?: 'details'
+    id?: number
+  }
 }
 
-export default function ManagePage({}: Props) {
+async function getData(classId: number, jwt: string): Promise<Students[]> {
+  const data = await STRAPI.getStudentsInClass({ groupId: Number(classId), jwt })
+  return data.map((student) => {
+    let status: 'terms' | 'pac' | 'progress' = 'progress'
+    if (!student.hasAcceptedTerms) {
+      status = 'terms'
+    } else if (student.firstPacStatus === 'READY') {
+      status = 'pac'
+    }
+    return {
+      id: student.id,
+      name: student.name,
+      email: student.email,
+      status,
+    }
+  })
+}
+
+export default async function ManagePage({
+  params: { classId },
+  searchParams: { show, id },
+}: Props) {
+  const user = await AUTH.getServerSession()
+  if (!user) {
+    redirect('/login')
+  }
+  const {
+    user: { jwt },
+  } = user
+
+  const tableData = await getData(Number(classId), jwt)
+  let userDetails
+  if (show === 'details' && id) {
+    userDetails = await STRAPI.getUserFullData({ userId: Number(id) })
+  }
+
   return (
-    <div className="flex flex-col w-full min-h-screen">
-      <main className="flex flex-col flex-1 gap-4 md:gap-8 bg-muted/40 p-4 md:p-10 min-h-[calc(90vh_-_theme(spacing.16))]">
-        <div className="gap-2 grid mx-auto w-full max-w-6xl">
-          <h1 className="font-semibold text-3xl">Turmas</h1>
-        </div>
-        <div className="items-start gap-6 grid md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr] mx-auto w-full max-w-6xl">
-          <nav className="gap-4 grid text-muted-foreground text-sm">
-            <Link href="#" className="font-semibold text-primary">
-              Piloto
-            </Link>
-          </nav>
-          <div className="gap-6 grid"></div>
-        </div>
-      </main>
+    <div className="container mx-auto py-2">
+      <DataTable columns={columns} data={tableData} />
+      {show === 'details' && id && <DetailsSheet userDetails={userDetails!} />}
     </div>
   )
 }

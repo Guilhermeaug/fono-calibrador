@@ -90,18 +90,46 @@ export type LoginPayload = {
   password: string
 }
 
+export type UserInfoStepsStatus = 'READY' | 'DONE' | 'WAITING' | 'INVALID' | 'UNAVAILABLE'
+
 export type UserInfo = {
   id: number
+  name: string
   username: string
   email: string
   provider: string
   confirmed: boolean
   blocked: boolean
   hasAcceptedTerms: boolean
-  hasCompletedPac: boolean
-  hasCompletedFinalPac: boolean
+  firstPacStatus: UserInfoStepsStatus
+  finalPacStatus: UserInfoStepsStatus
   jwt: string
   pacLink?: string
+} & StrapiDefaultAttributes
+
+export type AdditionalData = {
+  name: string
+  birthDate: string
+  isMusician: boolean
+  musicianType: string
+  musicianRole: string
+  musicianTime: string
+  job: string
+  workUniversity: string
+  university: string
+  courseLevel: string
+  voiceAreaDisciplines: string
+  graduationPeriod: string
+  hasExperienceInAuditoryPerceptualAssessment: boolean
+  auditoryPerceptualAssessmentTime: string
+  isVoiceSpecialist: boolean
+  auditoryPerceptualAssessmentExperience: string
+  isAuditoryPerceptualAssessmentTrained: boolean
+  hasMasterDegree: boolean
+  hasDoctorateDegree: boolean
+  hasResearchExperience: boolean
+  hasAcademicArticle: boolean
+  hearing: string
 } & StrapiDefaultAttributes
 
 export type SubmitAssessmentPayload = {

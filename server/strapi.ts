@@ -2,17 +2,19 @@ import { FORM_TYPE } from '@/app/(content)/register/constants'
 import { explodeStrapiData } from '@/lib/utils'
 import qs from 'qs'
 import {
+  AdditionalData,
   FullProgram,
   LoginPayload,
   ProgramAssessment,
   ProgramTraining,
   SubmitAssessmentPayload,
   SubmitTrainingPayload,
+  UserInfo,
   UserProgress,
 } from './types'
 
 export const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL
-const TOKEN = process.env.NEXT_PUBLIC_TOKEN
+const TOKEN = process.env.TOKEN
 const CACHE = process.env.NEXT_PUBLIC_CACHE as
   | 'no-cache'
   | 'default'
@@ -284,6 +286,35 @@ async function sendContactEmail(data: { email: string; content: string }) {
   })
 }
 
+async function getStudentsInClass({ groupId, jwt }: { groupId: number; jwt: string }) {
+  const query = qs.stringify({
+    fields: ['id'],
+    populate: {
+      students: true,
+    },
+  })
+  const data = await fetchStrapiApi({
+    path: `/groups/${groupId}?${query}`,
+    jwt,
+  })
+  return explodeStrapiData(data.data.attributes.students) as UserInfo[]
+}
+
+async function getUserFullData({ userId }: { userId: number }) {
+  const query = qs.stringify({
+    fields: ['id'],
+    populate: {
+      additionalData: true,
+    },
+  })
+  const data = await fetchStrapiApi({
+    path: `/users/${userId}?${query}`,
+  })
+  return explodeStrapiData(data.additionalData) as AdditionalData
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 async function login(loginPayload: LoginPayload) {
   const data = await fetchStrapiApi({
     path: '/auth/local',
@@ -342,6 +373,8 @@ export const STRAPI = {
   submitAssessment,
   submitTraining,
   sendContactEmail,
+  getStudentsInClass,
+  getUserFullData,
   /////////
   login,
   signUp,
