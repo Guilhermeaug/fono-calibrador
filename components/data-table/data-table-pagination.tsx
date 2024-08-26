@@ -1,7 +1,6 @@
 import { Table } from '@tanstack/react-table'
 import {
   ArrowLeftFromLine,
-  ArrowLeftToLine,
   ArrowRightFromLine,
   ChevronLeftIcon,
   ChevronRightIcon,
