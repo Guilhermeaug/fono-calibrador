@@ -28,7 +28,8 @@ export type Audio = {
 
 export type Status = 'NOT_NEEDED' | 'WAITING' | 'READY' | 'DONE' | 'INVALID'
 
-type AudioResult = {
+export type AudioResult = {
+  id: number
   identifier: string
   answer: number
   duration: number
@@ -37,23 +38,15 @@ type AudioResult = {
   numberOfAudioClicks: number
 }
 
-type SessionResults = {
-  assessmentRoughnessResults?: {
-    duration: number
-    audios: AudioResult[]
-  }
-  assessmentBreathinessResults?: {
-    duration: number
-    audios: AudioResult[]
-  }
-  trainingRoughnessResults?: {
-    duration: number
-    audios: AudioResult[]
-  }
-  trainingBreathinessResults?: {
-    duration: number
-    audios: AudioResult[]
-  }
+export type Result = {
+  audios: AudioResult[]
+}
+
+export type SessionResults = {
+  assessmentRoughnessResults?: Result
+  assessmentBreathinessResults?: Result
+  trainingRoughnessResults?: Result
+  trainingBreathinessResults?: Result
   assessmentStatus: Status
   trainingRoughnessStatus: Status
   trainingBreathinessStatus: Status

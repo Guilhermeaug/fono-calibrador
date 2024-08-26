@@ -76,7 +76,7 @@ export function generateChecklistItems(
       text: '2. Teste do Processamento Auditivo',
       href: '/startup/pac/begin',
       status: firstPacChecklistStatus,
-      canClickIf: false,
+      canClickIf: ['READY'].includes(firstPacChecklistStatus),
     },
     {
       text: '3. Treinamento de Avaliação Perceptivo-Auditiva da Voz',

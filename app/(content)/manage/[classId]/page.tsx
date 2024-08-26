@@ -18,9 +18,11 @@ type Props = {
 async function getData(classId: number, jwt: string): Promise<Students[]> {
   const data = await STRAPI.getStudentsInClass({ groupId: Number(classId), jwt })
   return data.map((student) => {
-    let status: 'terms' | 'pac' | 'progress' = 'progress'
+    let status: 'terms' | 'waiting_pac' | 'pac' | 'progress' = 'progress'
     if (!student.hasAcceptedTerms) {
       status = 'terms'
+    } else if (!student.pacLink) {
+      status = 'waiting_pac'
     } else if (student.firstPacStatus === 'READY') {
       status = 'pac'
     }
@@ -29,6 +31,7 @@ async function getData(classId: number, jwt: string): Promise<Students[]> {
       name: student.name,
       email: student.email,
       status,
+      pacLink: student.pacLink,
     }
   })
 }
@@ -52,9 +55,9 @@ export default async function ManagePage({
   }
 
   return (
-    <div className="container mx-auto py-2">
+    <main className="container mx-auto py-2">
       <DataTable columns={columns} data={tableData} />
       {show === 'details' && id && <DetailsSheet userDetails={userDetails!} />}
-    </div>
+    </main>
   )
 }

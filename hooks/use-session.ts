@@ -6,10 +6,10 @@ export function useSession() {
   const userSession = useNextAuthSession()
 
   const { data } = userSession
-  if (!data) {
-    throw new Error('No user session found')
-  }
 
+  if (!data) {
+    return null
+  }
   const {
     user: { id, jwt, email },
   } = data

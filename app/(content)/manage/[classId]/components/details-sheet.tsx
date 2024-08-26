@@ -1,8 +1,15 @@
 'use client'
 
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet'
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from '@/components/ui/sheet'
 import { AdditionalData } from '@/server/types'
 import dayjs from 'dayjs'
+import { isEmpty } from 'lodash'
 import { usePathname, useRouter } from 'next/navigation'
 import { translations } from '../../constants'
 
@@ -26,6 +33,7 @@ export function DetailsSheet({ userDetails }: Props) {
         <SheetHeader>
           <SheetTitle>Detalhes do usuário</SheetTitle>
         </SheetHeader>
+        <SheetDescription />
         <div className="overflow-y-auto">
           <UserDetails userDetails={userDetails} />
         </div>
@@ -50,6 +58,10 @@ function UserDetails({ userDetails }: UserDetailsProps) {
         }
 
         if (typeof value === 'string') {
+          if (isEmpty(value)) {
+            return null
+          }
+
           const isMultiple = value.includes(';')
           if (isMultiple) {
             return (

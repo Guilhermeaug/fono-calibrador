@@ -156,11 +156,11 @@ async function updateUserProgress({
 async function getUserResults({
   programId,
   userId,
-  jwt,
+  jwt = TOKEN,
 }: {
   userId: number
   programId: number
-  jwt: string
+  jwt?: string
 }) {
   const query = qs.stringify({
     filters: {
@@ -171,7 +171,24 @@ async function getUserResults({
         $eq: userId,
       },
     },
-    populate: 'deep',
+    populate: {
+      sessions: {
+        populate: {
+          assessmentRoughnessResults: {
+            populate: ['audios'],
+          },
+          assessmentBreathinessResults: {
+            populate: ['audios'],
+          },
+          trainingRoughnessResults: {
+            populate: ['audios'],
+          },
+          trainingBreathinessResults: {
+            populate: ['audios'],
+          },
+        },
+      },
+    },
   })
 
   const data = explodeStrapiData(
@@ -313,6 +330,23 @@ async function getUserFullData({ userId }: { userId: number }) {
   return explodeStrapiData(data.additionalData) as AdditionalData
 }
 
+async function putUser({
+  userId,
+  jwt,
+  data,
+}: {
+  userId: number
+  jwt: string
+  data: Partial<UserInfo>
+}) {
+  return await fetchStrapiApi({
+    path: `/users/${userId}`,
+    body: data,
+    jwt,
+    method: 'PUT',
+  })
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 async function login(loginPayload: LoginPayload) {
@@ -375,6 +409,7 @@ export const STRAPI = {
   sendContactEmail,
   getStudentsInClass,
   getUserFullData,
+  putUser,
   /////////
   login,
   signUp,

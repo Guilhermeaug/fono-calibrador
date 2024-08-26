@@ -19,7 +19,13 @@ export function AcceptTerms({ userId, jwt }: Props) {
 
   async function handleSubmit() {
     if (accepted) {
-      await STRAPI.acceptPac({ userId, jwt })
+      await STRAPI.putUser({
+        data: {
+          firstPacStatus: 'DONE',
+        },
+        userId,
+        jwt,
+      })
       setTimeout(() => {
         router.replace('/startup')
       }, 2000)

@@ -11,13 +11,34 @@ import {
 import { ColumnDef } from '@tanstack/react-table'
 import { MoreHorizontalIcon } from 'lucide-react'
 import Link from 'next/link'
+import { AddLinkModal } from './add-link-modal'
 
 export type Students = {
   id: number
   name: string
   email: string
-  status: 'terms' | 'pac' | 'progress'
+  status: 'terms' | 'waiting_pac' | 'pac' | 'progress'
+  pacLink?: string
 }
+
+export const statuses = [
+  {
+    value: 'terms',
+    label: 'Aguardando aceite dos termos',
+  },
+  {
+    value: 'waiting_pac',
+    label: 'Sem link PAC',
+  },
+  {
+    value: 'pac',
+    label: 'Aguardando PAC',
+  },
+  {
+    value: 'progress',
+    label: 'Em progresso',
+  },
+]
 
 export const columns: ColumnDef<Students>[] = [
   {
@@ -34,28 +55,21 @@ export const columns: ColumnDef<Students>[] = [
     cell: ({ row }) => {
       const status = row.original.status
       return (
-        <div
-          className={`rounded-md px-2 py-1 text-white ${
-            status === 'terms'
-              ? 'bg-yellow-500'
-              : status === 'pac'
-                ? 'bg-blue-500'
-                : 'bg-green-500'
-          }`}
-        >
-          {status === 'terms'
-            ? 'Aguardando aceite dos termos'
-            : status === 'pac'
-              ? 'Aguardando envio do PAC'
-              : 'Em treinamento'}
-        </div>
+        <span className="rounded-md px-2 py-1 bg-fuchsia-300 dark:bg-fuchsia-700 text-xs whitespace-nowrap uppercase">
+          {status === 'terms' && 'Aguardando aceite dos termos'}
+          {status === 'waiting_pac' && 'Sem link PAC'}
+          {status === 'pac' && 'Aguardando PAC'}
+          {status === 'progress' && 'Em progresso'}
+        </span>
       )
     },
   },
   {
     id: 'actions',
     cell: ({ row }) => {
-      const id = row.original.id
+      const { id, name, status } = row.original
+
+      const enableAddPacLink = status === 'waiting_pac'
 
       return (
         <DropdownMenu>
@@ -69,7 +83,18 @@ export const columns: ColumnDef<Students>[] = [
             <DropdownMenuItem>
               <Link href={`?show=details&id=${id}`}>Mostrar Detalhes</Link>
             </DropdownMenuItem>
-            {/* <DropdownMenuSeparator /> */}
+            <DropdownMenuItem>
+              <Link href={`results?id=${id}&name=${name}`}>Visualizar resultados</Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <AddLinkModal name={name} userId={id} disabled={!enableAddPacLink}>
+              <DropdownMenuItem
+                disabled={!enableAddPacLink}
+                onSelect={(e) => e.preventDefault()}
+              >
+                Adicionar link do PAC
+              </DropdownMenuItem>
+            </AddLinkModal>
           </DropdownMenuContent>
         </DropdownMenu>
       )
