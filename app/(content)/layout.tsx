@@ -1,4 +1,4 @@
-import { Navbar } from '@/components/nav-bar'
+import { Navbar } from '@/components/nav-bar/nav-bar'
 import * as React from 'react'
 
 type Props = {

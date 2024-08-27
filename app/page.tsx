@@ -1,4 +1,4 @@
-import { Navbar } from '@/components/nav-bar'
+import { Navbar } from '@/components/nav-bar/nav-bar'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import Image from 'next/image'
 import Link from 'next/link'

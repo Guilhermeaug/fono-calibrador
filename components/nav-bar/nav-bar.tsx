@@ -1,27 +1,23 @@
-'use client'
-
 import { cn } from '@/lib/utils'
-import { CircleUserIcon, MenuIcon } from 'lucide-react'
-import { signOut } from 'next-auth/react'
+import { AUTH } from '@/server/auth'
+import { isNil } from 'lodash'
+import { MenuIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ModeToggle } from './mode-toggle'
-import { Button } from './ui/button'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from './ui/dropdown-menu'
-import { Sheet, SheetContent, SheetTrigger } from './ui/sheet'
+import { ModeToggle } from '../mode-toggle'
+import { Button } from '../ui/button'
+import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet'
+import { NavbarDropdown } from './dropdown'
 
 type Props = {
   className?: string
 }
 
-export function Navbar({ className }: Props) {
-  const style = cn('flex h-16 items-center gap-4 bg-background px-4 md:px-8', className)
+export async function Navbar({ className }: Props) {
+  const userInfo = await AUTH.getCurrentUser()
+  const hasAuth = !isNil(userInfo)
 
+  const style = cn('flex h-16 items-center gap-4 bg-background px-4 md:px-8', className)
   return (
     <header className={style}>
       <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
@@ -53,13 +49,24 @@ export function Navbar({ className }: Props) {
         >
           Fundamentação
         </Link>
-        <Link
-          href="/login"
-          className="text-muted-foreground transition-colors hover:text-foreground"
-          prefetch={false}
-        >
-          Login
-        </Link>
+        {!hasAuth && (
+          <Link
+            href="/login"
+            className="text-muted-foreground transition-colors hover:text-foreground"
+            prefetch={false}
+          >
+            Login
+          </Link>
+        )}
+        {hasAuth && (
+          <Link
+            href="/manage/add"
+            className="text-muted-foreground transition-colors hover:text-foreground"
+            prefetch={false}
+          >
+            Gerenciar turmas
+          </Link>
+        )}
         <Link
           href="/contact"
           className="text-muted-foreground transition-colors hover:text-foreground"
@@ -119,22 +126,19 @@ export function Navbar({ className }: Props) {
             >
               Contato
             </Link>
+            <Link
+              href="/contact"
+              className="text-muted-foreground transition-colors hover:text-foreground"
+              prefetch={false}
+            >
+              Aopa
+            </Link>
           </nav>
         </SheetContent>
       </Sheet>
       <div className="flex gap-4 ml-auto md:gap-2 lg:gap-4">
         <ModeToggle />
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="secondary" size="icon" className="md:ml-auto rounded-full">
-              <CircleUserIcon className="h-5 w-5" />
-              <span className="sr-only">Navegação do usuário</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => signOut()}>Sair do sistema</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <NavbarDropdown hasAuth={hasAuth} />
       </div>
     </header>
   )
