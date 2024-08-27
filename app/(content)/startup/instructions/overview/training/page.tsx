@@ -24,7 +24,7 @@ export default function OverviewTraining({ searchParams }: Props) {
           do parâmetro Soprosidade.
         </li>
         <li>Você deve:</li>
-        <ul className="list-disc ml-4">
+        <ul className="list-square ml-4">
           <li>Escutar a voz a ser avaliada</li>
           <li>Escutar as vozes referências no quadro ao lado</li>
           <li>
@@ -35,12 +35,10 @@ export default function OverviewTraining({ searchParams }: Props) {
             Arraste o cursor na barra de rolagem até o ponto equivalente ao grau de desvio
             para o parâmetro avaliado.
           </li>
-          <ul className="list-disc ml-8">
-            <li>
-              O ponto inicial da reta, à esquerda, corresponde ao valor 0, sem desvio; e o
-              ponto final á direita da reta corresponde ao valor 100, máximo de desvio.
-            </li>
-          </ul>
+          <li>
+            O ponto inicial da reta, à esquerda, corresponde ao valor 0, sem desvio; e o
+            ponto final á direita da reta corresponde ao valor 100, máximo de desvio.
+          </li>
         </ul>
       </ul>
       <div className="h-[8px]" />

@@ -11,10 +11,10 @@ import { TraningEvaluationDataBothFeatures } from '@/types'
 import dayjs from 'dayjs'
 import { ArrowRight } from 'lucide-react'
 import { Session } from 'next-auth'
-import { useRouter } from 'next/navigation'
 import * as React from 'react'
 import { toast } from 'sonner'
 import useSound from 'use-sound'
+import { options } from '../constants'
 
 type Props = {
   audios: Audio[]
@@ -27,8 +27,6 @@ export function TrainingFormBoth({ audios, feature, userSession, sessionNumber }
   const {
     user: { jwt },
   } = userSession
-  const router = useRouter()
-
   const startDate = React.useRef(dayjs().toISOString())
   const { elapsedTime, startTimer, resetTimer } = useElapsedTime()
   const [data, setData] = React.useState<TraningEvaluationDataBothFeatures[]>(
@@ -146,8 +144,8 @@ export function TrainingFormBoth({ audios, feature, userSession, sessionNumber }
       })
       toast.success('Programa finalizado! Retornando para a tela principal.')
       setTimeout(() => {
-        router.replace('/startup')
-      }, 3000)
+        window.location.href = '/startup'
+      }, 2000)
     }
   }
 
@@ -179,6 +177,8 @@ export function TrainingFormBoth({ audios, feature, userSession, sessionNumber }
   return (
     <section className="space-y-4">
       <TypographyP>Rugosidade e Soprosidade</TypographyP>
+      <TypographyP>{options.breathiness.title}</TypographyP>
+      <TypographyP>{options.roughness.title}</TypographyP>
       <div className="flex items-center gap-4">
         <TypographyP>Voz {currentIndex + 1}:</TypographyP>
         {View}

@@ -11,7 +11,6 @@ import { TraningEvaluationDataOneFeature } from '@/types'
 import dayjs from 'dayjs'
 import { ArrowRight } from 'lucide-react'
 import { Session } from 'next-auth'
-import { useRouter } from 'next/navigation'
 import * as React from 'react'
 import { toast } from 'sonner'
 import useSound from 'use-sound'
@@ -33,8 +32,6 @@ export function TrainingFormBasic({
   const {
     user: { jwt },
   } = userSession
-  const router = useRouter()
-
   const startDate = React.useRef(dayjs().toISOString())
   const { elapsedTime, startTimer, resetTimer } = useElapsedTime()
   const [data, setData] = React.useState<TraningEvaluationDataOneFeature[]>(
@@ -114,8 +111,8 @@ export function TrainingFormBasic({
 
         toast.success('Treinamento finalizado! Retornando para a tela principal.')
         setTimeout(() => {
-          router.replace('/startup')
-        }, 3000)
+          window.location.href = '/startup'
+        }, 2000)
       }
     } else {
       toast.error('Resposta incorreta! Escute as âncoras e tente novamente.')

@@ -15,6 +15,13 @@ export default async function TermsPage() {
       <TypographyH1 className="text-center">
         TERMO DE CONSENTIMENTO LIVRE E ESCLARECIDO
       </TypographyH1>
+      <TypographyP>
+        Você está sendo convidado(a) a participar de uma pesquisa, que tem como objetivo
+        propor um instrumento de treinamento perceptivo-auditivo da voz e validá-lo para
+        uso na clínica vocal. Sua participação neste estudo é muito importante e
+        voluntária. Você poderá recusar-se a permanecer no estudo a qualquer momento, sem
+        qualquer tipo de constrangimento, penalidades ou coerção.
+      </TypographyP>
       <TypographyP className="font-bold">
         Título da Pesquisa: Instrumentos de treinamento e avaliação perceptivo-auditiva da
         voz referências.
@@ -26,13 +33,13 @@ export default async function TermsPage() {
         experiência. 2. Realizar teste do processamento auditivo antes e após o
         treinamento por meio de link enviado pelos pesquisadores. 3. Nessa etapa e na
         seguinte, você participará da validação do instrumento. Você deverá realizar seis
-        sessões do treinamento perceptivo-auditivo, com intervalo de 48h entre treinamento
-        de rugosidade e soprosidade e intervalo de 7 dias entre as sessões de cada
-        parâmetro. No treinamento, serão avaliadas 20 emissões com o apoio de emissões
-        âncoras para cada parâmetro. Nas sessões 1, 3 e 6 haverá também uma avaliação
-        extra de 20 vozes para os mesmos parâmetros. As atividades devem ser realizadas em
-        ambiente silencioso e usando fone de ouvido supra-auricular modelo Multilaser Vibe
-        Headphone estéreo.
+        sessões do treinamento perceptivo-auditivo, com intervalo mínimo de 24h e máximo
+        de 48h entre treinamento de rugosidade e soprosidade e intervalo de 7 dias entre
+        as sessões de cada parâmetro. No treinamento, serão avaliadas 20 emissões com o
+        apoio de emissões âncoras para cada parâmetro. Nas sessões 1, 3 e 6 haverá também
+        uma avaliação extra de 20 vozes para os mesmos parâmetros. As atividades devem ser
+        realizadas em ambiente silencioso e usando fone de ouvido supra-auricular modelo
+        Multilaser Vibe Headphone estéreo.
       </TypographyP>
       <TypographyH4>2. Riscos e desconfortos</TypographyH4>
       <TypographyP>
@@ -59,8 +66,10 @@ export default async function TermsPage() {
       </TypographyP>
       <TypographyH4>5. Custos/Reembolso</TypographyH4>
       <TypographyP>
-        O único gasto ao participar da pesquisa, será o deslocamento para o local da
-        coleta. Você terá este custo ressarcido pelas pesquisadoras.
+        Para você participar da presente pesquisa precisará apenas de um
+        computador/notebook com acesso à internet para acessar ao software do treinamento,
+        e um fone de ouvido. Caso não possua algum destes recursos, solicitamos que
+        contacte previamente aos pesquisadores para providenciarem.
       </TypographyP>
       <TypographyH4>6. Garantia de esclarecimento</TypographyH4>
       <TypographyP>
@@ -83,10 +92,8 @@ export default async function TermsPage() {
       </TypographyP>
       <TypographyH4>8. Ressarcimento e indenização</TypographyH4>
       <TypographyP>
-        O(A) Sr. (a) terá o custo de descolamento para o local de coleta, único gasto
-        envolvido na participação da pesquisa, ressarcido pelos pesquisadores pelo meio
-        que preferir: transferência bancária ou dinheiro em espécie. Não receberá
-        remuneração por sua participação na pesquisa.
+        Não há gastos envolvidos na participação da pesquisa. Os participantes não
+        receberão remuneração por sua participação.
       </TypographyP>
       <TypographyP>
         <b>CONSENTIMENTO:</b> Declaro que li e entendi as informações acima e que todas as

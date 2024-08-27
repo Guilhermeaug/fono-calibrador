@@ -81,8 +81,8 @@ export function RegisterForm() {
   }
 
   const isMusician = form.watch('isMusician') === 'yes'
-  const isStudent = form.watch('job') === 'student'
-  const isTeacher = form.watch('job') === 'teacher'
+  const isStudent = form.watch('job') === 'estudante'
+  const isTeacher = form.watch('job') === 'professor'
   const hasExperienceInAuditoryPerceptualAssessment =
     form.watch('hasExperienceInAuditoryPerceptualAssessment') === 'yes'
 
@@ -246,13 +246,13 @@ export function RegisterForm() {
                         >
                           <FormItem className="flex items-center space-x-3 space-y-0">
                             <FormControl>
-                              <RadioGroupItem value="professional" />
+                              <RadioGroupItem value="profissional" />
                             </FormControl>
                             <FormLabel className="font-normal">Profissional</FormLabel>
                           </FormItem>
                           <FormItem className="flex items-center space-x-3 space-y-0">
                             <FormControl>
-                              <RadioGroupItem value="amateur" />
+                              <RadioGroupItem value="amador" />
                             </FormControl>
                             <FormLabel className="font-normal">Amador</FormLabel>
                           </FormItem>
@@ -330,31 +330,31 @@ export function RegisterForm() {
                         >
                           <FormItem className="flex items-center space-x-3 space-y-0">
                             <FormControl>
-                              <RadioGroupItem value="1-year" />
+                              <RadioGroupItem value="1 ano" />
                             </FormControl>
                             <FormLabel className="font-normal">Até um ano</FormLabel>
                           </FormItem>
                           <FormItem className="flex items-center space-x-3 space-y-0">
                             <FormControl>
-                              <RadioGroupItem value="1-3 years" />
+                              <RadioGroupItem value="1-3 anos" />
                             </FormControl>
                             <FormLabel className="font-normal">1 a 3 anos</FormLabel>
                           </FormItem>
                           <FormItem className="flex items-center space-x-3 space-y-0">
                             <FormControl>
-                              <RadioGroupItem value="3-5 years" />
+                              <RadioGroupItem value="3-5 anos" />
                             </FormControl>
                             <FormLabel className="font-normal">3 a 5 anos</FormLabel>
                           </FormItem>
                           <FormItem className="flex items-center space-x-3 space-y-0">
                             <FormControl>
-                              <RadioGroupItem value="5-10 years" />
+                              <RadioGroupItem value="5-10 anos" />
                             </FormControl>
                             <FormLabel className="font-normal">5 a 10 anos</FormLabel>
                           </FormItem>
                           <FormItem className="flex items-center space-x-3 space-y-0">
                             <FormControl>
-                              <RadioGroupItem value="10+ years" />
+                              <RadioGroupItem value="10+ anos" />
                             </FormControl>
                             <FormLabel className="font-normal">Mais de 10 anos</FormLabel>
                           </FormItem>
@@ -379,7 +379,7 @@ export function RegisterForm() {
                       >
                         <FormItem className="flex items-center space-x-3 space-y-0">
                           <FormControl>
-                            <RadioGroupItem value="professional" />
+                            <RadioGroupItem value="profissional" />
                           </FormControl>
                           <FormLabel className="font-normal">
                             Profissional formado
@@ -683,37 +683,37 @@ export function RegisterForm() {
                       >
                         <FormItem className="flex items-center space-x-3 space-y-0">
                           <FormControl>
-                            <RadioGroupItem value="0-5 years" />
+                            <RadioGroupItem value="0-5 anos" />
                           </FormControl>
                           <FormLabel className="font-normal">Até 5 anos</FormLabel>
                         </FormItem>
                         <FormItem className="flex items-center space-x-3 space-y-0">
                           <FormControl>
-                            <RadioGroupItem value="6-10 years" />
+                            <RadioGroupItem value="6-10 anos" />
                           </FormControl>
                           <FormLabel className="font-normal">6 a 10 anos</FormLabel>
                         </FormItem>
                         <FormItem className="flex items-center space-x-3 space-y-0">
                           <FormControl>
-                            <RadioGroupItem value="11-15 years" />
+                            <RadioGroupItem value="11-15 anos" />
                           </FormControl>
                           <FormLabel className="font-normal">11 a 15 anos</FormLabel>
                         </FormItem>
                         <FormItem className="flex items-center space-x-3 space-y-0">
                           <FormControl>
-                            <RadioGroupItem value="16-20 years" />
+                            <RadioGroupItem value="16-20 anos" />
                           </FormControl>
                           <FormLabel className="font-normal">16 a 20 anos</FormLabel>
                         </FormItem>
                         <FormItem className="flex items-center space-x-3 space-y-0">
                           <FormControl>
-                            <RadioGroupItem value="21+ years" />
+                            <RadioGroupItem value="21+ anos" />
                           </FormControl>
                           <FormLabel className="font-normal">Mais de 21 anos</FormLabel>
                         </FormItem>
                         <FormItem className="flex items-center space-x-3 space-y-0">
                           <FormControl>
-                            <RadioGroupItem value="0 years" />
+                            <RadioGroupItem value="0 anos" />
                           </FormControl>
                           <FormLabel className="font-normal">
                             Não possuo experiência

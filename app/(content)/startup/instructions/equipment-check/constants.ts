@@ -16,9 +16,30 @@ const items = [
 ] as const
 
 const schema = z.object({
-  items: z.array(z.string()).refine((value) => value.length === items.length, {
-    message: 'Você deve cumprir todos os passos descritos.',
-  }),
+  items: z
+    .array(z.string())
+    .refine(
+      (value) => {
+        if (value.includes('v-1') && value.includes('v-2')) {
+          return false
+        }
+        return true
+      },
+      {
+        message: 'Selecione apenas um tipo de fone de ouvido',
+      },
+    )
+    .refine(
+      (value) => {
+        if (!value.includes('v-3')) {
+          return false
+        }
+        return true
+      },
+      {
+        message: 'Você precisa estar em um ambiente silencioso',
+      },
+    ),
 })
 
 export type Schema = z.infer<typeof schema>

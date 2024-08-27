@@ -22,19 +22,22 @@ export default async function PacBeginPage() {
         Teste do Processamento Auditivo (PAC)
       </TypographyH1>
       <TypographyP>
-        Antes de iniciar a avaliação das vozes, realize o{' '}
-        <b>Teste do Processamento Auditivo (PAC)</b>. Para realizá-lo, basta clicar no
-        botão abaixo. Você será direcionado ao site AudBility, onde realizará o teste. Se
-        o teste ainda não estiver disponível, aguarde a liberação.
+        Antes de iniciar o treinamento perceptivo-auditivo, realize a Triagem do
+        Processamento Auditivo (PAC). Para realizá-lo, basta clicar no botão INICIAR PAC
+        abaixo. Você será direcionado ao site AudBility, onde realizará o teste. Se o
+        teste ainda não estiver disponível, aguarde a liberação. Após finalizar a Triagem
+        do Processamento Auditivo, é preciso que você retorne nessa página, clique no
+        botão o Termo de Conclusão PAC e concorde com o termo para que, em seguida, tenha
+        acesso ao treinamento.
       </TypographyP>
       <TypographyP>
-        Após finalizar o programa, você também precisa realizar o PAC novamente para
+        Após finalizar o treinamento perceptivo-auditivo, você também precisará realizar o
+        PAC novamente e concordar com o Termo de Conclusão PAC, para que seja possível
         comparar os resultados.
       </TypographyP>
       <TypographyP className="font-bold">
         Importante: após realizar o teste, é necessário retornar nesta página e assinar
-        virtualmente o Termo de Conclusão do PAC abaixo para prosseguir para a última
-        etapa, o Treinamento de Avaliação Perceptivo-Auditiva.
+        virtualmente o Termo de Conclusão do PAC
       </TypographyP>
       <div className="mx-auto flex gap-4 py-8">
         <Button
@@ -46,7 +49,7 @@ export default async function PacBeginPage() {
             Iniciar pac
           </Link>
         </Button>
-        {userInfo.firstPacStatus !== 'DONE' && (
+        {userInfo.firstPacStatus !== 'DONE' && pacLink && (
           <Button className="uppercase w-full" asChild>
             <Link href="end">Termo de Conclusão PAC</Link>
           </Button>

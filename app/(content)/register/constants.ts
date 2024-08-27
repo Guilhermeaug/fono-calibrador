@@ -16,12 +16,12 @@ const formSchema = z
       ),
     birthDate: z.date({ required_error: FILL_FIELD }),
     isMusician: z.enum(['yes', 'no'], { required_error: FILL_FIELD }),
-    musicianType: z.enum(['professional', 'amateur']).optional(),
+    musicianType: z.enum(['profissional', 'amador']).optional(),
     musicianRole: z.array(z.string()).optional(),
     musicianTime: z
-      .enum(['1-year', '1-3 years', '3-5 years', '5-10 years', '10+ years'])
+      .enum(['1 ano', '1-3 anos', '3-5 anos', '5-10 anos', '10+ anos'])
       .optional(),
-    job: z.enum(['professional', 'student', 'teacher'], {
+    job: z.enum(['profissional', 'estudante', 'professor'], {
       required_error: FILL_FIELD,
     }),
     workUniversity: z.string().min(3, FILL_FIELD).optional(),
@@ -46,7 +46,7 @@ const formSchema = z
       .optional(),
     isVoiceSpecialist: z.enum(['yes', 'no'], { required_error: FILL_FIELD }),
     auditoryPerceptualAssessmentExperience: z.enum(
-      ['0-5 years', '6-10 years', '11-15 years', '16-20 years', '21+ years', '0 years'],
+      ['0-5 anos', '6-10 anos', '11-15 anos', '16-20 anos', '21+ anos', '0 anos'],
       { required_error: FILL_FIELD },
     ),
     isAuditoryPerceptualAssessmentTrained: z.enum(['yes', 'no'], {
@@ -74,19 +74,19 @@ const formSchema = z
     message: FILL_FIELD,
     path: ['musicianTime'],
   })
-  .refine((data) => !(data.job === 'teacher' && !data.workUniversity), {
+  .refine((data) => !(data.job === 'professor' && !data.workUniversity), {
     message: FILL_FIELD,
     path: ['workUniversity'],
   })
-  .refine((data) => !(data.job === 'teacher' && !data.courseLevel?.length), {
+  .refine((data) => !(data.job === 'professor' && !data.courseLevel?.length), {
     message: FILL_FIELD,
     path: ['courseLevel'],
   })
-  .refine((data) => !(data.job === 'teacher' && !data.voiceAreaDisciplines), {
+  .refine((data) => !(data.job === 'professor' && !data.voiceAreaDisciplines), {
     message: FILL_FIELD,
     path: ['voiceAreaDisciplines'],
   })
-  .refine((data) => !(data.job === 'student' && !data.graduationPeriod), {
+  .refine((data) => !(data.job === 'estudante' && !data.graduationPeriod), {
     message: FILL_FIELD,
     path: ['graduationPeriod'],
   })
@@ -113,11 +113,11 @@ const DEFAULT_VALUES = {
 
 const musicianRoles = [
   {
-    id: 'singer',
+    id: 'cantor',
     label: 'Cantor',
   },
   {
-    id: 'instrumentalist',
+    id: 'instrumentista',
     label: 'Instrumentista',
   },
 ] as const

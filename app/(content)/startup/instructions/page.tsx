@@ -30,12 +30,14 @@ export default function InstructionsPage() {
           aprendizagem. Deste forma, segue a estruturação do treinamento em cada sessão:​
         </li>
         <ul className="list-disc ml-4 my-2">
+          <li>Teste PAC</li>
           <li>Sessão 1 – Avaliação inicial + Treinamento</li>
           <li>Sessão 2 – Treinamento</li>
           <li>Sessão 3 – Treinamento + Avaliação</li>
           <li>Sessão 4 – Treinamento</li>
           <li>Sessão 5 – Treinamento</li>
           <li>Sessão 6 – Treinamento + Avaliação</li>
+          <li>Teste PAC</li>
         </ul>
         <li>
           O treinamento é divido em dois blocos: treino do parâmetro Rugosidade e treino

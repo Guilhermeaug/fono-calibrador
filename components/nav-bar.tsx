@@ -11,8 +11,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu'
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet'
@@ -134,9 +132,7 @@ export function Navbar({ className }: Props) {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Minha conta</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => signOut()}>Logout</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => signOut()}>Sair do sistema</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
