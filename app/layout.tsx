@@ -6,6 +6,7 @@ import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from '@/components/ui/sonner'
 import { SessionProvider } from '@/contexts/SessionProvider'
 import { cn } from '@/lib/utils'
+import { Metadata } from 'next'
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -14,6 +15,11 @@ const fontSans = FontSans({
 
 type RootLayoutProps = {
   children: React.ReactNode
+}
+
+export const metadata: Metadata = {
+  title: 'Calibrador Auditivo',
+  description: 'Sistema especialista feito pela UFMG',
 }
 
 export default function RootLayout({ children }: RootLayoutProps) {
