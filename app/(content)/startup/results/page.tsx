@@ -7,7 +7,6 @@ import { computateAssessmentsMeanScores } from './helpers'
 
 export default async function ResultsPage() {
   const userInfo = await AUTH.getCurrentUser()
-
   if (!userInfo) {
     redirect('/login')
   }

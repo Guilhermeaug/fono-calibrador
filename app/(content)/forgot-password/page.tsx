@@ -11,7 +11,7 @@ import { ForgotPasswordForm } from './components/ForgotPasswordForm'
 export default function ForgotPasswordPage() {
   return (
     <main className="mx-auto max-w-[850px] p-8">
-      <Card className="mx-auto max-w-sm">
+      <Card className="mx-auto max-w-lg">
         <CardHeader>
           <CardTitle className="text-2xl">Recuperação de Senha</CardTitle>
           <CardDescription>

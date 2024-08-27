@@ -12,8 +12,8 @@ function computateAssessmentsMeanScores({ sessions }: UserProgress) {
   )
 
   if (
-    roughnessAssessmentResults.some((result) => result.length === 0) ||
-    breathinessAssessmentResults.some((result) => result.length === 0)
+    roughnessAssessmentResults.every((result) => result.length === 0) ||
+    breathinessAssessmentResults.every((result) => result.length === 0)
   ) {
     return []
   }
@@ -24,6 +24,9 @@ function computateAssessmentsMeanScores({ sessions }: UserProgress) {
     breathiness: number | null
   }[] = []
   for (let i = 0; i < sessions.length; i++) {
+    if (!roughnessAssessmentResults[i].length || !breathinessAssessmentResults.length) {
+      continue
+    }
     chartData.push({
       session: `Sessão ${i + 1}`,
       roughness: roughnessAssessmentResults[i]

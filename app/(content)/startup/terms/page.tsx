@@ -102,9 +102,13 @@ export default async function TermsPage() {
         width={467}
         height={65}
       />
-      <TypographyP>Desta forma:</TypographyP>
-      <div className="h-[10px]" />
-      <AcceptTerms userId={userInfo.id} jwt={userInfo.jwt} />
+      {userInfo.hasAcceptedTerms === false && (
+        <>
+          <TypographyP>Desta forma:</TypographyP>
+          <div className="h-[10px]" />
+          <AcceptTerms userId={userInfo.id} jwt={userInfo.jwt} />
+        </>
+      )}
     </main>
   )
 }

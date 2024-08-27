@@ -1,23 +1,40 @@
 import { TypographyH2, TypographyP } from '@/components/typography'
 import { Separator } from '@/components/ui/separator'
+import { AUTH } from '@/server/auth'
+import { STRAPI } from '@/server/strapi'
+import { redirect } from 'next/navigation'
 import { SidebarNav } from './components/sidebar-nav'
 
 interface SettingsLayoutProps {
   children: React.ReactNode
 }
 
-const sidebarNavItems = [
+const defaultNavItems = [
   {
     title: 'Criar nova turma',
     href: '/manage/add',
   },
-  {
-    title: 'Piloto',
-    href: '/manage/1',
-  },
 ]
 
-export default function ManageLayout({ children }: SettingsLayoutProps) {
+async function getGroups(userId: number, jwt: string) {
+  const groups = await STRAPI.getTeachersGroups({ userId, jwt })
+  return [
+    ...defaultNavItems,
+    ...groups.map((group) => ({
+      title: group.name,
+      href: `/manage/${group.id}`,
+    })),
+  ]
+}
+
+export default async function ManageLayout({ children }: SettingsLayoutProps) {
+  const userInfo = await AUTH.getCurrentUser()
+  if (!userInfo) {
+    redirect('/login')
+  }
+
+  const sidebarNavItems = await getGroups(userInfo.id, userInfo.jwt)
+
   return (
     <>
       <div className="hidden space-y-6 p-8 md:block container mx-auto">

@@ -94,7 +94,7 @@ export function TrainingFormBasic({
       answer: value,
       feature,
       session: sessionNumber,
-    })
+    }).catch(() => setIsLoading(false))
     setIsLoading(false)
 
     if (isCorrect === true) {

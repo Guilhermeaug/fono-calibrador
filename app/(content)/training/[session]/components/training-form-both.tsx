@@ -91,7 +91,7 @@ export function TrainingFormBoth({ audios, feature, userSession, sessionNumber }
       answer: roughness,
       feature: 'roughness',
       session: sessionNumber,
-    })
+    }).catch(() => setIsLoading(false))
     if (isCorrectRoughness === false) {
       setIsLoading(false)
       toast.error(
@@ -106,7 +106,7 @@ export function TrainingFormBoth({ audios, feature, userSession, sessionNumber }
       answer: breathiness,
       feature: 'breathiness',
       session: sessionNumber,
-    })
+    }).catch(() => setIsLoading(false))
     if (isCorrectBreathiness === false) {
       setIsLoading(false)
       toast.error(

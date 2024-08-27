@@ -4,6 +4,7 @@ import qs from 'qs'
 import {
   AdditionalData,
   FullProgram,
+  Group,
   LoginPayload,
   ProgramAssessment,
   ProgramTraining,
@@ -347,6 +348,21 @@ async function putUser({
   })
 }
 
+async function getTeachersGroups({ userId, jwt }: { userId: number; jwt: string }) {
+  const query = qs.stringify({
+    filters: {
+      teacher: {
+        $eq: userId,
+      },
+    },
+  })
+  const data = await fetchStrapiApi({
+    path: `/groups?${query}`,
+    jwt,
+  })
+  return explodeStrapiData(data) as Group[]
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 async function login(loginPayload: LoginPayload) {
@@ -410,6 +426,7 @@ export const STRAPI = {
   getStudentsInClass,
   getUserFullData,
   putUser,
+  getTeachersGroups,
   /////////
   login,
   signUp,

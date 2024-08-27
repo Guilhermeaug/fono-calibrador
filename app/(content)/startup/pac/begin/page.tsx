@@ -1,7 +1,9 @@
 import { TypographyH1, TypographyP } from '@/components/typography'
+import { Button } from '@/components/ui/button'
 import { AUTH } from '@/server/auth'
+import { isNull } from 'lodash'
+import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import { Buttons } from './components/Buttons'
 
 export default async function PacBeginPage() {
   const userInfo = await AUTH.getCurrentUser()
@@ -11,6 +13,8 @@ export default async function PacBeginPage() {
 
   const { pacLink } = userInfo
   const startPac = pacLink ? pacLink : '#'
+
+  console.log(pacLink)
 
   return (
     <main className="mx-auto max-w-[850px] p-8">
@@ -32,7 +36,22 @@ export default async function PacBeginPage() {
         virtualmente o Termo de Conclusão do PAC abaixo para prosseguir para a última
         etapa, o Treinamento de Avaliação Perceptivo-Auditiva.
       </TypographyP>
-      <Buttons enableStartPack={!Boolean(pacLink)} startPacLink={startPac} />
+      <div className="mx-auto flex gap-4 py-8">
+        <Button
+          className="uppercase w-full"
+          disabled={isNull(pacLink)}
+          asChild={!isNull(pacLink)}
+        >
+          <Link href={startPac} target="_blank">
+            Iniciar pac
+          </Link>
+        </Button>
+        {userInfo.firstPacStatus !== 'DONE' && (
+          <Button className="uppercase w-full" asChild>
+            <Link href="end">Termo de Conclusão PAC</Link>
+          </Button>
+        )}
+      </div>
     </main>
   )
 }

@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/sheet'
 import { AdditionalData } from '@/server/types'
 import dayjs from 'dayjs'
-import { isEmpty } from 'lodash'
+import { cloneDeep, isEmpty } from 'lodash'
 import { usePathname, useRouter } from 'next/navigation'
 import { translations } from '../../constants'
 
@@ -47,11 +47,12 @@ type UserDetailsProps = {
 }
 
 function UserDetails({ userDetails }: UserDetailsProps) {
-  userDetails.birthDate = dayjs(userDetails.birthDate).format('DD/MM/YYYY')
+  const details = cloneDeep(userDetails)
+  details.birthDate = dayjs(userDetails.birthDate).format('DD/MM/YYYY')
 
   return (
     <div className="grid gap-1 text-base font-normal capitalize">
-      {Object.entries(userDetails).map(([key, value]) => {
+      {Object.entries(details).map(([key, value]) => {
         const translatedKey = translations[key as keyof AdditionalData]
         if (!translatedKey) {
           return null

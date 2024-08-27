@@ -53,7 +53,7 @@ export function DataTable<TData, TValue>({
           onChange={(event) =>
             table.getColumn('email')?.setFilterValue(event.target.value)
           }
-          className="h-8 w-[150px] lg:w-[250px]"
+          className="h-8 w-[200px] lg:w-[250px]"
         />
         <DataTableFacetedFilter
           column={table.getColumn('status')}

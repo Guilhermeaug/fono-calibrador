@@ -32,9 +32,7 @@ function getStatusForTraining(
   progress: UserProgress,
 ): CheckListStatus {
   if (!previous) return CheckListStatus.UNAVAILABLE
-  return progress.status === CheckListStatus.DONE
-    ? CheckListStatus.DONE
-    : CheckListStatus.READY
+  return progress.status as CheckListStatus
 }
 
 function getStatusForFinalPac(

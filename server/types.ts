@@ -152,6 +152,13 @@ export type SubmitTrainingPayload = {
   }[]
 }
 
+export type Group = {
+  name: string
+  students: UserInfo[]
+  teacher: UserInfo
+  program: FullProgram
+} & StrapiDefaultAttributes
+
 export type StrapiError = {
   data: null
   error: {

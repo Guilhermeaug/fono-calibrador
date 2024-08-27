@@ -71,6 +71,7 @@ export function RegisterForm() {
       return
     }
 
+    toast.success('Cadastro realizado com sucesso!')
     await signIn('credentials', {
       identifier: values.email,
       password: values.password,
