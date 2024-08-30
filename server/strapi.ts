@@ -363,6 +363,40 @@ async function getTeachersGroups({ userId, jwt }: { userId: number; jwt: string 
   return explodeStrapiData(data) as Group[]
 }
 
+async function createGroup({ jwt, data }: { jwt: string; data: Partial<Group> }) {
+  return await fetchStrapiApi({
+    path: '/groups',
+    body: {
+      data,
+    },
+    jwt,
+    method: 'POST',
+  })
+}
+
+async function acceptInvite({
+  jwt,
+  userId,
+  groupId,
+}: {
+  jwt: string
+  userId: number
+  groupId: number
+}) {
+  return await fetchStrapiApi({
+    path: `/groups/${groupId}`,
+    body: {
+      data: {
+        students: {
+          connect: [userId],
+        },
+      },
+    },
+    jwt,
+    method: 'PUT',
+  })
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 async function login(loginPayload: LoginPayload) {
@@ -427,6 +461,8 @@ export const STRAPI = {
   getUserFullData,
   putUser,
   getTeachersGroups,
+  createGroup,
+  acceptInvite,
   /////////
   login,
   signUp,
