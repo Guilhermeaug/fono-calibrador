@@ -4,6 +4,7 @@ import './globals.css'
 import { Footer } from '@/components/footer'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from '@/components/ui/sonner'
+import MicrosoftClarity from '@/contexts/clarity'
 import { SessionProvider } from '@/contexts/SessionProvider'
 import { cn } from '@/lib/utils'
 import { Metadata } from 'next'
@@ -43,6 +44,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             <Toaster richColors />
           </ThemeProvider>
         </SessionProvider>
+        <MicrosoftClarity />
       </body>
     </html>
   )
