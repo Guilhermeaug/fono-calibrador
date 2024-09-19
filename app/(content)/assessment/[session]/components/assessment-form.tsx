@@ -75,12 +75,15 @@ export function AsssessmentForm({ audios, userSession, isLastSession }: Props) {
     play,
   })
 
-  function saveEvaluation() {
-    if (currentEvaluation.numberOfAudioClicks === 0) {
+  const checkIfAudioWasListened = () => {
+    if (currentEvaluation.numberOfAudioClicks === 0 && audioClickedTimes === 0) {
       toast.error('Você precisa ouvir o áudio antes de continuar.')
-      return
+      return false
     }
+    return true
+  }
 
+  function saveEvaluation() {
     const newEvaluations = [...data]
     newEvaluations[currentIndex] = {
       ...currentEvaluation,
@@ -103,6 +106,11 @@ export function AsssessmentForm({ audios, userSession, isLastSession }: Props) {
   }
 
   function handleNext() {
+    const hasListened = checkIfAudioWasListened()
+    if (!hasListened) {
+      return
+    }
+
     stop()
     stopAnimation()
     saveEvaluation()
@@ -114,6 +122,11 @@ export function AsssessmentForm({ audios, userSession, isLastSession }: Props) {
   }
 
   async function endAssessment() {
+    const hasListened = checkIfAudioWasListened()
+    if (!hasListened) {
+      return
+    }
+
     stop()
     stopAnimation()
     saveEvaluation()
