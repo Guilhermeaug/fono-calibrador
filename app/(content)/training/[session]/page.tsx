@@ -60,7 +60,7 @@ export default async function Page({
         )}
       </div>
       {!isOneFeature && (
-        <div className="grid gap-4 grid-cols-2 mt-12">
+        <div className="mt-12 grid grid-cols-2 gap-4">
           <Anchor feature="roughness" program={program} />
           <Anchor feature="breathiness" program={program} />
         </div>

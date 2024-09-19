@@ -41,7 +41,7 @@ export function CreateGroup({ userInfo }: Props) {
   }
 
   return (
-    <div className="gap-4 mt-4 grid">
+    <div className="mt-4 grid gap-4">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <FormField

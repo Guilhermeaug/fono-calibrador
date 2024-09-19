@@ -31,7 +31,7 @@ export function AdjustmentForm() {
       </section>
       <div className="h-[30px]" />
       <Button
-        className="block mx-auto"
+        className="mx-auto block"
         disabled={!isDone}
         size="lg"
         onClick={() => {

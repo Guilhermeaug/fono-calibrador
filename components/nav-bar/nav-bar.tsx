@@ -136,7 +136,7 @@ export async function Navbar({ className }: Props) {
           </nav>
         </SheetContent>
       </Sheet>
-      <div className="flex gap-4 ml-auto md:gap-2 lg:gap-4">
+      <div className="ml-auto flex gap-4 md:gap-2 lg:gap-4">
         <ModeToggle />
         <NavbarDropdown hasAuth={hasAuth} />
       </div>

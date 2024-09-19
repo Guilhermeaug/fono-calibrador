@@ -24,7 +24,7 @@ export function Invite({ userInfo, classId }: Props) {
   }
 
   return (
-    <Button className="uppercase w-full block" onClick={acceptInvite}>
+    <Button className="block w-full uppercase" onClick={acceptInvite}>
       Aceitar convite
     </Button>
   )

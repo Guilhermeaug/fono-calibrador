@@ -29,7 +29,7 @@ export function DetailsSheet({ userDetails }: Props) {
 
   return (
     <Sheet defaultOpen onOpenChange={handleOpenChange}>
-      <SheetContent className="flex flex-col min-w-[500px] max-w-[50vw]">
+      <SheetContent className="flex min-w-[500px] max-w-[50vw] flex-col">
         <SheetHeader>
           <SheetTitle>Detalhes do usuário</SheetTitle>
         </SheetHeader>

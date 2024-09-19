@@ -10,7 +10,7 @@ type Props = {
 
 export default function OverviewTraining({ searchParams }: Props) {
   return (
-    <main className="mx-auto max-w-[850px] p-8 space-y-4 text-justify">
+    <main className="mx-auto max-w-[850px] space-y-4 p-8 text-justify">
       <TypographyH1 className="text-center">Treinamento</TypographyH1>
       <TypographyP>
         O treinamento será realizado por meio da avaliação de 20 vozes.
@@ -24,7 +24,7 @@ export default function OverviewTraining({ searchParams }: Props) {
           do parâmetro Soprosidade.
         </li>
         <li>Você deve:</li>
-        <ul className="list-square ml-4">
+        <ul className="ml-4 list-square">
           <li>Escutar a voz a ser avaliada</li>
           <li>Escutar as vozes referências no quadro ao lado</li>
           <li>

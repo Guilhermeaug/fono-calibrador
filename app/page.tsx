@@ -10,7 +10,7 @@ export default function Home() {
       <div className="h-8 bg-secondary" />
       <Navbar className="bg-secondary" />
       <div className="relative h-[100px] bg-secondary md:h-[160px]" />
-      <main className="max-h-[600px] relative mx-auto flex max-w-[900px] flex-col items-center gap-2 py-2 px-4 md:flex-row-reverse">
+      <main className="relative mx-auto flex max-h-[600px] max-w-[900px] flex-col items-center gap-2 px-4 py-2 md:flex-row-reverse">
         <Image
           className="max-w-full"
           src="/images/logo.png"

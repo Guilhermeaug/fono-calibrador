@@ -6,6 +6,6 @@ type Props = {
 }
 
 export function TypographyLarge({ children, className }: Props) {
-  const style = cn('font-semibold text-lg', className)
+  const style = cn('text-lg font-semibold', className)
   return <p className={style}>{children}</p>
 }

@@ -18,7 +18,7 @@ export function NavbarDropdown({ hasAuth }: Props) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="secondary" size="icon" className="md:ml-auto rounded-full">
+        <Button variant="secondary" size="icon" className="rounded-full md:ml-auto">
           <CircleUserIcon className="h-5 w-5" />
           <span className="sr-only">Navegação do usuário</span>
         </Button>

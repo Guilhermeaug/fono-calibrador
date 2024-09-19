@@ -32,7 +32,7 @@ export function TrainingSelectionModal({ progress: { sessions } }: Props) {
 
   return (
     <AlertDialog open={open}>
-      <AlertDialogContent className="w-[400px] h-[300px]">
+      <AlertDialogContent className="h-[300px] w-[400px]">
         <AlertDialogHeader>
           <AlertDialogTitle>
             Escolha qual treinamento deseja fazer primeiro
@@ -40,7 +40,7 @@ export function TrainingSelectionModal({ progress: { sessions } }: Props) {
           <AlertDialogDescription className="text-base">{text}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <div className="flex justify-center gap-4 w-full">
+          <div className="flex w-full justify-center gap-4">
             {isLastSession ? (
               <Button
                 onClick={() =>

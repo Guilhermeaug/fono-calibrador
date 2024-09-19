@@ -183,7 +183,7 @@ export function TrainingFormBoth({ audios, feature, userSession, sessionNumber }
         <TypographyP>Voz {currentIndex + 1}:</TypographyP>
         {View}
       </div>
-      <div className="gap-8 grid">
+      <div className="grid gap-8">
         {sliders.map((slider, index) => (
           <div key={index} className="flex flex-col items-center gap-6 md:flex-row">
             <span className="w-24 text-center text-sm leading-none md:mt-4 md:text-start">
@@ -197,13 +197,13 @@ export function TrainingFormBoth({ audios, feature, userSession, sessionNumber }
         ))}
       </div>
       <div className="h-[12px]" />
-      <div className="flex justify-center gap-4 mx-auto">
+      <div className="mx-auto flex justify-center gap-4">
         <Button size="lg" disabled={isLoading} onClick={handleNext}>
           {isNextDisabled ? (
             'Enviar treinamento e voltar para tela principal'
           ) : (
             <>
-              Próxima <ArrowRight className="ml-2 w-4 h-4" />{' '}
+              Próxima <ArrowRight className="ml-2 h-4 w-4" />{' '}
             </>
           )}
         </Button>

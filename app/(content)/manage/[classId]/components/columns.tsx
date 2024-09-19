@@ -55,7 +55,7 @@ export const columns: ColumnDef<Students>[] = [
     cell: ({ row }) => {
       const status = row.original.status
       return (
-        <span className="rounded-md px-2 py-1 bg-fuchsia-300 dark:bg-fuchsia-700 text-xs whitespace-nowrap uppercase">
+        <span className="whitespace-nowrap rounded-md bg-fuchsia-300 px-2 py-1 text-xs uppercase dark:bg-fuchsia-700">
           {status === 'terms' && 'Aguardando aceite dos termos'}
           {status === 'waiting_pac' && 'Sem link PAC'}
           {status === 'pac' && 'Aguardando PAC'}

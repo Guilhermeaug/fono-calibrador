@@ -34,7 +34,7 @@ export default function ContactPage() {
   }
 
   return (
-    <main className="mx-auto max-w-[850px] py-8 grid place-content-center">
+    <main className="mx-auto grid max-w-[850px] place-content-center py-8">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 px-4">
           <FormField
@@ -60,7 +60,7 @@ export default function ContactPage() {
                 <FormControl>
                   <Textarea
                     placeholder="Escreva aqui a sua mensagem"
-                    className="resize-none h-[200px]"
+                    className="h-[200px] resize-none"
                     {...field}
                   />
                 </FormControl>
@@ -68,7 +68,7 @@ export default function ContactPage() {
               </FormItem>
             )}
           />
-          <Button className="block w-full ml-auto" size="lg" type="submit">
+          <Button className="ml-auto block w-full" size="lg" type="submit">
             Enviar
           </Button>
         </form>

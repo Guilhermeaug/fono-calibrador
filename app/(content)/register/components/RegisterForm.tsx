@@ -88,8 +88,8 @@ export function RegisterForm() {
 
   return (
     <React.Fragment>
-      <div className="flex justify-center items-center py-4">
-        <div className="gap-4 grid mx-auto w-[500px]">
+      <div className="flex items-center justify-center py-4">
+        <div className="mx-auto grid w-[500px] gap-4">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 px-4">
               <FormField
@@ -178,11 +178,11 @@ export function RegisterForm() {
                             ) : (
                               <span>Sua data de nascimento</span>
                             )}
-                            <CalendarIcon className="opacity-50 ml-auto w-4 h-4" />
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                           </Button>
                         </FormControl>
                       </PopoverTrigger>
-                      <PopoverContent className="p-0 w-auto" align="start">
+                      <PopoverContent className="w-auto p-0" align="start">
                         <Calendar
                           mode="single"
                           captionLayout="dropdown-buttons"
@@ -375,7 +375,7 @@ export function RegisterForm() {
                       <RadioGroup
                         onValueChange={field.onChange}
                         defaultValue={field.value}
-                        className="flex flex-wrap md:flex-nowrap gap-2"
+                        className="flex flex-wrap gap-2 md:flex-nowrap"
                       >
                         <FormItem className="flex items-center space-x-3 space-y-0">
                           <FormControl>

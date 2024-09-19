@@ -41,7 +41,7 @@ export default async function PacBeginPage() {
       </TypographyP>
       <div className="mx-auto flex gap-4 py-8">
         <Button
-          className="uppercase w-full"
+          className="w-full uppercase"
           disabled={isNull(pacLink)}
           asChild={!isNull(pacLink)}
         >
@@ -50,7 +50,7 @@ export default async function PacBeginPage() {
           </Link>
         </Button>
         {userInfo.firstPacStatus !== 'DONE' && pacLink && (
-          <Button className="uppercase w-full" asChild>
+          <Button className="w-full uppercase" asChild>
             <Link href="end">Termo de Conclusão PAC</Link>
           </Button>
         )}

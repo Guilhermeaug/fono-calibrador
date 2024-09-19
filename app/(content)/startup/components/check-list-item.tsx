@@ -29,7 +29,7 @@ export function CheckListItem({
   const href = canClickIf ? hrefProp : '#'
 
   return (
-    <li className={`${bgColor} text-white rounded-md `}>
+    <li className={`${bgColor} rounded-md text-white`}>
       <Link href={href}>
         <div className="flex items-center gap-3 p-2">
           <div className="">

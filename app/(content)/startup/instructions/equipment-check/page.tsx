@@ -41,14 +41,14 @@ export default function EquipmentCheck() {
   }
 
   return (
-    <main className="mx-auto grid place-content-center max-w-[850px] px-8 pt-12 space-y-12 text-justify">
+    <main className="mx-auto grid max-w-[850px] place-content-center space-y-12 px-8 pt-12 text-justify">
       <TypographyH1 className="text-center">
         Passos necessários para iniciar o treinamento
       </TypographyH1>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-8 grid place-content-center"
+          className="grid place-content-center space-y-8"
         >
           <FormField
             control={form.control}
@@ -91,7 +91,7 @@ export default function EquipmentCheck() {
               </FormItem>
             )}
           />
-          <Button className="block mx-auto" type="submit" size="lg">
+          <Button className="mx-auto block" type="submit" size="lg">
             Próximo
           </Button>
         </form>

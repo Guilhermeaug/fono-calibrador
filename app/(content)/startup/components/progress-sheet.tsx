@@ -52,7 +52,7 @@ export function ProgressSheet({
           </SheetDescription>
         </SheetHeader>
         <div className="h-[30px]" />
-        <div className="gap-4 grid">
+        <div className="grid gap-4">
           <Accordion type="multiple" defaultValue={[String(sessions.length - 1)]}>
             {sessions.map(
               (
@@ -66,11 +66,11 @@ export function ProgressSheet({
               ) => (
                 <AccordionItem key={id} value={String(index)}>
                   <AccordionTrigger>Sessão {index + 1}</AccordionTrigger>
-                  <AccordionContent className="gap-2 grid">
+                  <AccordionContent className="grid gap-2">
                     {assessmentStatus !== 'NOT_NEEDED' && (
                       <div className="flex justify-between">
                         <div>
-                          <TypographyLarge className="font-bold text-lg">
+                          <TypographyLarge className="text-lg font-bold">
                             Avaliação
                           </TypographyLarge>
                           <p className="text-violet-500">
@@ -88,7 +88,7 @@ export function ProgressSheet({
                               )
                             }
                           >
-                            <Play className="w-4 h-4" />
+                            <Play className="h-4 w-4" />
                           </Button>
                         )}
                       </div>
@@ -97,7 +97,7 @@ export function ProgressSheet({
                       <div className="flex justify-between">
                         <div className="flex justify-between">
                           <div>
-                            <h3 className="font-bold text-lg">
+                            <h3 className="text-lg font-bold">
                               Treinamento - Rugosidade
                             </h3>
                             {['DONE', 'NOT_NEEDED'].includes(assessmentStatus) ? (
@@ -123,13 +123,13 @@ export function ProgressSheet({
                               )
                             }}
                           >
-                            <Play className="w-4 h-4" />
+                            <Play className="h-4 w-4" />
                           </Button>
                         )}
                       </div>
                       <div className="flex justify-between">
                         <div>
-                          <h3 className="font-bold text-lg">Treinamento - Soprosidade</h3>
+                          <h3 className="text-lg font-bold">Treinamento - Soprosidade</h3>
                           {['DONE', 'NOT_NEEDED'].includes(assessmentStatus) ? (
                             <p className="text-violet-500">
                               Status: {status[trainingBreathinessStatus]}
@@ -152,7 +152,7 @@ export function ProgressSheet({
                               )
                             }}
                           >
-                            <Play className="w-4 h-4" />
+                            <Play className="h-4 w-4" />
                           </Button>
                         )}
                       </div>

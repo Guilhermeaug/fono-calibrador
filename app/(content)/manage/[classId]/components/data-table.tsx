@@ -57,7 +57,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-1 justify-between items-center space-x-2 overflow-x-scroll">
+      <div className="flex flex-1 items-center justify-between space-x-2 overflow-x-scroll">
         <div className="flex items-center gap-2">
           <Input
             placeholder="Filtre por email"
@@ -74,7 +74,7 @@ export function DataTable<TData, TValue>({
           />
         </div>
         <Button
-          className="self-end justify-self-end ml-auto"
+          className="ml-auto self-end justify-self-end"
           variant="outline"
           onClick={copyInviteLink}
         >

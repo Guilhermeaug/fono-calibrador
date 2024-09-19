@@ -5,8 +5,8 @@ import { LoginForm } from './components/LoginForm'
 
 export default function Page() {
   return (
-    <div className="lg:grid lg:min-h-[550px] lg:grid-cols-2 xl:min-h-[700px] p-8">
-      <div className="flex items-center justify-center pt-8 pb-2">
+    <div className="p-8 lg:grid lg:min-h-[550px] lg:grid-cols-2 xl:min-h-[700px]">
+      <div className="flex items-center justify-center pb-2 pt-8">
         <div className="mx-auto grid w-[350px] gap-6">
           <div className="grid gap-2 text-center">
             <h1 className="text-3xl font-bold">Login</h1>

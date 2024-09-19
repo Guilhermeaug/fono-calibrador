@@ -6,7 +6,7 @@ type Props = {
 }
 
 export function TypographyP({ children, className }: Props) {
-  const style = cn('leading-7 text-justify [&:not(:first-child)]:mt-6', className)
+  const style = cn('text-justify leading-7 [&:not(:first-child)]:mt-6', className)
 
   return <p className={style}>{children}</p>
 }
