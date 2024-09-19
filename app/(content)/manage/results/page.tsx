@@ -1,3 +1,5 @@
+import { computateAssessmentsMeanScores } from '@/components/charts/helpers'
+import { MeanScoresChart } from '@/components/charts/mean-scores'
 import { TypographyH2, TypographyH4 } from '@/components/typography'
 import {
   Accordion,
@@ -16,6 +18,7 @@ import {
 import { STRAPI } from '@/server/strapi'
 import { AudioResult, Result, SessionResults as SessionResultsType } from '@/server/types'
 import { redirect } from 'next/navigation'
+import { ExportButton } from './components/export-button'
 
 type Props = {
   searchParams: {
@@ -36,15 +39,36 @@ export default async function ManageUserResultsPage({
     userId: id,
   })
 
+  const areResultsEmpty = sessions.every(
+    (session) =>
+      !session.trainingBreathinessResults &&
+      !session.trainingRoughnessResults &&
+      !session.assessmentBreathinessResults &&
+      !session.assessmentRoughnessResults,
+  )
+
+  const chartData = computateAssessmentsMeanScores(sessions)
+
   return (
     <main className="container mx-auto py-2">
-      <TypographyH2>{name}</TypographyH2>
+      <div className="flex justify-between">
+        <TypographyH2>{name}</TypographyH2>
+        <ExportButton sessions={sessions} />
+      </div>
       <div className="h-[30px]" />
-      <Accordion defaultValue={['0']} type="multiple">
-        {sessions.map((session, index) => (
-          <SessionResults key={session.id} session={session} index={index} />
-        ))}
-      </Accordion>
+      {areResultsEmpty ? (
+        <TypographyH4>Não há resultados para exibir</TypographyH4>
+      ) : (
+        <>
+          <Accordion type="multiple">
+            {sessions.map((session, index) => (
+              <SessionResults key={session.id} session={session} index={index} />
+            ))}
+          </Accordion>
+          <div className="h-[40px]" />
+          <MeanScoresChart chartData={chartData} />
+        </>
+      )}
     </main>
   )
 }
@@ -90,6 +114,17 @@ type SessionResultsProps = {
 }
 
 function SessionResults({ session, index }: SessionResultsProps) {
+  const hasResults = Boolean(
+    session.trainingBreathinessResults ||
+      session.trainingRoughnessResults ||
+      session.assessmentBreathinessResults ||
+      session.assessmentRoughnessResults,
+  )
+
+  if (!hasResults) {
+    return null
+  }
+
   return (
     <AccordionItem key={session.id} value={String(index)}>
       <AccordionTrigger>Sessão {index + 1}</AccordionTrigger>

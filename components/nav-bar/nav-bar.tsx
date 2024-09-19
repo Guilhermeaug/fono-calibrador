@@ -127,11 +127,11 @@ export async function Navbar({ className }: Props) {
               Contato
             </Link>
             <Link
-              href="/contact"
+              href="/manage/add"
               className="text-muted-foreground transition-colors hover:text-foreground"
               prefetch={false}
             >
-              Aopa
+              Gerenciar Turmas
             </Link>
           </nav>
         </SheetContent>

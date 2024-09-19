@@ -59,8 +59,8 @@ export function CreateGroup({ userInfo }: Props) {
             )}
           />
           <TypographyMuted>
-            Observe que criar turmas é uma forma de permitir que outras compartilhem o
-            progresso deles com você.
+            Observe que criar turmas é uma forma de permitir que outros usuários
+            compartilhem o progresso deles com você.
           </TypographyMuted>
           <Button className="block w-full" type="submit">
             Cadastrar

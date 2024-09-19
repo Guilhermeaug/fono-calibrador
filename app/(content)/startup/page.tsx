@@ -37,14 +37,14 @@ export default async function StartupPage({ searchParams: { show } }: Props) {
 
   return (
     <>
-      <main className="mx-auto p-8 max-w-[850px]">
+      <main className="mx-auto max-w-[850px] p-8">
         <TypographyH1 className="text-center">
           Seja bem vindo ao Calibrador Auditivo!
         </TypographyH1>
         <TypographyP>
           As atividades do treinamento devem ser realizadas respeitando a ordem abaixo.
           Antes de iniciar seu treinamento,{' '}
-          <Link className="underline text-sky-400" href="/startup/instructions">
+          <Link className="text-sky-400 underline" href="/startup/instructions">
             leia as instruções
           </Link>{' '}
           e assista ao vídeo abaixo.

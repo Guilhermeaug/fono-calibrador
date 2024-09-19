@@ -138,22 +138,22 @@ export function TrainingFormBasic({
         <TypographyP>Voz {currentIndex + 1}:</TypographyP>
         {View}
       </div>
-      <div className="gap-8 grid">
-        <div className="flex md:flex-row flex-col items-center gap-6">
-          <span className="md:mt-4 w-24 text-center text-sm md:text-start leading-none">
+      <div className="grid gap-8">
+        <div className="flex flex-col items-center gap-6 md:flex-row">
+          <span className="w-24 text-center text-sm leading-none md:mt-4 md:text-start">
             {options[feature].name}
           </span>
           <VoiceSlider value={[value]} onValueChange={(value) => setValue(value[0])} />
         </div>
       </div>
       <div className="h-[12px]" />
-      <div className="flex justify-center gap-4 mx-auto">
+      <div className="mx-auto flex justify-center gap-4">
         <Button size="lg" disabled={isLoading} onClick={handleNext}>
           {isNextDisabled ? (
             'Enviar treinamento e voltar para tela principal'
           ) : (
             <>
-              Próxima <ArrowRight className="ml-2 w-4 h-4" />{' '}
+              Próxima <ArrowRight className="ml-2 h-4 w-4" />{' '}
             </>
           )}
         </Button>

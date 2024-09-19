@@ -9,7 +9,7 @@ type Props = {
 
 export function CheckList({ userInfo, progress }: Props) {
   return (
-    <div className="place-content-center gap-2 grid list-none">
+    <div className="grid list-none place-content-center gap-2">
       {generateChecklistItems(userInfo, progress).map((item, index) => (
         <CheckListItem key={index} {...item} />
       ))}

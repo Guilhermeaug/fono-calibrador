@@ -1,7 +1,5 @@
 'use client'
 
-import { CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts'
-
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   ChartConfig,
@@ -11,6 +9,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart'
+import { CartesianGrid, Line, LineChart, XAxis, YAxis } from 'recharts'
 
 const chartConfig = {
   roughness: {
@@ -27,14 +26,14 @@ type Props = {
   chartData: { session: string; roughness: number | null; breathiness: number | null }[]
 }
 
-export function Graph({ chartData }: Props) {
+export function MeanScoresChart({ chartData }: Props) {
   return (
     <Card>
       <CardHeader>
         <CardTitle>Evolução das avaliações</CardTitle>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig} className="w-full min-h-[300px]">
+        <ChartContainer config={chartConfig} className="min-h-[300px] w-full">
           <LineChart accessibilityLayer data={chartData}>
             <CartesianGrid vertical={false} />
             <YAxis tickLine={false} axisLine={false} domain={[0, 100]} />

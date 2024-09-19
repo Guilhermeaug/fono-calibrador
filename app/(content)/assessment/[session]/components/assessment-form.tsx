@@ -24,6 +24,7 @@ import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { Session } from 'next-auth'
 import { useRouter } from 'next/navigation'
 import * as React from 'react'
+import { toast } from 'sonner'
 import useSound from 'use-sound'
 
 type Props = {
@@ -75,6 +76,11 @@ export function AsssessmentForm({ audios, userSession, isLastSession }: Props) {
   })
 
   function saveEvaluation() {
+    if (currentEvaluation.numberOfAudioClicks === 0) {
+      toast.error('Você precisa ouvir o áudio antes de continuar.')
+      return
+    }
+
     const newEvaluations = [...data]
     newEvaluations[currentIndex] = {
       ...currentEvaluation,

@@ -20,7 +20,8 @@ type RootLayoutProps = {
 
 export const metadata: Metadata = {
   title: 'Calibrador Auditivo',
-  description: 'Sistema especialista feito pela UFMG',
+  description:
+    'Sistema especialista feito pela Universidade Federal de Minas Gerais para melhorar o ensino de Avaliação Perceptivo da Voz e Calibração Auditiva.',
 }
 
 export default function RootLayout({ children }: RootLayoutProps) {

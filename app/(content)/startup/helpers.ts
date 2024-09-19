@@ -80,7 +80,9 @@ export function generateChecklistItems(
       text: '3. Treinamento de Avaliação Perceptivo-Auditiva da Voz',
       href: '?show=progress',
       status: trainingStatus,
-      canClickIf: ['READY', 'WAITING', 'DONE'].includes(progress.status),
+      canClickIf:
+        ['DONE'].includes(firstPacChecklistStatus) &&
+        ['READY', 'WAITING', 'DONE'].includes(progress.status),
     },
     {
       text: '4. Teste do Processamento Auditivo',

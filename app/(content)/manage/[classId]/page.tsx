@@ -55,7 +55,7 @@ export default async function ManagePage({
   }
 
   return (
-    <main className="container mx-auto py-2">
+    <main className="mx-auto py-2 lg:container">
       <DataTable columns={columns} data={tableData} classId={classId} />
       {show === 'details' && id && <DetailsSheet userDetails={userDetails!} />}
     </main>

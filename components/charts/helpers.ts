@@ -1,7 +1,7 @@
-import { UserProgress } from '@/server/types'
+import { SessionResults } from '@/server/types'
 import { mean } from 'simple-statistics'
 
-function computateAssessmentsMeanScores({ sessions }: UserProgress) {
+function computateAssessmentsMeanScores(sessions: SessionResults[]) {
   const roughnessAssessmentResults = sessions.map(
     (session) =>
       session.assessmentRoughnessResults?.audios.map((audio) => audio.score) || [],
