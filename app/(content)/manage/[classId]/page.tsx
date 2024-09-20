@@ -1,5 +1,6 @@
 import { AUTH } from '@/server/auth'
 import { STRAPI } from '@/server/strapi'
+import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { columns, Students } from './components/columns'
 import { DataTable } from './components/data-table'
@@ -54,9 +55,22 @@ export default async function ManagePage({
     userDetails = await STRAPI.getUserFullData({ userId: Number(id) })
   }
 
+  async function deleteGroup(groupId: number) {
+    'use server'
+
+    await STRAPI.deleteGroup({ groupId });
+    revalidatePath('/manage', "layout")
+    redirect('/manage/add')
+  }
+
   return (
-    <main className="mx-auto py-2 lg:container">
-      <DataTable columns={columns} data={tableData} classId={classId} />
+    <main className="mx-auto py-2">
+      <DataTable
+        columns={columns}
+        data={tableData}
+        classId={classId}
+        deleteGroup={deleteGroup}
+      />
       {show === 'details' && id && <DetailsSheet userDetails={userDetails!} />}
     </main>
   )

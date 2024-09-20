@@ -1,6 +1,17 @@
 'use client'
 
 import { DataTablePagination } from '@/components/data-table/data-table-pagination'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -29,12 +40,14 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   classId: string
+  deleteGroup: (groupId: number) => Promise<void>
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   classId,
+  deleteGroup,
 }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
 
@@ -57,7 +70,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-1 items-center justify-between space-x-2 overflow-x-scroll">
+      <div className="flex flex-1 items-center justify-between space-x-2 overflow-x-auto">
         <div className="flex items-center gap-2">
           <Input
             placeholder="Filtre por email"
@@ -73,13 +86,36 @@ export function DataTable<TData, TValue>({
             options={statuses}
           />
         </div>
-        <Button
-          className="ml-auto self-end justify-self-end"
-          variant="outline"
-          onClick={copyInviteLink}
-        >
-          Compartilhar convite
-        </Button>
+        <div className="space-x-2">
+          <Button
+            className="ml-auto self-end justify-self-end"
+            variant="outline"
+            onClick={copyInviteLink}
+          >
+            Compartilhar convite
+          </Button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant="destructive">Excluir turma</Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>
+                  Tem certeza que deseja excluir a turma?
+                </AlertDialogTitle>
+                <AlertDialogDescription>
+                  Essa ação não pode ser desfeita.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                <AlertDialogAction onClick={() => deleteGroup(Number(classId))}>
+                  Continuar
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
       </div>
       <div className="rounded-md border">
         <Table>

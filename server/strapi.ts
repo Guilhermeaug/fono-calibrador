@@ -374,6 +374,13 @@ async function createGroup({ jwt, data }: { jwt: string; data: Partial<Group> })
   })
 }
 
+async function deleteGroup({ groupId }: { groupId: number }) {
+  return await fetchStrapiApi({
+    path: `/groups/${groupId}`,
+    method: 'DELETE',
+  })
+}
+
 async function acceptInvite({
   jwt,
   userId,
@@ -463,6 +470,7 @@ export const STRAPI = {
   getTeachersGroups,
   createGroup,
   acceptInvite,
+  deleteGroup,
   /////////
   login,
   signUp,

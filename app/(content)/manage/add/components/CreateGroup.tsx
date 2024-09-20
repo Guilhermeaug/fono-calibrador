@@ -18,12 +18,14 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { DEFAULT_VALUES, FORM_TYPE, formSchema } from '../constants'
+import { useRouter } from 'next/navigation'
 
 type Props = {
   userInfo: UserInfo
 }
 
 export function CreateGroup({ userInfo }: Props) {
+  const router = useRouter()
   const form = useForm<FORM_TYPE>({
     resolver: zodResolver(formSchema),
     defaultValues: DEFAULT_VALUES,
@@ -38,6 +40,7 @@ export function CreateGroup({ userInfo }: Props) {
       } as unknown as Partial<Group>,
     })
     toast.success('Turma criada com sucesso!')
+    router.refresh()
   }
 
   return (
