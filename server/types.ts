@@ -123,6 +123,8 @@ export type AdditionalData = {
   hasResearchExperience: boolean
   hasAcademicArticle: boolean
   hearing: string
+  laterality: string
+  learningComplaints: boolean
 } & StrapiDefaultAttributes
 
 export type SubmitAssessmentPayload = {

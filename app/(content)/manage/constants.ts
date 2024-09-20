@@ -24,4 +24,6 @@ export const translations = {
   hasResearchExperience: 'Tem experiência em pesquisa?',
   hasAcademicArticle: 'Tem artigo acadêmico?',
   hearing: 'Audição',
+  laterality: 'Lateralidade',
+  learningComplaints: 'Queixas de aprendizado',
 } as Record<keyof AdditionalData, string>

@@ -58,9 +58,13 @@ const formSchema = z
       required_error: FILL_FIELD,
     }),
     hasAcademicArticle: z.enum(['yes', 'no'], { required_error: FILL_FIELD }),
-    hearing: z.enum(['normal', 'changed'], {
+    hearing: z.enum(['normal', 'alterada'], {
       required_error: FILL_FIELD,
     }),
+    laterality: z.enum(['destro', 'canhoto', 'ambidestro'], {
+      required_error: FILL_FIELD,
+    }),
+    learningComplaints: z.enum(['yes', 'no'], { required_error: FILL_FIELD }),
   })
   .refine((data) => !(data.isMusician === 'yes' && !data.musicianType), {
     message: FILL_FIELD,

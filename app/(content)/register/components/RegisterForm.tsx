@@ -89,7 +89,7 @@ export function RegisterForm() {
   return (
     <React.Fragment>
       <div className="flex items-center justify-center py-4">
-        <div className="mx-auto grid w-[500px] gap-4">
+        <div className="mx-auto grid w-[600px] gap-4">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 px-4">
               <FormField
@@ -900,9 +900,75 @@ export function RegisterForm() {
                         </FormItem>
                         <FormItem className="flex items-center space-x-3 space-y-0">
                           <FormControl>
-                            <RadioGroupItem value="changed" />
+                            <RadioGroupItem value="alterada" />
                           </FormControl>
                           <FormLabel className="font-normal">Alterada</FormLabel>
+                        </FormItem>
+                      </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="laterality"
+                render={({ field }) => (
+                  <FormItem className="space-y-3">
+                    <FormLabel>Você considera, quanto a lateralidade</FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        className="flex space-x-1"
+                      >
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="destro" />
+                          </FormControl>
+                          <FormLabel className="font-normal">Destro</FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="canhoto" />
+                          </FormControl>
+                          <FormLabel className="font-normal">Canhoto</FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="ambidestro" />
+                          </FormControl>
+                          <FormLabel className="font-normal">Ambidestro</FormLabel>
+                        </FormItem>
+                      </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="learningComplaints"
+                render={({ field }) => (
+                  <FormItem className="space-y-3">
+                    <FormLabel>Você apresenta queixa de aprendizado?</FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        className="flex space-x-1"
+                      >
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="yes" />
+                          </FormControl>
+                          <FormLabel className="font-normal">Sim</FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="no" />
+                          </FormControl>
+                          <FormLabel className="font-normal">Não</FormLabel>
                         </FormItem>
                       </RadioGroup>
                     </FormControl>
