@@ -34,9 +34,9 @@ export default function ContactPage() {
   }
 
   return (
-    <main className="mx-auto grid max-w-[850px] place-content-center py-8">
+    <main className="mx-auto max-w-[850px] px-2 py-8 lg:px-0">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 px-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
             control={form.control}
             name="email"
