@@ -41,7 +41,7 @@ export function ProgressSheet({
 
   return (
     <Sheet defaultOpen onOpenChange={handleOpenChange} {...props}>
-      <SheetContent className="w-full sm:w-3/4">
+      <SheetContent className="w-full overflow-y-scroll sm:w-3/4">
         <SheetHeader>
           <SheetTitle>Progresso no programa</SheetTitle>
           <SheetDescription className="text-justify">
