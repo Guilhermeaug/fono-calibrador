@@ -14,8 +14,6 @@ export default async function PacBeginPage() {
   const { pacLink } = userInfo
   const startPac = pacLink ? pacLink : '#'
 
-  console.log(pacLink)
-
   return (
     <main className="mx-auto max-w-[850px] p-8">
       <TypographyH1 className="text-center">
@@ -24,11 +22,14 @@ export default async function PacBeginPage() {
       <TypographyP>
         Antes de iniciar o treinamento perceptivo-auditivo, realize a Triagem do
         Processamento Auditivo (PAC). Para realizá-lo, basta clicar no botão INICIAR PAC
-        abaixo. Você será direcionado ao site AudBility, onde realizará o teste. Se o
-        teste ainda não estiver disponível, aguarde a liberação. Após finalizar a Triagem
-        do Processamento Auditivo, é preciso que você retorne nessa página, clique no
-        botão o Termo de Conclusão PAC e concorde com o termo para que, em seguida, tenha
-        acesso ao treinamento.
+        abaixo. Você será direcionado ao site AudBility, onde realizará o teste.{' '}
+        <span className="font-semibold uppercase">
+          Se o teste ainda não estiver disponível, aguarde a liberação. Isso será feito em
+          até 24 horas após o seu cadastro.
+        </span>{' '}
+        Após finalizar a Triagem do Processamento Auditivo, é preciso que você retorne
+        nessa página, clique no botão o Termo de Conclusão PAC e concorde com o termo para
+        que, em seguida, tenha acesso ao treinamento.
       </TypographyP>
       <TypographyP>
         Após finalizar o treinamento perceptivo-auditivo, você também precisará realizar o
