@@ -22,7 +22,7 @@ export function Anchor({
   const anchorsData = feature === 'roughness' ? roughnessAnchor : breathinessAnchor
 
   return (
-    <div className="min-w-[300px]">
+    <div className="max-w-[600px] flex-1">
       <div className="grid gap-4">
         {anchorsData.map((anchor) => {
           const values = anchor[feature]

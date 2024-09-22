@@ -22,3 +22,14 @@ export type TraningEvaluationDataBothFeatures = {
   roughness: number
   breathiness: number
 }
+
+export type VoiceFormData = {
+  identifier: string
+  duration: number
+  numberOfAudioClicks: number
+  numberOfAttempts: number
+  data: {
+    feature: string
+    value: number
+  }[]
+}

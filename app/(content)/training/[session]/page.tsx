@@ -1,11 +1,11 @@
 import { TypographyH2 } from '@/components/typography'
+import { cn, translateFeature } from '@/lib/utils'
 import { AUTH } from '@/server/auth'
 import { STRAPI } from '@/server/strapi'
 import { shuffle } from 'fast-shuffle'
 import { redirect } from 'next/navigation'
 import { Anchor } from './components/anchor'
-import { TrainingFormBasic } from './components/training-form-basic'
-import { TrainingFormBoth } from './components/training-form-both'
+import { TrainingForm } from './components/training-form'
 
 type Props = {
   params: {
@@ -33,42 +33,29 @@ export default async function Page({
   program.training = shuffle(program.training)
 
   const isOneFeature = feature === 'both' ? false : true
-  const title = `Sessão ${session} - Treinamento de ${isOneFeature ? translateFeature(feature) : 'Rugosidade e Soprosidade'}`
+  const title = `Sessão ${session} - Treinamento de ${translateFeature(feature)}`
+
+  const style = cn('flex flex-col gap-6 md:flex-row', !isOneFeature && 'justify-center')
 
   return (
-    <main className="mx-auto max-w-[1024px] px-3 pt-16 md:px-8">
+    <main className="container py-10">
       <TypographyH2>{title}</TypographyH2>
-      <div className="h-[40px]" />
-      <div className="grid justify-between gap-6 md:grid-cols-[1fr,auto]">
-        {isOneFeature ? (
-          <TrainingFormBasic
-            audios={program.training}
-            feature={feature as 'roughness' | 'breathiness'}
-            userSession={userSession}
-            sessionNumber={parseInt(session)}
-          />
-        ) : (
-          <TrainingFormBoth
-            audios={program.training}
-            feature="both"
-            userSession={userSession}
-            sessionNumber={parseInt(session)}
-          />
-        )}
+      <div className="h-[20px]" />
+      <div className={style}>
+        <TrainingForm
+          sessionNumber={Number(session)}
+          {...{ feature, isOneFeature, program, userSession }}
+        />
         {isOneFeature && (
           <Anchor feature={feature as 'roughness' | 'breathiness'} program={program} />
         )}
       </div>
       {!isOneFeature && (
-        <div className="mt-12 grid grid-cols-2 gap-4">
+        <div className="mt-12 grid sm:grid-cols-2 gap-4">
           <Anchor feature="roughness" program={program} />
           <Anchor feature="breathiness" program={program} />
         </div>
       )}
     </main>
   )
-}
-
-function translateFeature(feature: string) {
-  return feature === 'roughness' ? 'Rugosidade' : 'Soprosidade'
 }

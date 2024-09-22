@@ -5,6 +5,14 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+export function translateFeature(feature: string) {
+  return {
+    both: 'Rugosidade e Soprosidade',
+    roughness: 'Rugosidade',
+    breathiness: 'Soprosidade',
+  }[feature]
+}
+
 export function explodeStrapiData(obj: any): any {
   if (Array.isArray(obj)) {
     return obj.map(explodeStrapiData)
@@ -34,3 +42,4 @@ export function explodeStrapiData(obj: any): any {
   }
   return obj
 }
+
