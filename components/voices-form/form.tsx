@@ -5,6 +5,7 @@ import { useElapsedTime } from '@/hooks/use-elapsed-time'
 import { STRAPI_URL } from '@/server/strapi'
 import { Audio } from '@/server/types'
 import { VoiceFormData } from '@/types'
+import dayjs from 'dayjs'
 import { ArrowLeftIcon, ArrowRightIcon } from 'lucide-react'
 import * as React from 'react'
 import { toast } from 'sonner'
@@ -39,7 +40,7 @@ export function VoiceForm({
   const [currentIndex, setCurrentIndex] = React.useState(0)
   const [isLoading, setIsLoading] = React.useState(false)
 
-  const voice = audios[currentIndex]
+  const voice = audios.find((audio) => audio.identifier === data[currentIndex].identifier)!
   const currentEvaluation = data[currentIndex]
 
   const url = `${STRAPI_URL}${voice.file.url}`
@@ -66,7 +67,7 @@ export function VoiceForm({
     return true
   }
 
-  function saveTraining() {
+  function save() {
     const newData = [...data]
     const currentData = newData[currentIndex]
     newData[currentIndex] = {
@@ -76,6 +77,12 @@ export function VoiceForm({
       numberOfAttempts: currentData.numberOfAttempts + 1,
     }
     setData(newData)
+
+    const timestamp = dayjs().toISOString()
+    localStorage.setItem(
+      'voiceFormBackup',
+      JSON.stringify({ timestamp, features, backup: newData }),
+    )
   }
 
   function resetValues() {
@@ -87,7 +94,7 @@ export function VoiceForm({
   }
 
   function handlePrevious() {
-    saveTraining()
+    save()
     resetValues()
 
     setCurrentIndex((prev) => prev - 1)
@@ -99,7 +106,7 @@ export function VoiceForm({
       return
     }
 
-    saveTraining()
+    save()
 
     setIsLoading(true)
     const canProcceed = await onNext(currentEvaluation)
@@ -110,6 +117,7 @@ export function VoiceForm({
       }
     } else {
       if (canProcceed) {
+        localStorage.removeItem('voiceFormBackup')
         await onSubmit(data)
       }
       resetValues()

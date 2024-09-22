@@ -33,3 +33,9 @@ export type VoiceFormData = {
     value: number
   }[]
 }
+
+export type VoiceFormDataBackup = {
+  timestamp: string
+  features: string[]
+  backup: VoiceFormData[]
+}

@@ -23,7 +23,8 @@ export default async function Page({ params: { session } }: Props) {
 
   const isLastSession = Number(session) === program.numberOfSessions
 
-  const title = `Sessão ${session} - Avaliação ${session}`
+  const asessmentIndex = Math.ceil(Math.sqrt(Number(session)))
+  const title = `Sessão ${session} - Avaliação ${asessmentIndex}`
   return (
     <main className="container grid w-full auto-cols-fr place-content-center justify-items-center py-10">
       <TypographyH2>{title}</TypographyH2>
