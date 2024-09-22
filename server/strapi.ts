@@ -304,6 +304,14 @@ async function sendContactEmail(data: { email: string; content: string }) {
   })
 }
 
+async function sendEmailTemplate(data: { templateReferenceId: number; to: string, data: Record<string, any> }) {
+  await fetchStrapiApi({
+    path: '/email/sendEmailTemplate',
+    body: data,
+    method: 'POST',
+  })
+}
+
 async function getStudentsInClass({ groupId, jwt }: { groupId: number; jwt: string }) {
   const query = qs.stringify({
     fields: ['id'],
@@ -464,6 +472,7 @@ export const STRAPI = {
   submitAssessment,
   submitTraining,
   sendContactEmail,
+  sendEmailTemplate,
   getStudentsInClass,
   getUserFullData,
   putUser,

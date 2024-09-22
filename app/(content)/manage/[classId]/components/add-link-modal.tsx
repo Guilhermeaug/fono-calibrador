@@ -17,15 +17,17 @@ import { STRAPI } from '@/server/strapi'
 import { useRouter } from 'next/navigation'
 import * as React from 'react'
 import { toast } from 'sonner'
+import { sendEmailTemplate } from '../send-email-action'
 
 type Props = {
   children: React.ReactNode
   name: string
   userId: number
+  userEmail: string
   disabled: boolean
 }
 
-export function AddLinkModal({ children, name, userId, disabled }: Props) {
+export function AddLinkModal({ children, name, userEmail, userId, disabled }: Props) {
   const session = useSession()
   const router = useRouter()
 
@@ -37,13 +39,24 @@ export function AddLinkModal({ children, name, userId, disabled }: Props) {
       return
     }
     try {
-      await STRAPI.putUser({
-        userId: userId,
-        data: {
-          pacLink: link,
-        },
-        jwt,
-      })
+      await Promise.all([
+        STRAPI.putUser({
+          userId: userId,
+          data: {
+            pacLink: link,
+          },
+          jwt,
+        }),
+        sendEmailTemplate(
+          userEmail,
+          {
+            user: {
+              name,
+            },
+          },
+          6,
+        ),
+      ])
       toast.success('Link salvo com sucesso')
       router.refresh()
     } catch (error) {
@@ -56,7 +69,7 @@ export function AddLinkModal({ children, name, userId, disabled }: Props) {
       <DialogTrigger disabled={disabled}>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Incluir link do teste</DialogTitle>
+          <DialogTitle>Incluir link para o Audbility</DialogTitle>
           <DialogDescription />
         </DialogHeader>
         <div className="grid gap-4 py-4">

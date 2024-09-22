@@ -67,7 +67,7 @@ export const columns: ColumnDef<Students>[] = [
   {
     id: 'actions',
     cell: ({ row }) => {
-      const { id, name, status } = row.original
+      const { id, name, status, email } = row.original
 
       const enableAddPacLink = status === 'waiting_pac'
 
@@ -87,7 +87,7 @@ export const columns: ColumnDef<Students>[] = [
               <Link href={`results?id=${id}&name=${name}`}>Visualizar resultados</Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <AddLinkModal name={name} userId={id} disabled={!enableAddPacLink}>
+            <AddLinkModal name={name} userId={id} userEmail={email} disabled={!enableAddPacLink}>
               <DropdownMenuItem
                 disabled={!enableAddPacLink}
                 onSelect={(e) => e.preventDefault()}
