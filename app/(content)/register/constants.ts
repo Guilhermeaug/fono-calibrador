@@ -14,6 +14,10 @@ const formSchema = z
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d])[A-Za-z\d\S]{6,}$/,
         'Senha deve conter pelo menos 6 caracteres, uma letra maiúscula, uma letra minúscula, um número e um caractere especial',
       ),
+    phone: z.string().regex(
+      /^\(\d{2}\) \d{5}-\d{4}$/,
+      'Celular deve estar no formato (99) 99999-9999',
+    ),
     birthDate: z.date({ required_error: FILL_FIELD }),
     isMusician: z.enum(['yes', 'no'], { required_error: FILL_FIELD }),
     musicianType: z.enum(['profissional', 'amador']).optional(),

@@ -39,6 +39,8 @@ import {
   formSchema,
   musicianRoles,
 } from '../constants'
+import {withMask} from 'use-mask-input'
+
 
 export function RegisterForm() {
   const form = useForm<FORM_TYPE>({
@@ -169,7 +171,7 @@ export function RegisterForm() {
                           <Button
                             variant={'outline'}
                             className={cn(
-                              'w-[240px] pl-3 text-left font-normal',
+                              'pl-3 text-left font-normal',
                               !field.value && 'text-muted-foreground',
                             )}
                           >
@@ -182,7 +184,7 @@ export function RegisterForm() {
                           </Button>
                         </FormControl>
                       </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
+                      <PopoverContent className="w-auto p-0">
                         <Calendar
                           mode="single"
                           captionLayout="dropdown-buttons"
@@ -197,6 +199,19 @@ export function RegisterForm() {
                         />
                       </PopoverContent>
                     </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="phone"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>Número de celular</FormLabel>
+                    <FormControl ref={withMask("(99) 99999-9999")}>
+                      <Input placeholder="Seu número de celular" {...field} />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
