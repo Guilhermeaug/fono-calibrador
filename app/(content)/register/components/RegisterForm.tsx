@@ -402,7 +402,7 @@ export function RegisterForm() {
                         </FormItem>
                         <FormItem className="flex items-center space-x-3 space-y-0">
                           <FormControl>
-                            <RadioGroupItem value="student" />
+                            <RadioGroupItem value="estudante" />
                           </FormControl>
                           <FormLabel className="font-normal">
                             Estudante de graduação em fonoaudiologia
@@ -410,7 +410,7 @@ export function RegisterForm() {
                         </FormItem>
                         <FormItem className="flex items-center space-x-3 space-y-0">
                           <FormControl>
-                            <RadioGroupItem value="teacher" />
+                            <RadioGroupItem value="professor" />
                           </FormControl>
                           <FormLabel className="font-normal">
                             Professor em curso de fonoaudiologia

@@ -20,6 +20,7 @@ type Props = {
   features: string[]
   audios: Audio[]
   enableBackButton?: boolean
+  isAssessment?: boolean
   endText: string
   onNext?: (current: VoiceFormData) => Promise<boolean>
   onSubmit: (data: VoiceFormData[]) => Promise<void>
@@ -32,6 +33,7 @@ export function VoiceForm({
   endText,
   onNext = () => Promise.resolve(true),
   enableBackButton = false,
+  isAssessment = false,
 }: Props) {
   const { elapsedTime, startTimer, resetTimer } = useElapsedTime()
   const [data, setData] = React.useState<VoiceFormData[]>(
@@ -158,7 +160,7 @@ export function VoiceForm({
 
   return (
     <section className="w-full max-w-[860px] flex-1 space-y-4">
-      {features.map((feature) => (
+      {!isAssessment && features.map((feature) => (
         <TypographyP key={feature}>
           {options[feature as keyof typeof options].title}
         </TypographyP>

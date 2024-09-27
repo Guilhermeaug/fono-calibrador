@@ -87,8 +87,8 @@ export function TrainingForm({
       toast.success('Treinamento finalizado! Retornando para a tela principal.')
       setTimeout(() => {
         router.refresh()
-        router.push('/startup')
-      }, 2000)
+        router.push('/')
+      }, 3000)
     } catch (error) {
       console.error(error)
     }

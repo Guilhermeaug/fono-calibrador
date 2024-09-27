@@ -65,7 +65,7 @@ export function AsssessmentForm({ program, isLastSession, userSession }: Props) 
       setTimeout(() => {
         router.refresh()
         router.replace(`/startup?show=training-selection&isLastSession=${isLastSession}`)
-      }, 2000)
+      }, 3000)
     } catch (error) {
       console.error(error)
     }
@@ -78,6 +78,7 @@ export function AsssessmentForm({ program, isLastSession, userSession }: Props) 
         audios={program.assessment}
         endText="Terminar treinamento"
         onSubmit={onSubmitTraining}
+        isAssessment
         enableBackButton
       />
       <AlertDialog open={showAlert} onOpenChange={handleOpenChange}>
