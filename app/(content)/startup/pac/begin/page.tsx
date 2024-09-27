@@ -11,9 +11,13 @@ export default async function PacBeginPage() {
     redirect('/login')
   }
 
-  const { pacLink } = userInfo
-  const startPac = pacLink ? pacLink : '#'
+  let { pacLink } = userInfo
+  if (!pacLink) {
+    pacLink = 'https://www.audbility.com.br/'
+  }
 
+  const startPac = pacLink ? pacLink : '#'
+  
   return (
     <main className="mx-auto max-w-[850px] p-8">
       <TypographyH1 className="text-center">
