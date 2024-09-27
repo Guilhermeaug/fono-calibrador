@@ -16,7 +16,6 @@ import { ProgramAssessment } from '@/server/types'
 import { VoiceFormData } from '@/types'
 import dayjs from 'dayjs'
 import { Session } from 'next-auth'
-import { useRouter } from 'next/navigation'
 import * as React from 'react'
 import { toast } from 'sonner'
 
@@ -30,7 +29,6 @@ export function AsssessmentForm({ program, isLastSession, userSession }: Props) 
   const {
     user: { jwt },
   } = userSession
-  const router = useRouter()
   const startDate = React.useRef(dayjs().toISOString())
   const voiceFormData = React.useRef<VoiceFormData[]>([])
 
@@ -63,8 +61,7 @@ export function AsssessmentForm({ program, isLastSession, userSession }: Props) 
       })
       toast.success('Avaliação finalizada! Prosseguindo para a próxima etapa...')
       setTimeout(() => {
-        router.refresh()
-        router.replace(`/startup?show=training-selection&isLastSession=${isLastSession}`)
+        window.location.href = `/startup?show=training-selection&isLastSession=${isLastSession}`
       }, 3000)
     } catch (error) {
       console.error(error)

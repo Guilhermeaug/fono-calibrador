@@ -7,7 +7,6 @@ import { ProgramTraining } from '@/server/types'
 import { VoiceFormData } from '@/types'
 import dayjs from 'dayjs'
 import { Session } from 'next-auth'
-import { useRouter } from 'next/navigation'
 import * as React from 'react'
 import { toast } from 'sonner'
 
@@ -29,7 +28,6 @@ export function TrainingForm({
   const {
     user: { jwt },
   } = userSession
-  const router = useRouter()
   const startDate = React.useRef(dayjs().toISOString())
 
   const features = isOneFeature ? [feature] : ['roughness', 'breathiness']
@@ -86,8 +84,7 @@ export function TrainingForm({
       )
       toast.success('Treinamento finalizado! Retornando para a tela principal.')
       setTimeout(() => {
-        router.refresh()
-        router.push('/')
+        window.location.href = '/startup'
       }, 3000)
     } catch (error) {
       console.error(error)
@@ -104,4 +101,3 @@ export function TrainingForm({
     />
   )
 }
-
