@@ -134,15 +134,17 @@ export const columns: ColumnDef<Students>[] = [
                 <DialogClose asChild>
                   <Button variant="outline">Cancelar</Button>
                 </DialogClose>
-                <Button
-                  variant="destructive"
-                  onClick={async () => {
-                    const groupId = window.location.pathname.split('/').pop()
-                    await removeUserFromGroup(Number(groupId), id)
-                  }}
-                >
-                  Remover usuário
-                </Button>
+                <DialogTrigger asChild>
+                  <Button
+                    variant="destructive"
+                    onClick={async () => {
+                      const groupId = window.location.pathname.split('/').pop()
+                      await removeUserFromGroup(Number(groupId), id)
+                    }}
+                  >
+                    Remover usuário
+                  </Button>
+                </DialogTrigger>
               </DialogFooter>
             </DialogContent>
           </Dialog>

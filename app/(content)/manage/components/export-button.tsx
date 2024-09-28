@@ -13,8 +13,6 @@ type Props = {
 } & ButtonProps
 
 export function ExportButton({ ids, ...props }: Props) {
-  console.log(ids)
-
   async function downloadCsv() {
     const usersProgress = await getUsersSessions(ids)
     const csvRows = usersProgress.map((user) => ({
@@ -24,6 +22,7 @@ export function ExportButton({ ids, ...props }: Props) {
     const currentTime = dayjs().format('YYYY-MM-DD_HH-mm-ss')
     const zip = new JSZip()
     for (const { userId, data } of csvRows) {
+      if (!data.length) continue
       const csvConfig = getCsvConfig(`resultados_${userId}_${currentTime}.csv`)
       const csv = generateCsv(csvConfig)(data)
       const csvBufferStr = addNewLine(asString(csv))

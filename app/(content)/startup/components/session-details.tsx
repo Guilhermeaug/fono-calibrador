@@ -12,9 +12,10 @@ type Props = {
   session: SessionResults
   index: number
   isOnLastSession: boolean
+  favoriteFeature?: 'roughness' | 'breathiness'
 }
 
-export function SessionDetails({ session, index, isOnLastSession }: Props) {
+export function SessionDetails({ session, index, isOnLastSession, favoriteFeature }: Props) {
   const router = useRouter()
 
   const statuses = {

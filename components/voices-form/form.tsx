@@ -85,6 +85,8 @@ export function VoiceForm({
       'voiceFormBackup',
       JSON.stringify({ timestamp, features, backup: newData }),
     )
+
+    return newData
   }
 
   function resetValues() {
@@ -108,11 +110,11 @@ export function VoiceForm({
       return
     }
 
-    save()
+    const newData = save()
 
     setIsLoading(true)
     const canProcceed = await onNext(currentEvaluation)
-    if (currentIndex + 1 < data.length) {
+    if (currentIndex + 1 < audios.length) {
       if (canProcceed) {
         resetValues()
         setCurrentIndex((prev) => prev + 1)
@@ -120,9 +122,8 @@ export function VoiceForm({
     } else {
       if (canProcceed) {
         localStorage.removeItem('voiceFormBackup')
-        await onSubmit(data)
+        await onSubmit(newData)
       }
-      resetValues()
     }
     setIsLoading(false)
   }

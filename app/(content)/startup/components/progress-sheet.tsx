@@ -24,7 +24,7 @@ type Props = {
 } & React.ComponentPropsWithoutRef<typeof Sheet>
 
 export function ProgressSheet({
-  progress: { sessions },
+  progress: { sessions, favoriteFeature },
   isOnLastSession,
   ...props
 }: Props) {
@@ -58,6 +58,7 @@ export function ProgressSheet({
                   session={session}
                   index={index}
                   isOnLastSession={isOnLastSession}
+                  favoriteFeature={favoriteFeature}
                 />
               </AccordionContent>
             </AccordionItem>
