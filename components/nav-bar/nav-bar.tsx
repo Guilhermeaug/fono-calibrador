@@ -27,7 +27,7 @@ export async function Navbar({ className }: Props) {
           prefetch={false}
         >
           <Image
-            className="max-w-full flex-grow"
+            className="h-auto w-auto max-w-full flex-grow"
             src="/images/logo-only.png"
             alt=""
             width={30}
@@ -90,7 +90,7 @@ export async function Navbar({ className }: Props) {
               prefetch={false}
             >
               <Image
-                className="max-w-[40px] flex-grow"
+                className="h-auto w-auto max-w-[40px] flex-grow"
                 src="/images/logo-only.png"
                 alt=""
                 width={30}

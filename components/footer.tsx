@@ -1,34 +1,84 @@
-import Image from 'next/image'
+import { DualImage } from './ui/dual-image'
 
 export function Footer() {
   return (
-    <footer className="grid grid-cols-3 items-center space-x-4 px-1 md:grid-cols-6">
-      <div className="relative h-12">
-        <Image
-          className="object-contain"
-          src="/images/medicina.png"
-          alt="Medicina"
-          fill
+    <footer className="my-4 container grid grid-cols-3 items-center gap-x-2 sm:gap-x-4 sm:grid-cols-6">
+      <div className="relative">
+        <DualImage
+          lightImage="/images/faculdade_medicina.png"
+          darkImage="/images/faculdade_medicina_dark.png"
+          imageProps={{
+            alt: 'Logo da Faculdade de Medicina da UFMG',
+            width: 0,
+            height: 0,
+            sizes: '100vw',
+          }}
+          className="h-28 w-full max-w-[300px] object-contain"
         />
       </div>
-      <div className="relative h-12">
-        <Image className="object-contain" src="/images/ufmg.png" alt="UFMG" fill />
+      <div className="relative">
+        <DualImage
+          lightImage="/images/ufmg.png"
+          darkImage="/images/ufmg_dark.png"
+          imageProps={{
+            alt: 'Logo da Faculdade UFMG',
+            width: 0,
+            height: 0,
+            sizes: '100vw',
+          }}
+          className="h-28 w-full max-w-[300px] object-contain"
+        />
       </div>
-      <div className="relative h-16">
-        <Image className="object-contain" src="/images/gp-voz.png" alt="GP Voz" fill />
+      <div className="relative">
+        <DualImage
+          lightImage="/images/gp-voz.png"
+          darkImage="/images/gp-voz.png"
+          imageProps={{
+            alt: 'Logo do grupo de pesquisa GP-Voz',
+            width: 0,
+            height: 0,
+            sizes: '100vw',
+          }}
+          className="h-28 w-full max-w-[300px] object-contain dark:brightness-[0.6] dark:grayscale"
+        />
       </div>
-      <div className="relative h-12">
-        <Image className="object-contain" src="/images/cnpq.png" alt="CNPq" fill />
+      <div className="relative">
+        <DualImage
+          lightImage="/images/cnpq.png"
+          darkImage="/images/cnpq_dark.png"
+          imageProps={{
+            alt: 'Logo do Conselho Nacional de Desenvolvimento Científico e Tecnológico (CNPq)',
+            width: 0,
+            height: 0,
+            sizes: '100vw',
+          }}
+          className="h-28 w-full max-w-[300px] object-contain"
+        />
       </div>
-      <div className="relative h-12">
-        <Image className="object-contain" src="/images/capes.png" alt="CAPES" fill />
+      <div className="relative">
+        <DualImage
+          lightImage="/images/capes.png"
+          darkImage="/images/capes_dark.png"
+          imageProps={{
+            alt: 'Logo do Conselho Nacional de Desenvolvimento Científico e Tecnológico (CNPq)',
+            width: 0,
+            height: 0,
+            sizes: '100vw',
+          }}
+          className="h-28 w-full max-w-[300px] object-contain"
+        />
       </div>
-      <div className="relative h-12">
-        <Image
-          className="object-contain"
-          src="/images/audbility.png"
-          alt="Audbility"
-          fill
+      <div className="relative">
+        <DualImage
+          lightImage="/images/audbility.png"
+          darkImage="/images/audbility.png"
+          imageProps={{
+            alt: 'Logo do Audbility',
+            width: 0,
+            height: 0,
+            sizes: '100vw',
+          }}
+          className="h-28 w-full max-w-[300px] object-contain dark:brightness-[0.6] dark:grayscale"
         />
       </div>
     </footer>

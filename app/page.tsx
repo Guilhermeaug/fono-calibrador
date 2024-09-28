@@ -12,7 +12,7 @@ export default function Home() {
       <div className="relative h-[100px] bg-secondary md:h-[160px]" />
       <main className="relative mx-auto flex max-h-[600px] max-w-[900px] flex-col items-center gap-2 px-4 py-2 md:flex-row-reverse">
         <Image
-          className="max-w-full"
+          className="h-auto w-auto max-w-full dark:brightness-75 dark:grayscale"
           src="/images/logo.png"
           alt="Logo do Calibrador Auditivo"
           width={400}
