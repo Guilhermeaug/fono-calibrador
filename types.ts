@@ -39,3 +39,14 @@ export type VoiceFormDataBackup = {
   features: string[]
   backup: VoiceFormData[]
 }
+
+export type CsvRow = {
+  sessão: number
+  identificador: string
+  tipo: string
+  parâmetro: string
+  pontuação: number
+  duração: number
+  tentativas: number
+  tentativasAudio: number
+}

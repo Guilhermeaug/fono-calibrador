@@ -8,4 +8,12 @@ const status: Record<Status, string> = {
   INVALID: 'Etapa invalidada',
 }
 
-export { status }
+const colors : Record<Status, string> = {
+  WAITING: 'text-violet-500',
+  READY: 'text-sky-500',
+  DONE: 'text-emerald-500',
+  NOT_NEEDED: '',
+  INVALID: 'text-destructive',
+}
+
+export { status, colors }

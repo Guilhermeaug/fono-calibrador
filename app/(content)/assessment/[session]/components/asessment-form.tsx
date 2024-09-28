@@ -73,7 +73,7 @@ export function AsssessmentForm({ program, isLastSession, userSession }: Props) 
       <VoiceForm
         features={['roughness', 'breathiness']}
         audios={program.assessment}
-        endText="Terminar treinamento"
+        endText="Terminar Avaliação"
         onSubmit={onSubmitTraining}
         isAssessment
         enableBackButton

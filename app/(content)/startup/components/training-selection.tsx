@@ -12,32 +12,36 @@ import { Button } from '@/components/ui/button'
 import { UserProgress } from '@/server/types'
 import { useRouter, useSearchParams } from 'next/navigation'
 import * as React from 'react'
+import { setFavoriteFeature } from '../set-favorite-feature-action'
 
 type Props = {
   progress: UserProgress
 }
 
-export function TrainingSelectionModal({ progress: { sessions } }: Props) {
+export function TrainingSelectionModal({
+  progress: { id, sessions, favoriteFeature },
+}: Props) {
   const router = useRouter()
   const searchParams = useSearchParams()
-
-  const [open] = React.useState(true)
 
   const lastSessionIndex = sessions.length
   const isLastSession = searchParams.get('isLastSession') === 'true'
 
-  const text = isLastSession
-    ? 'Você está na última sessão e precisa realizar ambos os treinamentos simultaneamente.'
-    : ' Você deve escolher um dos tipos para realizar agora. O outro ficará disponível em 24 horas e deve ser entregue em até 48 horas.'
+  const text = {
+    lastSession:
+      'Você está na última sessão e precisa realizar ambos os treinamentos simultaneamente.',
+    firstSession:
+      'Você deve escolher um dos tipos para realizar agora. O outro ficará disponível em 24 horas e deve ser entregue em até 48 horas.',
+    default: 'Complete o treinamento a seguir. O outro ficará disponível em 24 horas e deve ser entregue em até 48 horas.',
+  }
+  const displayText = isLastSession ? text.lastSession : lastSessionIndex === 1 ? text.firstSession : text.default
 
   return (
-    <AlertDialog open={open}>
+    <AlertDialog open={true}>
       <AlertDialogContent className="h-[300px] w-[400px]">
         <AlertDialogHeader>
-          <AlertDialogTitle>
-            Escolha qual treinamento deseja fazer primeiro
-          </AlertDialogTitle>
-          <AlertDialogDescription className="text-base">{text}</AlertDialogDescription>
+          <AlertDialogTitle>Seleção de treinamento</AlertDialogTitle>
+          <AlertDialogDescription className="text-base">{displayText}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <div className="flex w-full justify-center gap-4">
@@ -53,25 +57,54 @@ export function TrainingSelectionModal({ progress: { sessions } }: Props) {
               </Button>
             ) : (
               <React.Fragment>
-                <Button
-                  onClick={() =>
-                    router.push(
-                      `/startup/instructions/overview/training?session=${lastSessionIndex}&feature=roughness`,
-                    )
-                  }
-                >
-                  Rugosidade
-                </Button>
-                <Button
-                  variant="secondary"
-                  onClick={() =>
-                    router.push(
-                      `/startup/instructions/overview/training?session=${lastSessionIndex}&feature=breathiness`,
-                    )
-                  }
-                >
-                  Soprosidade
-                </Button>
+                {favoriteFeature === null && (
+                  <>
+                    <Button
+                      onClick={async () => {
+                        await setFavoriteFeature(id, 'roughness')
+                        router.push(
+                          `/startup/instructions/overview/training?session=${lastSessionIndex}&feature=roughness`,
+                        )
+                      }}
+                    >
+                      Rugosidade
+                    </Button>
+                    <Button
+                      variant="secondary"
+                      onClick={() => {
+                        setFavoriteFeature(id, 'breathiness')
+                        router.push(
+                          `/startup/instructions/overview/training?session=${lastSessionIndex}&feature=breathiness`,
+                        )
+                      }}
+                    >
+                      Soprosidade
+                    </Button>
+                  </>
+                )}
+                {favoriteFeature === 'roughness' && (
+                  <Button
+                    onClick={() =>
+                      router.push(
+                        `/startup/instructions/overview/training?session=${lastSessionIndex}&feature=roughness`,
+                      )
+                    }
+                  >
+                    Rugosidade
+                  </Button>
+                )}
+                {favoriteFeature === 'breathiness' && (
+                  <Button
+                    variant="secondary"
+                    onClick={() =>
+                      router.push(
+                        `/startup/instructions/overview/training?session=${lastSessionIndex}&feature=breathiness`,
+                      )
+                    }
+                  >
+                    Soprosidade
+                  </Button>
+                )}
               </React.Fragment>
             )}
           </div>

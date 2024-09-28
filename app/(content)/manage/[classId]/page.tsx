@@ -1,6 +1,5 @@
 import { AUTH } from '@/server/auth'
 import { STRAPI } from '@/server/strapi'
-import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { columns, Students } from './components/columns'
 import { DataTable } from './components/data-table'
@@ -28,11 +27,8 @@ async function getData(classId: number, jwt: string): Promise<Students[]> {
       status = 'pac'
     }
     return {
-      id: student.id,
-      name: student.name,
-      email: student.email,
       status,
-      pacLink: student.pacLink,
+      ...student,
     }
   })
 }
@@ -45,32 +41,16 @@ export default async function ManagePage({
   if (!user) {
     redirect('/login')
   }
-  const {
-    user: { jwt },
-  } = user
 
-  const tableData = await getData(Number(classId), jwt)
+  const tableData = await getData(Number(classId), user.user.jwt)
   let userDetails
   if (show === 'details' && id) {
     userDetails = await STRAPI.getUserFullData({ userId: Number(id) })
   }
 
-  async function deleteGroup(groupId: number) {
-    'use server'
-
-    await STRAPI.deleteGroup({ groupId });
-    revalidatePath('/manage', "layout")
-    redirect('/manage/add')
-  }
-
   return (
     <main className="mx-auto py-2">
-      <DataTable
-        columns={columns}
-        data={tableData}
-        classId={classId}
-        deleteGroup={deleteGroup}
-      />
+      <DataTable columns={columns} data={tableData} classId={classId} />
       {show === 'details' && id && <DetailsSheet userDetails={userDetails!} />}
     </main>
   )

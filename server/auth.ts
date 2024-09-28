@@ -87,6 +87,11 @@ async function getCurrentUser() {
   } as Promise<UserInfo>
 }
 
+async function getUserJwt() {
+  const session = await getServerSession(authOptions)
+  return session?.user.jwt ?? ''
+}
+
 async function sendResetPasswordToken(data: { email: string }) {
   return await STRAPI.sendResetPasswordToken(data)
 }
@@ -100,6 +105,7 @@ export const AUTH = {
   login,
   signUp,
   getCurrentUser,
+  getUserJwt,
   sendResetPasswordToken,
   resetPassword,
 }

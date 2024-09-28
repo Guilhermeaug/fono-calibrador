@@ -18,7 +18,7 @@ import {
 import { STRAPI } from '@/server/strapi'
 import { AudioResult, Result, SessionResults as SessionResultsType } from '@/server/types'
 import { redirect } from 'next/navigation'
-import { ExportButton } from './components/export-button'
+import { ExportButton } from '../components/export-button'
 
 type Props = {
   searchParams: {
@@ -53,7 +53,9 @@ export default async function ManageUserResultsPage({
     <main className="container mx-auto py-2">
       <div className="flex justify-between">
         <TypographyH2>{name}</TypographyH2>
-        <ExportButton sessions={sessions} />
+        <ExportButton ids={[id]}>
+          Exportar dados
+        </ExportButton>
       </div>
       <div className="h-[30px]" />
       {areResultsEmpty ? (

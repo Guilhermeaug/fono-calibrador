@@ -33,25 +33,25 @@ import {
 import copy from 'clipboard-copy'
 import * as React from 'react'
 import { toast } from 'sonner'
-import { statuses } from './columns'
+import { ExportButton } from '../../components/export-button'
+import { deleteGroup } from '../delete-group-action'
+import { statuses, Students } from './columns'
 import { DataTableFacetedFilter } from './data-table-faceted-filter'
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
+  columns: ColumnDef<Students, TValue>[]
+  data: Students[]
   classId: string
-  deleteGroup: (groupId: number) => Promise<void>
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   classId,
-  deleteGroup,
 }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
 
-  const table = useReactTable({
+  const table = useReactTable<Students>({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
@@ -94,6 +94,13 @@ export function DataTable<TData, TValue>({
           >
             Compartilhar convite
           </Button>
+          <ExportButton
+            className="ml-auto self-end justify-self-end"
+            variant="outline"
+            ids={table.getRowModel().rows.map((row) => row.original.id)}
+          >
+            Exportar dados
+          </ExportButton>
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button variant="destructive">Excluir turma</Button>

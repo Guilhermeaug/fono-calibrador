@@ -29,8 +29,7 @@ export default async function StartupPage({ searchParams: { show } }: Props) {
   })
 
   const program = await STRAPI.getFullProgram({ id: 1 })
-
-  const isLastSession = userProgress?.sessions?.length === program.numberOfSessions
+  const isOnLastSession = userProgress?.sessions?.length === program.numberOfSessions
 
   const showProgress = show === 'progress'
   const showTrainingSelection = show === 'training-selection'
@@ -62,7 +61,7 @@ export default async function StartupPage({ searchParams: { show } }: Props) {
       </main>
       <Suspense>
         {showProgress && (
-          <ProgressSheet progress={userProgress} isLastSession={isLastSession} />
+          <ProgressSheet progress={userProgress} isOnLastSession={isOnLastSession} />
         )}
         {showTrainingSelection && <TrainingSelectionModal progress={userProgress} />}
       </Suspense>

@@ -17,7 +17,7 @@ export default async function PacBeginPage() {
   }
 
   const startPac = pacLink ? pacLink : '#'
-  
+
   return (
     <main className="mx-auto max-w-[850px] p-8">
       <TypographyH1 className="text-center">
@@ -54,7 +54,7 @@ export default async function PacBeginPage() {
             Iniciar pac
           </Link>
         </Button>
-        {userInfo.firstPacStatus !== 'DONE' && pacLink && (
+        {pacLink && (
           <Button className="w-full uppercase" asChild>
             <Link href="end">Termo de Conclusão PAC</Link>
           </Button>

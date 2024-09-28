@@ -13,3 +13,5 @@ export const getCsvConfig = (
     useKeysAsHeaders,
   })
 }
+
+export const addNewLine = (s: string): string => s + "\n";

@@ -74,6 +74,7 @@ export type ProgramTraining = {
 export type UserProgress = {
   sessions: SessionResults[]
   status: 'READY' | 'DONE' | 'WAITING' | 'INVALID'
+  favoriteFeature?: 'roughness' | 'breathiness'
   nextDueDate?: string
   timeoutEndDate?: string
 } & StrapiDefaultAttributes

@@ -169,7 +169,7 @@ async function getUserResults({
         $eq: programId,
       },
       user: {
-        $eq: userId,
+        $in: userId,
       },
     },
     populate: {
@@ -199,6 +199,56 @@ async function getUserResults({
     }),
   ) as UserProgress[]
   return data && data[0]
+}
+
+async function getUsersSessionResults({
+  programId,
+  userIds,
+}: {
+  userIds: number[]
+  programId: number
+}) {
+  const query = qs.stringify({
+    filters: {
+      program: {
+        $eq: programId,
+      },
+      user: {
+        $in: userIds,
+      },
+    },
+    populate: {
+      sessions: {
+        populate: {
+          assessmentRoughnessResults: {
+            populate: ['audios'],
+          },
+          assessmentBreathinessResults: {
+            populate: ['audios'],
+          },
+          trainingRoughnessResults: {
+            populate: ['audios'],
+          },
+          trainingBreathinessResults: {
+            populate: ['audios'],
+          },
+        },
+      },
+      user: {
+        fields: ['id'],
+      },
+    },
+  })
+
+  return explodeStrapiData(
+    await fetchStrapiApi({
+      path: `/users-progress?${query}`,
+    }),
+  ) as (UserProgress & {
+    user: {
+      id: number
+    }
+  })[]
 }
 
 async function checkAnswer({
@@ -304,7 +354,11 @@ async function sendContactEmail(data: { email: string; content: string }) {
   })
 }
 
-async function sendEmailTemplate(data: { templateReferenceId: number; to: string, data: Record<string, any> }) {
+async function sendEmailTemplate(data: {
+  templateReferenceId: number
+  to: string
+  data: Record<string, any>
+}) {
   await fetchStrapiApi({
     path: '/email/sendEmailTemplate',
     body: data,
@@ -389,6 +443,20 @@ async function deleteGroup({ groupId }: { groupId: number }) {
   })
 }
 
+async function removeUserFromGroup({ groupId, userId}: { groupId: number; userId: number }) {
+  return await fetchStrapiApi({
+    path: `/groups/${groupId}`,
+    body: {
+      data: {
+        students: {
+          disconnect: [userId],
+        },
+      },
+    },
+    method: 'PUT',
+  })
+}
+
 async function acceptInvite({
   jwt,
   userId,
@@ -408,6 +476,24 @@ async function acceptInvite({
       },
     },
     jwt,
+    method: 'PUT',
+  })
+}
+
+async function setFavoriteFeature({
+  id,
+  feature,
+}: {
+  id: number
+  feature: string
+}) {
+  return await fetchStrapiApi({
+    path: `/users-progress/${id}`,
+    body: {
+      data: {
+        favoriteFeature: feature,
+      },
+    },
     method: 'PUT',
   })
 }
@@ -480,6 +566,9 @@ export const STRAPI = {
   createGroup,
   acceptInvite,
   deleteGroup,
+  removeUserFromGroup,
+  getUsersSessionResults,
+  setFavoriteFeature,
   /////////
   login,
   signUp,
