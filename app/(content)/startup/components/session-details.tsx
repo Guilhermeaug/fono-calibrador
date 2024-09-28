@@ -3,6 +3,7 @@
 import { TypographyLarge } from '@/components/typography'
 import { Button } from '@/components/ui/button'
 import { SessionResults } from '@/server/types'
+import { isNil } from 'lodash'
 import { PlayIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import * as React from 'react'
@@ -15,13 +16,55 @@ type Props = {
   favoriteFeature?: 'roughness' | 'breathiness'
 }
 
-export function SessionDetails({ session, index, isOnLastSession, favoriteFeature }: Props) {
+export function SessionDetails({
+  session,
+  index,
+  isOnLastSession,
+  favoriteFeature,
+}: Props) {
   const router = useRouter()
 
   const statuses = {
     assessment: session.assessmentStatus,
     trainingRoughness: session.trainingRoughnessStatus,
     trainingBreathiness: session.trainingBreathinessStatus,
+  }
+
+  const favoriteFeatureEquals = (feature: 'roughness' | 'breathiness') =>
+    favoriteFeature === feature
+
+  const isTrainingRoughnessOnClickEnabled =
+    statuses.trainingRoughness === 'READY' &&
+    (favoriteFeatureEquals('roughness') ||
+      statuses.trainingBreathiness === 'DONE' ||
+      isNil(favoriteFeature))
+  const isTrainingBreathinessOnClickEnabled =
+    statuses.trainingBreathiness === 'READY' &&
+    (favoriteFeatureEquals('breathiness') ||
+      statuses.trainingRoughness === 'DONE' ||
+      isNil(favoriteFeature))
+
+  const trainingRoughnessDescription = () => {
+    if (statuses.assessment === 'READY' || statuses.assessment === 'WAITING') {
+      return 'Status: Aguardando o término da avaliação'
+    }
+    if (statuses.trainingRoughness === 'READY' && !isTrainingRoughnessOnClickEnabled) {
+      return 'Status: Aguardando o término do treinamento de soprosidade'
+    }
+    return `Status: ${status[statuses.trainingRoughness]}`
+  }
+
+  const trainingBreathinessDescription = () => {
+    if (statuses.assessment === 'READY' || statuses.assessment === 'WAITING') {
+      return 'Status: Aguardando o término da avaliação'
+    }
+    if (
+      statuses.trainingBreathiness === 'READY' &&
+      !isTrainingBreathinessOnClickEnabled
+    ) {
+      return 'Status: Aguardando o término do treinamento de rugosidade'
+    }
+    return `Status: ${status[statuses.trainingBreathiness]}`
   }
 
   const content = {
@@ -39,9 +82,7 @@ export function SessionDetails({ session, index, isOnLastSession, favoriteFeatur
     },
     trainingRoughness: {
       title: 'Treinamento - Rugosidade',
-      description: ['DONE', 'NOT_NEEDED'].includes(statuses.assessment)
-        ? `Status: ${status[statuses.trainingRoughness]}`
-        : 'Status: Aguardando o término da avaliação',
+      description: trainingRoughnessDescription(),
       color: colors[statuses.trainingRoughness],
       onClick: () => {
         if (statuses.trainingRoughness === 'READY') {
@@ -52,13 +93,11 @@ export function SessionDetails({ session, index, isOnLastSession, favoriteFeatur
         }
       },
       enabled: !isOnLastSession,
-      onClickEnabled: statuses.trainingRoughness === 'READY',
+      onClickEnabled: isTrainingRoughnessOnClickEnabled,
     },
     trainingBreathiness: {
       title: 'Treinamento - Soprosidade',
-      description: ['DONE', 'NOT_NEEDED'].includes(statuses.assessment)
-        ? `Status: ${status[statuses.trainingBreathiness]}`
-        : 'Status: Aguardando o término da avaliação',
+      description: trainingBreathinessDescription(),
       color: colors[statuses.trainingBreathiness],
       onClick: () => {
         if (statuses.trainingBreathiness === 'READY') {
@@ -69,25 +108,25 @@ export function SessionDetails({ session, index, isOnLastSession, favoriteFeatur
         }
       },
       enabled: !isOnLastSession,
-      onClickEnabled: statuses.trainingBreathiness === 'READY',
+      onClickEnabled: isTrainingBreathinessOnClickEnabled,
     },
     trainingBoth: {
-        title: 'Treinamento - Rugosidade e Soprosidade',
-        description: ['DONE', 'NOT_NEEDED'].includes(statuses.assessment)
-          ? `Status: ${status[statuses.trainingBreathiness]}`
-          : 'Status: Aguardando o término da avaliação',
-        color: colors[statuses.trainingBreathiness],
-        onClick: () => {
-          if (statuses.trainingBreathiness === 'READY') {
-            const feature = 'both'
-            router.replace(
-              `/startup/instructions/overview/training?feature=${feature}&session=${index + 1}`,
-            )
-          }
-        },
-        enabled: isOnLastSession,
-        onClickEnabled: statuses.trainingBreathiness === 'READY',
+      title: 'Treinamento - Rugosidade e Soprosidade',
+      description: ['DONE', 'NOT_NEEDED'].includes(statuses.assessment)
+        ? `Status: ${status[statuses.trainingBreathiness]}`
+        : 'Status: Aguardando o término da avaliação',
+      color: colors[statuses.trainingBreathiness],
+      onClick: () => {
+        if (statuses.trainingBreathiness === 'READY') {
+          const feature = 'both'
+          router.replace(
+            `/startup/instructions/overview/training?feature=${feature}&session=${index + 1}`,
+          )
+        }
       },
+      enabled: isOnLastSession,
+      onClickEnabled: statuses.trainingBreathiness === 'READY',
+    },
   }
 
   return (
