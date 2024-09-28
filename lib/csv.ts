@@ -1,6 +1,6 @@
 import { mkConfig } from 'export-to-csv'
 
-export const getCsvConfig = (
+const getCsvConfig = (
   filename: string,
   headers: string[] = [],
   useKeysAsHeaders = true,
@@ -14,4 +14,6 @@ export const getCsvConfig = (
   })
 }
 
-export const addNewLine = (s: string): string => s + "\n";
+const addNewLine = (s: string): string => s + '\n'
+
+export { addNewLine, getCsvConfig }

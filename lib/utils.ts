@@ -1,11 +1,11 @@
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
-export function cn(...inputs: ClassValue[]) {
+function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function translateFeature(feature: string) {
+function translateFeature(feature: string) {
   return {
     both: 'Rugosidade e Soprosidade',
     roughness: 'Rugosidade',
@@ -13,7 +13,7 @@ export function translateFeature(feature: string) {
   }[feature]
 }
 
-export function explodeStrapiData(obj: any): any {
+function explodeStrapiData(obj: any): any {
   if (Array.isArray(obj)) {
     return obj.map(explodeStrapiData)
   } else if (obj && typeof obj === 'object') {
@@ -43,3 +43,4 @@ export function explodeStrapiData(obj: any): any {
   return obj
 }
 
+export { cn, explodeStrapiData, translateFeature }
