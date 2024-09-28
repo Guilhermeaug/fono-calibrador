@@ -1,7 +1,7 @@
 import { TypographyH1, TypographyP } from '@/components/typography'
 import { Button } from '@/components/ui/button'
 import { AUTH } from '@/server/auth'
-import { isNull } from 'lodash'
+import { isNil } from 'lodash'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 
@@ -11,12 +11,14 @@ export default async function PacBeginPage() {
     redirect('/login')
   }
 
-  let { pacLink } = userInfo
+  let { pacLink, firstPacStatus, finalPacStatus } = userInfo
   if (!pacLink) {
     pacLink = 'https://www.audbility.com.br/'
   }
 
   const startPac = pacLink ? pacLink : '#'
+
+  const needsToAcceptTerms = firstPacStatus !== 'DONE' || finalPacStatus !== 'DONE'
 
   return (
     <main className="mx-auto max-w-[850px] p-8">
@@ -47,14 +49,14 @@ export default async function PacBeginPage() {
       <div className="mx-auto flex gap-4 py-8">
         <Button
           className="w-full uppercase"
-          disabled={isNull(pacLink)}
-          asChild={!isNull(pacLink)}
+          disabled={isNil(pacLink)}
+          asChild={!isNil(pacLink)}
         >
           <Link href={startPac} target="_blank">
             Iniciar pac
           </Link>
         </Button>
-        {pacLink && (
+        {pacLink && needsToAcceptTerms && (
           <Button className="w-full uppercase" asChild>
             <Link href="end">Termo de Conclusão PAC</Link>
           </Button>

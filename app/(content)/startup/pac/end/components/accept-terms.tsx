@@ -4,15 +4,15 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { STRAPI } from '@/server/strapi'
+import { UserInfo } from '@/server/types'
 import * as React from 'react'
 import { toast } from 'sonner'
 
 type Props = {
-  userId: number
-  jwt: string
+  userInfo: UserInfo
 }
 
-export function AcceptTerms({ userId, jwt }: Props) {
+export function AcceptTerms({ userInfo }: Props) {
   const [accepted, setAccepted] = React.useState(false)
 
   async function handleSubmit() {
@@ -20,9 +20,10 @@ export function AcceptTerms({ userId, jwt }: Props) {
       await STRAPI.putUser({
         data: {
           firstPacStatus: 'DONE',
+          finalPacStatus: userInfo.firstPacStatus === 'DONE' ? 'DONE' : userInfo.finalPacStatus,
         },
-        userId,
-        jwt,
+        userId: userInfo.id,
+        jwt: userInfo.jwt,
       })
       toast.success(
         'Teste do Processamento Auditivo finalizado com sucesso! Redirecionando...',

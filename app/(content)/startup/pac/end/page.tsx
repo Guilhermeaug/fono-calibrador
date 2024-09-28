@@ -20,7 +20,7 @@ export default async function PacEndPage() {
         Avaliação Perceptivo-Auditiva da Voz.
       </TypographyP>
       <div className="h-[30px]" />
-      <AcceptTerms userId={userInfo.id} jwt={userInfo.jwt} />
+      <AcceptTerms userInfo={userInfo} />
     </main>
   )
 }

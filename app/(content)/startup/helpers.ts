@@ -88,7 +88,7 @@ export function generateChecklistItems(
       text: '4. Teste do Processamento Auditivo',
       href: '/startup/pac/begin',
       status: finalPacChecklistStatus,
-      canClickIf: ['READY', 'WAITING', 'DONE'].includes(finalPacChecklistStatus),
+      canClickIf: ['READY'].includes(finalPacChecklistStatus),
     },
     {
       text: 'Resultados',
