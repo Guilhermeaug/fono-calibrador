@@ -1,4 +1,4 @@
-import { FORM_TYPE } from '@/app/(content)/register/constants'
+import { RegisterFormType } from '@/app/(content)/register/constants'
 import { AuthOptions, getServerSession, User } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { revalidatePath } from 'next/cache'
@@ -53,10 +53,10 @@ export const authOptions: AuthOptions = {
 }
 
 async function login(loginPayload: LoginPayload) {
-  return await STRAPI.login(loginPayload)
+  return STRAPI.login(loginPayload)
 }
 
-async function signUp(data: FORM_TYPE) {
+async function signUp(data: RegisterFormType) {
   const dataCopy: any = { ...data }
   for (const key in dataCopy) {
     if (dataCopy[key] === 'yes') {
@@ -93,11 +93,11 @@ async function getUserJwt() {
 }
 
 async function sendResetPasswordToken(data: { email: string }) {
-  return await STRAPI.sendResetPasswordToken(data)
+  return STRAPI.sendResetPasswordToken(data)
 }
 
 async function resetPassword(data: { code: string; password: string }) {
-  return await STRAPI.resetPassword(data)
+  return STRAPI.resetPassword(data)
 }
 
 export const AUTH = {

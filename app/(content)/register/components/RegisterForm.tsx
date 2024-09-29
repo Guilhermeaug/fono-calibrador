@@ -32,24 +32,23 @@ import { signIn } from 'next-auth/react'
 import * as React from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
+import { withMask } from 'use-mask-input'
 import {
   courseLevels,
   DEFAULT_VALUES,
-  FORM_TYPE,
   formSchema,
   musicianRoles,
+  RegisterFormType,
 } from '../constants'
-import {withMask} from 'use-mask-input'
-
 
 export function RegisterForm() {
-  const form = useForm<FORM_TYPE>({
+  const form = useForm<RegisterFormType>({
     resolver: zodResolver(formSchema),
     mode: 'onBlur',
     defaultValues: DEFAULT_VALUES,
   })
 
-  async function onSubmit(values: FORM_TYPE) {
+  async function onSubmit(values: RegisterFormType) {
     const res = await AUTH.signUp(values)
 
     if ('error' in res) {
@@ -209,7 +208,7 @@ export function RegisterForm() {
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
                     <FormLabel>Número de celular</FormLabel>
-                    <FormControl ref={withMask("(99) 99999-9999")}>
+                    <FormControl ref={withMask('(99) 99999-9999')}>
                       <Input placeholder="Seu número de celular" {...field} />
                     </FormControl>
                     <FormMessage />
@@ -610,37 +609,37 @@ export function RegisterForm() {
                         >
                           <FormItem className="flex items-center space-x-3 space-y-0">
                             <FormControl>
-                              <RadioGroupItem value="0-2 hours" />
+                              <RadioGroupItem value="0-2 horas" />
                             </FormControl>
                             <FormLabel className="font-normal">0 a 2h</FormLabel>
                           </FormItem>
                           <FormItem className="flex items-center space-x-3 space-y-0">
                             <FormControl>
-                              <RadioGroupItem value="2-4 hours" />
+                              <RadioGroupItem value="2-4 horas" />
                             </FormControl>
                             <FormLabel className="font-normal">2 a 4h</FormLabel>
                           </FormItem>
                           <FormItem className="flex items-center space-x-3 space-y-0">
                             <FormControl>
-                              <RadioGroupItem value="4-6 hours" />
+                              <RadioGroupItem value="4-6 horas" />
                             </FormControl>
                             <FormLabel className="font-normal">4 a 6h</FormLabel>
                           </FormItem>
                           <FormItem className="flex items-center space-x-3 space-y-0">
                             <FormControl>
-                              <RadioGroupItem value="6-8 hours" />
+                              <RadioGroupItem value="6-8 horas" />
                             </FormControl>
                             <FormLabel className="font-normal">6 a 8h</FormLabel>
                           </FormItem>
                           <FormItem className="flex items-center space-x-3 space-y-0">
                             <FormControl>
-                              <RadioGroupItem value="8-10 hours" />
+                              <RadioGroupItem value="8-10 horas" />
                             </FormControl>
                             <FormLabel className="font-normal">8 a 10h</FormLabel>
                           </FormItem>
                           <FormItem className="flex items-center space-x-3 space-y-0">
                             <FormControl>
-                              <RadioGroupItem value="10+ hours" />
+                              <RadioGroupItem value="10+ horas" />
                             </FormControl>
                             <FormLabel className="font-normal">Mais de 10h</FormLabel>
                           </FormItem>

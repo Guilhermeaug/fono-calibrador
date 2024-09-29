@@ -4,13 +4,13 @@ import * as React from 'react'
 import ReactPlayer from 'react-player'
 
 export function Player() {
-  const [isLoaded, setIsLoaded] = React.useState(false)
+  const [mounted, setMounted] = React.useState(false)
 
   React.useEffect(() => {
-    setIsLoaded(true)
+    setMounted(true)
   }, [])
 
-  if (!isLoaded) {
+  if (!mounted) {
     return null
   }
 

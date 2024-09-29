@@ -7,9 +7,10 @@ const formSchema = z.object({
   password: z.string().min(6, REQUIRED_FIELD),
 })
 
-const DEFAULT_VALUES = {
+const defaultValues = {
   identifier: '',
   password: '',
 }
 
-export { DEFAULT_VALUES, formSchema }
+export { defaultValues, formSchema }
+export type LoginFormType = z.infer<typeof formSchema>

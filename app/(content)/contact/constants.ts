@@ -6,4 +6,4 @@ const schema = z.object({
 })
 
 export { schema }
-export type ContactForm = z.infer<typeof schema>
+export type ContactFormType = z.infer<typeof schema>

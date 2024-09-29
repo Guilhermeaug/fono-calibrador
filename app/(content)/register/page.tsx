@@ -1,21 +1,23 @@
-
 import Link from 'next/link'
 
+import { TypographyH1, TypographyP } from '@/components/typography'
 import { RegisterForm } from './components/RegisterForm'
 
 export default function Page() {
   return (
     <main className="mx-auto max-w-[900px] p-8">
       <div className="grid gap-2 text-center">
-        <h1 className="text-3xl font-bold">Cadastro</h1>
-        <p className="text-balance text-muted-foreground">
+        <TypographyH1 className="text-center text-3xl">Cadastro</TypographyH1>
+        <TypographyP className="text-balance text-center text-muted-foreground">
           Preencha os campos abaixo para criar sua conta no Calibrador Auditivo
-        </p>
+        </TypographyP>
         <div className="mt-1 text-center text-sm">
-          Já possui cadastro?{'  '}
-          <Link href="/login" className="underline">
-            Entre com sua conta
-          </Link>
+          <TypographyP className="text-center">
+            Já possui cadastro?{'  '}
+            <Link href="/login" className="underline">
+              Entre com sua conta
+            </Link>
+          </TypographyP>
         </div>
       </div>
       <RegisterForm />

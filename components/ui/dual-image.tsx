@@ -12,7 +12,16 @@ type Props = {
 }
 
 export function DualImage({ lightImage, darkImage, imageProps, className = '' }: Props) {
+  const [mounted, setMounted] = React.useState(false)
   const { resolvedTheme = 'light' } = useTheme()
+
+  React.useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    return null
+  }
 
   if (resolvedTheme === 'light') {
     return <Image src={lightImage} className={className} {...imageProps} />

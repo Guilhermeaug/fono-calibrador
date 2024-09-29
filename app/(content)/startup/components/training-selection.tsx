@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button'
 import { UserProgress } from '@/server/types'
 import { useRouter, useSearchParams } from 'next/navigation'
 import * as React from 'react'
-import { setFavoriteFeature } from '../set-favorite-feature-action'
+import { setFavoriteFeatureAction } from '../set-favorite-feature-action'
 
 type Props = {
   progress: UserProgress
@@ -61,7 +61,7 @@ export function TrainingSelectionModal({
                   <>
                     <Button
                       onClick={async () => {
-                        await setFavoriteFeature(id, 'roughness')
+                        await setFavoriteFeatureAction(id, 'roughness')
                         router.push(
                           `/startup/instructions/overview/training?session=${lastSessionIndex}&feature=roughness`,
                         )
@@ -72,7 +72,7 @@ export function TrainingSelectionModal({
                     <Button
                       variant="secondary"
                       onClick={() => {
-                        setFavoriteFeature(id, 'breathiness')
+                        setFavoriteFeatureAction(id, 'breathiness')
                         router.push(
                           `/startup/instructions/overview/training?session=${lastSessionIndex}&feature=breathiness`,
                         )

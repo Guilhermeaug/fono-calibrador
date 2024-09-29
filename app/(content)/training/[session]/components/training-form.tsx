@@ -9,41 +9,41 @@ import dayjs from 'dayjs'
 import { Session } from 'next-auth'
 import * as React from 'react'
 import { toast } from 'sonner'
+import { computeScore } from '../helpers'
 
 type Props = {
-  isOneFeature: boolean
   userSession: Session
   program: ProgramTraining
   feature: 'roughness' | 'breathiness' | 'both'
   sessionNumber: number
 }
 
-export function TrainingForm({
-  program,
-  isOneFeature,
-  feature,
-  sessionNumber,
-  userSession,
-}: Props) {
+export function TrainingForm({ program, feature, sessionNumber, userSession }: Props) {
   const {
     user: { jwt },
   } = userSession
   const startDate = React.useRef(dayjs().toISOString())
 
-  const features = isOneFeature ? [feature] : ['roughness', 'breathiness']
+  const features =
+    feature !== 'both'
+      ? [feature]
+      : (['roughness', 'breathiness'] as ('roughness' | 'breathiness')[])
+
+  const currentThreshold = program.sessionsThreshold[sessionNumber - 1]
 
   async function onNextVoice(current: VoiceFormData): Promise<boolean> {
     try {
       const validations = await Promise.all(
         features.map(async (feature) => {
-          const isCorrect = await STRAPI.checkAnswer({
-            programId: program.id,
-            fileIdentifier: current.identifier,
+          const referenceValues = program.training
+            .find((f) => f.identifier === current.identifier)!
+            [feature].map((v) => Number(v))
+          const { result } = computeScore({
             answer: current.data.find((d) => d.feature === feature)?.value!,
-            feature: feature as 'roughness' | 'breathiness',
-            session: sessionNumber,
+            values: referenceValues,
+            threshold: currentThreshold,
           })
-          return { feature, isCorrect }
+          return { feature, isCorrect: result }
         }),
       )
       if (validations.every((v) => v.isCorrect)) {

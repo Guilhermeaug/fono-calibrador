@@ -16,17 +16,16 @@ import Link from 'next/link'
 import * as React from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
-import { z } from 'zod'
-import { DEFAULT_VALUES, formSchema } from '../constants'
+import { defaultValues, formSchema, LoginFormType } from '../constants'
 
 export function LoginForm() {
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<LoginFormType>({
     resolver: zodResolver(formSchema),
     mode: 'onBlur',
-    defaultValues: DEFAULT_VALUES,
+    defaultValues: defaultValues,
   })
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: LoginFormType) {
     const res = await signIn('credentials', {
       identifier: values.identifier,
       password: values.password,

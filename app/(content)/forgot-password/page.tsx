@@ -5,23 +5,29 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { Suspense } from 'react'
+import { isNil } from 'lodash'
 import { ForgotPasswordForm } from './components/ForgotPasswordForm'
 
-export default function ForgotPasswordPage() {
+type Props = {
+  searchParams: {
+    code?: string
+  }
+}
+
+export default function ForgotPasswordPage({ searchParams: { code } }: Props) {
+  const description = isNil(code)
+    ? 'Entre com seu e-mail abaixo para recuperar sua senha'
+    : 'Escolha uma nova senha para compor sua conta'
+
   return (
-    <main className="mx-auto max-w-[850px] p-8">
-      <Card className="mx-auto max-w-lg">
+    <main className="mx-auto max-w-[850px] p-3 md:p-8">
+      <Card>
         <CardHeader>
           <CardTitle className="text-2xl">Recuperação de Senha</CardTitle>
-          <CardDescription>
-            Entre com seu e-mail abaixo para recuperar sua senha
-          </CardDescription>
+          <CardDescription>{description}</CardDescription>
         </CardHeader>
         <CardContent>
-          <Suspense>
-            <ForgotPasswordForm />
-          </Suspense>
+          <ForgotPasswordForm code={code} />
         </CardContent>
       </Card>
     </main>

@@ -12,15 +12,16 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
-import { STRAPI } from '@/server/strapi'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
+import * as React from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
-import { ContactForm, schema } from './constants'
+import { ContactFormType, schema } from './constants'
+import { sendContactEmailAction } from './send-contanct-email-action'
 
 export default function ContactPage() {
-  const form = useForm<ContactForm>({
+  const form = useForm<ContactFormType>({
     resolver: zodResolver(schema),
     defaultValues: {
       email: '',
@@ -28,10 +29,16 @@ export default function ContactPage() {
     },
   })
 
-  async function onSubmit(values: ContactForm) {
-    await STRAPI.sendContactEmail(values)
+  async function onSubmit(values: ContactFormType) {
+    await sendContactEmailAction(values)
     toast.success('Mensagem enviada com sucesso! Em breve entraremos em contato.')
   }
+
+  React.useEffect(() => {
+    if (form.formState.isSubmitSuccessful) {
+      form.reset()
+    }
+  }, [form.formState, form.reset])
 
   return (
     <main className="mx-auto max-w-[850px] px-2 py-8 lg:px-0">

@@ -14,10 +14,9 @@ const formSchema = z
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d])[A-Za-z\d\S]{6,}$/,
         'Senha deve conter pelo menos 6 caracteres, uma letra maiúscula, uma letra minúscula, um número e um caractere especial',
       ),
-    phone: z.string().regex(
-      /^\(\d{2}\) \d{5}-\d{4}$/,
-      'Celular deve estar no formato (99) 99999-9999',
-    ),
+    phone: z
+      .string()
+      .regex(/^\(\d{2}\) \d{5}-\d{4}$/, 'Celular deve estar no formato (99) 99999-9999'),
     birthDate: z.date({ required_error: FILL_FIELD }),
     isMusician: z.enum(['yes', 'no'], { required_error: FILL_FIELD }),
     musicianType: z.enum(['profissional', 'amador']).optional(),
@@ -40,12 +39,12 @@ const formSchema = z
     }),
     auditoryPerceptualAssessmentTime: z
       .enum([
-        '0-2 hours',
-        '2-4 hours',
-        '4-6 hours',
-        '6-8 hours',
-        '8-10 hours',
-        '10+ hours',
+        '0-2 horas',
+        '2-4 horas',
+        '4-6 horas',
+        '6-8 horas',
+        '8-10 horas',
+        '10+ horas',
       ])
       .optional(),
     isVoiceSpecialist: z.enum(['yes', 'no'], { required_error: FILL_FIELD }),
@@ -142,4 +141,4 @@ const courseLevels = [
 ] as const
 
 export { courseLevels, DEFAULT_VALUES, formSchema, musicianRoles }
-export type FORM_TYPE = z.infer<typeof formSchema>
+export type RegisterFormType = z.infer<typeof formSchema>

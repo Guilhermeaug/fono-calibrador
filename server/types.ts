@@ -69,6 +69,8 @@ export type ProgramTraining = {
   training: Audio[]
   roughnessAnchor: Audio[]
   breathinessAnchor: Audio[]
+  numberOfSessions: number
+  sessionsThreshold: number[]
 } & StrapiDefaultAttributes
 
 export type UserProgress = {

@@ -17,7 +17,7 @@ import { options } from './constants'
 import { initializeData } from './helpers'
 
 type Props = {
-  features: string[]
+  features: ('roughness' | 'breathiness')[]
   audios: Audio[]
   enableBackButton?: boolean
   isAssessment?: boolean
@@ -42,7 +42,9 @@ export function VoiceForm({
   const [currentIndex, setCurrentIndex] = React.useState(0)
   const [isLoading, setIsLoading] = React.useState(false)
 
-  const voice = audios.find((audio) => audio.identifier === data[currentIndex].identifier)!
+  const voice = audios.find(
+    (audio) => audio.identifier === data[currentIndex].identifier,
+  )!
   const currentEvaluation = data[currentIndex]
 
   const url = `${STRAPI_URL}${voice.file.url}`
@@ -161,11 +163,12 @@ export function VoiceForm({
 
   return (
     <section className="w-full max-w-[860px] flex-1 space-y-4">
-      {!isAssessment && features.map((feature) => (
-        <TypographyP key={feature}>
-          {options[feature as keyof typeof options].title}
-        </TypographyP>
-      ))}
+      {!isAssessment &&
+        features.map((feature) => (
+          <TypographyP key={feature}>
+            {options[feature as keyof typeof options].title}
+          </TypographyP>
+        ))}
       <div className="flex items-center gap-4">
         <TypographyP>Voz {currentIndex + 1}:</TypographyP>
         {View}

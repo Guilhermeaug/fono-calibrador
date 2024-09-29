@@ -42,7 +42,7 @@ const Slider = React.forwardRef<
     <div key={position} className="relative">
       <div
         key={index}
-        className="absolute h-2 w-[6px] bg-accent"
+        className="absolute h-2 w-[6px] bg-black dark:bg-white"
         style={{ left: `${position}%`, transform: 'translateX(-50%)' }}
       />
     </div>

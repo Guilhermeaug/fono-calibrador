@@ -2,7 +2,7 @@ import { DualImage } from './ui/dual-image'
 
 export function Footer() {
   return (
-    <footer className="my-4 container grid grid-cols-3 items-center gap-x-2 sm:gap-x-4 sm:grid-cols-6">
+    <footer className="container my-4 grid grid-cols-3 items-center gap-x-2 sm:grid-cols-6 sm:gap-x-4">
       <div className="relative">
         <DualImage
           lightImage="/images/faculdade_medicina.png"
@@ -39,7 +39,7 @@ export function Footer() {
             height: 0,
             sizes: '100vw',
           }}
-          className="h-28 w-full max-w-[300px] object-contain dark:brightness-[0.6] dark:grayscale"
+          className="h-28 w-full max-w-[300px] object-contain dark:brightness-[0.7] dark:grayscale"
         />
       </div>
       <div className="relative">
@@ -78,7 +78,7 @@ export function Footer() {
             height: 0,
             sizes: '100vw',
           }}
-          className="h-28 w-full max-w-[300px] object-contain dark:brightness-[0.6] dark:grayscale"
+          className="h-28 w-full max-w-[300px] object-contain dark:brightness-[0.7] dark:grayscale"
         />
       </div>
     </footer>

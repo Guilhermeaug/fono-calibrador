@@ -1,4 +1,4 @@
-import { FORM_TYPE } from '@/app/(content)/register/constants'
+import { RegisterFormType } from '@/app/(content)/register/constants'
 import { explodeStrapiData } from '@/lib/utils'
 import qs from 'qs'
 import {
@@ -16,27 +16,24 @@ import {
 
 export const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL
 const TOKEN = process.env.TOKEN
-const CACHE = process.env.NEXT_PUBLIC_CACHE as
-  | 'no-cache'
-  | 'default'
-  | 'reload'
-  | 'force-cache'
-  | 'only-if-cached'
 
-function fetchStrapiApi({
+async function fetchStrapiApi({
   path,
   body,
   jwt,
+  tags = [],
   method = 'GET',
   headers: propsHeaders = {},
 }: {
   path: string
   body?: Record<string, any>
   jwt?: string
+  tags?: string[]
   method?: string
   headers?: Record<string, string>
 }) {
-  const token = jwt ? jwt : TOKEN
+  const token = jwt ?? TOKEN
+  const cache = tags.length ? 'default' : 'no-cache'
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
     ...propsHeaders,
@@ -47,12 +44,21 @@ function fetchStrapiApi({
     method,
     body: JSON.stringify(body),
     headers,
-    cache: CACHE,
+    cache,
+    ...(tags.length
+      ? {
+          next: {
+            revalidate: 3600,
+            tags,
+          },
+        }
+      : {}),
   }).then(async (res) => {
+    const json = await res.json()
     if (!res.ok) {
-      throw await res.json()
+      throw json
     }
-    return res.json()
+    return json
   })
 }
 
@@ -77,6 +83,7 @@ async function getProgramAssessment({ id }: { id: number }) {
   const data = explodeStrapiData(
     await fetchStrapiApi({
       path: `/programs/${id}?${query}`,
+      tags: [`program-${id}`],
     }),
   ) as ProgramAssessment
 
@@ -101,6 +108,7 @@ async function getProgramTraining({ id }: { id: number }) {
   const data = explodeStrapiData(
     await fetchStrapiApi({
       path: `/programs/${id}?${query}`,
+      tags: [`program-${id}`],
     }),
   ) as ProgramTraining
   return data
@@ -347,7 +355,7 @@ async function alignProgress({
 }
 
 async function sendContactEmail(data: { email: string; content: string }) {
-  await fetchStrapiApi({
+  return fetchStrapiApi({
     path: '/email/contact',
     body: data,
     method: 'POST',
@@ -402,7 +410,7 @@ async function putUser({
   jwt: string
   data: Partial<UserInfo>
 }) {
-  return await fetchStrapiApi({
+  return fetchStrapiApi({
     path: `/users/${userId}`,
     body: data,
     jwt,
@@ -426,7 +434,7 @@ async function getTeachersGroups({ userId, jwt }: { userId: number; jwt: string 
 }
 
 async function createGroup({ jwt, data }: { jwt: string; data: Partial<Group> }) {
-  return await fetchStrapiApi({
+  return fetchStrapiApi({
     path: '/groups',
     body: {
       data,
@@ -437,14 +445,20 @@ async function createGroup({ jwt, data }: { jwt: string; data: Partial<Group> })
 }
 
 async function deleteGroup({ groupId }: { groupId: number }) {
-  return await fetchStrapiApi({
+  return fetchStrapiApi({
     path: `/groups/${groupId}`,
     method: 'DELETE',
   })
 }
 
-async function removeUserFromGroup({ groupId, userId}: { groupId: number; userId: number }) {
-  return await fetchStrapiApi({
+async function removeUserFromGroup({
+  groupId,
+  userId,
+}: {
+  groupId: number
+  userId: number
+}) {
+  return fetchStrapiApi({
     path: `/groups/${groupId}`,
     body: {
       data: {
@@ -457,16 +471,8 @@ async function removeUserFromGroup({ groupId, userId}: { groupId: number; userId
   })
 }
 
-async function acceptInvite({
-  jwt,
-  userId,
-  groupId,
-}: {
-  jwt: string
-  userId: number
-  groupId: number
-}) {
-  return await fetchStrapiApi({
+async function acceptInvite({ userId, groupId }: { userId: number; groupId: number }) {
+  return fetchStrapiApi({
     path: `/groups/${groupId}`,
     body: {
       data: {
@@ -475,19 +481,12 @@ async function acceptInvite({
         },
       },
     },
-    jwt,
     method: 'PUT',
   })
 }
 
-async function setFavoriteFeature({
-  id,
-  feature,
-}: {
-  id: number
-  feature: string
-}) {
-  return await fetchStrapiApi({
+async function setFavoriteFeature({ id, feature }: { id: number; feature: string }) {
+  return fetchStrapiApi({
     path: `/users-progress/${id}`,
     body: {
       data: {
@@ -495,6 +494,13 @@ async function setFavoriteFeature({
       },
     },
     method: 'PUT',
+  })
+}
+
+async function getProgramById({ id }: { id: number }) {
+  return fetchStrapiApi({
+    path: `/programs/${id}`,
+    tags: [`program-${id}`],
   })
 }
 
@@ -509,8 +515,8 @@ async function login(loginPayload: LoginPayload) {
   return data
 }
 
-async function signUp(data: FORM_TYPE) {
-  return await fetchStrapiApi({
+async function signUp(data: RegisterFormType) {
+  return fetchStrapiApi({
     path: '/auth/local/register',
     body: data,
     method: 'POST',
@@ -518,14 +524,14 @@ async function signUp(data: FORM_TYPE) {
 }
 
 async function getCurrentUser(jwt: string) {
-  return await fetchStrapiApi({
+  return fetchStrapiApi({
     path: '/users/me',
     jwt,
   })
 }
 
 async function sendResetPasswordToken(data: { email: string }) {
-  return await fetchStrapiApi({
+  return fetchStrapiApi({
     path: '/auth/forgot-password',
     body: data,
     method: 'POST',
@@ -533,7 +539,7 @@ async function sendResetPasswordToken(data: { email: string }) {
 }
 
 async function resetPassword(data: { code: string; password: string }) {
-  return await fetchStrapiApi({
+  return fetchStrapiApi({
     path: '/auth/reset-password',
     body: {
       code: data.code,
@@ -569,6 +575,7 @@ export const STRAPI = {
   removeUserFromGroup,
   getUsersSessionResults,
   setFavoriteFeature,
+  getProgramById,
   /////////
   login,
   signUp,

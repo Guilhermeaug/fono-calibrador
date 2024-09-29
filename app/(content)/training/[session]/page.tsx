@@ -38,20 +38,20 @@ export default async function Page({
   const style = cn('flex flex-col gap-6 md:flex-row', !isOneFeature && 'justify-center')
 
   return (
-    <main className="container py-10">
+    <main className="container py-8">
       <TypographyH2>{title}</TypographyH2>
       <div className="h-[20px]" />
       <div className={style}>
         <TrainingForm
           sessionNumber={Number(session)}
-          {...{ feature, isOneFeature, program, userSession }}
+          {...{ feature, program, userSession }}
         />
         {isOneFeature && (
           <Anchor feature={feature as 'roughness' | 'breathiness'} program={program} />
         )}
       </div>
       {!isOneFeature && (
-        <div className="mt-12 grid sm:grid-cols-2 gap-4">
+        <div className="mt-12 grid gap-4 sm:grid-cols-2">
           <Anchor feature="roughness" program={program} />
           <Anchor feature="breathiness" program={program} />
         </div>

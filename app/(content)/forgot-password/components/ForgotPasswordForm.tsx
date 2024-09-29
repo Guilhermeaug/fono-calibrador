@@ -4,34 +4,33 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { AUTH } from '@/server/auth'
+import { isEmpty, isNil } from 'lodash'
 import { signIn } from 'next-auth/react'
 import Link from 'next/link'
-import { useSearchParams } from 'next/navigation'
 import * as React from 'react'
 import { toast } from 'sonner'
 
-export function ForgotPasswordForm() {
-  const searchParams = useSearchParams()
-  const code = searchParams.get('code')
+type Props = {
+  code?: string
+}
 
+export function ForgotPasswordForm({ code }: Props) {
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
 
+  const codeExists = !isNil(code)
+
   async function handleToken() {
-    if (!email) {
+    if (isEmpty(email)) {
       return
     }
 
-    try {
-      await AUTH.sendResetPasswordToken({ email })
-      toast.success('Você receberá um e-mail com instruções para recuperar sua senha.')
-    } catch (error: any) {
-      console.error(error)
-    }
+    await AUTH.sendResetPasswordToken({ email })
+    toast.success('Você receberá um e-mail com instruções para recuperar sua senha.')
   }
 
   async function handleNewPassword() {
-    if (!code || !password) {
+    if (!codeExists || isEmpty(password)) {
       return
     }
 
@@ -43,26 +42,25 @@ export function ForgotPasswordForm() {
       return
     }
 
-    try {
-      const res: {
-        jwt: string
-        user: { username: string }
-      } = await AUTH.resetPassword({ code, password })
-      await signIn('credentials', {
-        identifier: res.user.username,
-        password: password,
-        redirect: false,
-      })
-      toast.success('Sua senha foi alterada com sucesso.')
-    } catch (error: any) {
-      console.error(error)
-    }
+    const res: {
+      jwt: string
+      user: { username: string }
+    } = await AUTH.resetPassword({ code, password })
+    await signIn('credentials', {
+      identifier: res.user.username,
+      password: password,
+      redirect: false,
+    })
+    toast.success('Sua senha foi alterada com sucesso.')
+    setTimeout(() => {
+      window.location.href = '/'
+    }, 2000)
   }
 
   return (
     <React.Fragment>
       <div className="grid gap-4">
-        {!code && (
+        {isNil(code) && (
           <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
             <Input
@@ -74,7 +72,7 @@ export function ForgotPasswordForm() {
             />
           </div>
         )}
-        {code && (
+        {!isNil(code) && (
           <div className="grid gap-2">
             <div className="flex items-center">
               <Label htmlFor="password">Digite a nova senha</Label>
