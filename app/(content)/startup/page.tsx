@@ -9,6 +9,7 @@ import { Suspense } from 'react'
 import { CheckList } from './components/check-list'
 import { ProgressSheet } from './components/progress-sheet'
 import { TrainingSelectionModal } from './components/training-selection'
+import * as React from 'react'
 
 type Props = {
   searchParams: {
@@ -35,7 +36,7 @@ export default async function StartupPage({ searchParams: { show } }: Props) {
   const showTrainingSelection = show === 'training-selection'
 
   return (
-    <>
+    <React.Fragment>
       <main className="mx-auto max-w-[850px] p-8">
         <TypographyH1 className="text-center">
           Seja bem vindo ao Calibrador Auditivo!
@@ -65,6 +66,6 @@ export default async function StartupPage({ searchParams: { show } }: Props) {
         )}
         {showTrainingSelection && <TrainingSelectionModal progress={userProgress} />}
       </Suspense>
-    </>
+    </React.Fragment>
   )
 }

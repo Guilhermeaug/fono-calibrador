@@ -13,7 +13,6 @@ export default async function ResultsPage() {
 
   const { sessions } = await STRAPI.getUserResults({
     programId: 1,
-    jwt: userInfo.jwt,
     userId: userInfo.id,
   })
 

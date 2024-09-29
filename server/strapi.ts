@@ -401,19 +401,23 @@ async function getUserFullData({ userId }: { userId: number }) {
   return explodeStrapiData(data.additionalData) as AdditionalData
 }
 
+async function getUser({ userId }: { userId: number }) {
+  const data = await fetchStrapiApi({
+    path: `/users/${userId}`,
+  })
+  return explodeStrapiData(data) as UserInfo
+}
+
 async function putUser({
   userId,
-  jwt,
   data,
 }: {
   userId: number
-  jwt: string
   data: Partial<UserInfo>
 }) {
   return fetchStrapiApi({
     path: `/users/${userId}`,
     body: data,
-    jwt,
     method: 'PUT',
   })
 }
@@ -433,13 +437,12 @@ async function getTeachersGroups({ userId, jwt }: { userId: number; jwt: string 
   return explodeStrapiData(data) as Group[]
 }
 
-async function createGroup({ jwt, data }: { jwt: string; data: Partial<Group> }) {
+async function createGroup({ data }: { data: Partial<Group> }) {
   return fetchStrapiApi({
     path: '/groups',
     body: {
       data,
     },
-    jwt,
     method: 'POST',
   })
 }
@@ -576,6 +579,7 @@ export const STRAPI = {
   getUsersSessionResults,
   setFavoriteFeature,
   getProgramById,
+  getUser,
   /////////
   login,
   signUp,

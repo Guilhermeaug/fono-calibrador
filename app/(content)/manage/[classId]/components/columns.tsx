@@ -78,9 +78,8 @@ export const columns: ColumnDef<Students>[] = [
   {
     id: 'actions',
     cell: ({ row }) => {
-      const { id, name, status, email } = row.original
-
-      const enableAddPacLink = status === 'waiting_pac'
+      const { id, name, email, pacLink } = row.original
+      const groupId = Number(window.location.pathname.split('/').pop())
 
       return (
         <div className="flex items-center gap-2">
@@ -99,19 +98,7 @@ export const columns: ColumnDef<Students>[] = [
                 <Link href={`results?id=${id}&name=${name}`}>Visualizar resultados</Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <AddLinkModal
-                name={name}
-                userId={id}
-                userEmail={email}
-                disabled={!enableAddPacLink}
-              >
-                <DropdownMenuItem
-                  disabled={!enableAddPacLink}
-                  onSelect={(e) => e.preventDefault()}
-                >
-                  Adicionar link do PAC
-                </DropdownMenuItem>
-              </AddLinkModal>
+              <AddLinkModal name={name} userId={id} pacLink={pacLink} userEmail={email} groupId={groupId} />
             </DropdownMenuContent>
           </DropdownMenu>
           <Dialog>
@@ -138,7 +125,6 @@ export const columns: ColumnDef<Students>[] = [
                   <Button
                     variant="destructive"
                     onClick={async () => {
-                      const groupId = window.location.pathname.split('/').pop()
                       await removeUserFromGroup(Number(groupId), id)
                     }}
                   >

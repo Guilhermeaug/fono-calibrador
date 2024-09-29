@@ -5,7 +5,6 @@ import { Footer } from '@/components/footer'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from '@/components/ui/sonner'
 import MicrosoftClarity from '@/contexts/clarity'
-import { SessionProvider } from '@/contexts/SessionProvider'
 import { cn } from '@/lib/utils'
 import { Metadata } from 'next'
 
@@ -33,18 +32,16 @@ export default function RootLayout({ children }: RootLayoutProps) {
           fontSans.variable,
         )}
       >
-        <SessionProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="light"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <div className="relative flex-grow">{children}</div>
-            <Footer />
-            <Toaster richColors />
-          </ThemeProvider>
-        </SessionProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <div className="relative flex-grow">{children}</div>
+          <Footer />
+          <Toaster richColors />
+        </ThemeProvider>
         <MicrosoftClarity />
       </body>
     </html>

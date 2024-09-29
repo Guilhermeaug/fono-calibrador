@@ -12,35 +12,31 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { STRAPI } from '@/server/strapi'
 import { Group, UserInfo } from '@/server/types'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
-import { DEFAULT_VALUES, FORM_TYPE, formSchema } from '../constants'
-import { useRouter } from 'next/navigation'
+import { createGroupAction } from '../../create-group-action'
+import { CreateGroupFormType, DEFAULT_VALUES, formSchema } from '../constants'
 
 type Props = {
   userInfo: UserInfo
 }
 
 export function CreateGroup({ userInfo }: Props) {
-  const router = useRouter()
-  const form = useForm<FORM_TYPE>({
+  const form = useForm<CreateGroupFormType>({
     resolver: zodResolver(formSchema),
     defaultValues: DEFAULT_VALUES,
   })
 
-  async function onSubmit(data: FORM_TYPE) {
-    await STRAPI.createGroup({
-      jwt: userInfo.jwt,
+  async function onSubmit(data: CreateGroupFormType) {
+    await createGroupAction({
       data: {
         teacher: userInfo.id,
         ...data,
       } as unknown as Partial<Group>,
     })
     toast.success('Turma criada com sucesso!')
-    router.refresh()
   }
 
   return (

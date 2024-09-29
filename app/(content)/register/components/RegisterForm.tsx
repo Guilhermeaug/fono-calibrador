@@ -22,13 +22,13 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { cn } from '@/lib/utils'
-import { AUTH } from '@/server/auth'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Select, SelectGroup } from '@radix-ui/react-select'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { CalendarIcon } from 'lucide-react'
 import { signIn } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import * as React from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
@@ -40,8 +40,11 @@ import {
   musicianRoles,
   RegisterFormType,
 } from '../constants'
+import { signUpAction } from '../sign-up-action'
 
 export function RegisterForm() {
+  const router = useRouter()
+
   const form = useForm<RegisterFormType>({
     resolver: zodResolver(formSchema),
     mode: 'onBlur',
@@ -49,7 +52,7 @@ export function RegisterForm() {
   })
 
   async function onSubmit(values: RegisterFormType) {
-    const res = await AUTH.signUp(values)
+    const res = await signUpAction(values)
 
     if ('error' in res) {
       switch (res.error.message) {
@@ -78,7 +81,8 @@ export function RegisterForm() {
       password: values.password,
       redirect: false,
     })
-    window.location.replace('/')
+    router.replace('/')
+    router.refresh()
   }
 
   const isMusician = form.watch('isMusician') === 'yes'

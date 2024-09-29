@@ -13,12 +13,15 @@ import { Input } from '@/components/ui/input'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { signIn } from 'next-auth/react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import * as React from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { defaultValues, formSchema, LoginFormType } from '../constants'
 
 export function LoginForm() {
+  const router = useRouter()
+
   const form = useForm<LoginFormType>({
     resolver: zodResolver(formSchema),
     mode: 'onBlur',
@@ -33,7 +36,8 @@ export function LoginForm() {
     })
 
     if (res?.ok) {
-      window.location.replace('/')
+      router.replace('/')
+      router.refresh()
       return
     }
 

@@ -42,10 +42,7 @@ export default async function Page({
       <TypographyH2>{title}</TypographyH2>
       <div className="h-[20px]" />
       <div className={style}>
-        <TrainingForm
-          sessionNumber={Number(session)}
-          {...{ feature, program, userSession }}
-        />
+        <TrainingForm sessionNumber={Number(session)} {...{ feature, program }} />
         {isOneFeature && (
           <Anchor feature={feature as 'roughness' | 'breathiness'} program={program} />
         )}

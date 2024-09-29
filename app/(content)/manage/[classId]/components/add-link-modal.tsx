@@ -10,44 +10,44 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
+import { DropdownMenuItem } from '@/components/ui/dropdown-menu'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { useSession } from '@/hooks/use-session'
-import { STRAPI } from '@/server/strapi'
+import { putUserAction } from '@/server/actions/put-user-action'
+import { isEmpty } from 'lodash'
 import { useRouter } from 'next/navigation'
 import * as React from 'react'
 import { toast } from 'sonner'
-import { sendEmailTemplate } from '../send-email-action'
+import { sendEmailTemplateAction } from '../send-email-action'
 
 type Props = {
-  children: React.ReactNode
   name: string
   userId: number
   userEmail: string
-  disabled: boolean
+  pacLink?: string
+  groupId: number
 }
 
-export function AddLinkModal({ children, name, userEmail, userId, disabled }: Props) {
-  const session = useSession()
+export function AddLinkModal({ name, userEmail, userId, groupId, pacLink = '' }: Props) {
   const router = useRouter()
 
-  const [link, setLink] = React.useState('')
+  const [link, setLink] = React.useState(pacLink)
 
   async function handleClick() {
-    const jwt = session?.jwt
-    if (!link || !jwt) {
+    if (isEmpty(link)) {
       return
     }
+
     try {
       await Promise.all([
-        STRAPI.putUser({
-          userId: userId,
+        putUserAction({
+          userId,
+          groupId,
           data: {
             pacLink: link,
           },
-          jwt,
         }),
-        sendEmailTemplate(
+        sendEmailTemplateAction(
           userEmail,
           {
             user: {
@@ -66,7 +66,11 @@ export function AddLinkModal({ children, name, userEmail, userId, disabled }: Pr
 
   return (
     <Dialog>
-      <DialogTrigger disabled={disabled}>{children}</DialogTrigger>
+      <DialogTrigger>
+        <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+          Adicionar link do PAC
+        </DropdownMenuItem>
+      </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Incluir link para o Audbility</DialogTitle>
@@ -86,7 +90,7 @@ export function AddLinkModal({ children, name, userEmail, userId, disabled }: Pr
             <Input
               className="col-span-3"
               id="link"
-              value={link}
+              value={link ?? ''}
               onChange={(e) => setLink(e.target.value)}
             />
           </div>

@@ -18,6 +18,7 @@ import {
 import { STRAPI } from '@/server/strapi'
 import { AudioResult, Result, SessionResults as SessionResultsType } from '@/server/types'
 import { redirect } from 'next/navigation'
+import * as React from 'react'
 import { ExportButton } from '../components/export-button'
 
 type Props = {
@@ -53,15 +54,13 @@ export default async function ManageUserResultsPage({
     <main className="container mx-auto py-2">
       <div className="flex justify-between">
         <TypographyH2>{name}</TypographyH2>
-        <ExportButton ids={[id]}>
-          Exportar dados
-        </ExportButton>
+        <ExportButton ids={[id]}>Exportar dados</ExportButton>
       </div>
       <div className="h-[30px]" />
       {areResultsEmpty ? (
         <TypographyH4>Não há resultados para exibir</TypographyH4>
       ) : (
-        <>
+        <React.Fragment>
           <Accordion type="multiple">
             {sessions.map((session, index) => (
               <SessionResults key={session.id} session={session} index={index} />
@@ -69,7 +68,7 @@ export default async function ManageUserResultsPage({
           </Accordion>
           <div className="h-[40px]" />
           <MeanScoresChart chartData={chartData} />
-        </>
+        </React.Fragment>
       )}
     </main>
   )

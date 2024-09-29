@@ -6,7 +6,7 @@ import dayjs from 'dayjs'
 import { asString, generateCsv } from 'export-to-csv'
 import JSZip from 'jszip'
 import { exportData } from '../helpers'
-import { getUsersSessions } from './get-users-sessions-action'
+import { getUsersSessionsAction } from './get-users-sessions-action'
 
 type Props = {
   ids: number[]
@@ -14,7 +14,7 @@ type Props = {
 
 export function ExportButton({ ids, ...props }: Props) {
   async function downloadCsv() {
-    const usersProgress = await getUsersSessions(ids)
+    const usersProgress = await getUsersSessionsAction(ids)
     const csvRows = usersProgress.map((user) => ({
       userId: user.user.id,
       data: exportData(user.sessions),

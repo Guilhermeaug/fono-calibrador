@@ -2,26 +2,23 @@
 
 import { VoiceForm } from '@/components/voices-form/form'
 import { translateFeature } from '@/lib/utils'
-import { STRAPI } from '@/server/strapi'
 import { ProgramTraining } from '@/server/types'
 import { VoiceFormData } from '@/types'
 import dayjs from 'dayjs'
-import { Session } from 'next-auth'
+import { useRouter } from 'next/navigation'
 import * as React from 'react'
 import { toast } from 'sonner'
 import { computeScore } from '../helpers'
+import { submitTrainingAction } from '../submit-training-action'
 
 type Props = {
-  userSession: Session
   program: ProgramTraining
   feature: 'roughness' | 'breathiness' | 'both'
   sessionNumber: number
 }
 
-export function TrainingForm({ program, feature, sessionNumber, userSession }: Props) {
-  const {
-    user: { jwt },
-  } = userSession
+export function TrainingForm({ program, feature, sessionNumber }: Props) {
+  const router = useRouter()
   const startDate = React.useRef(dayjs().toISOString())
 
   const features =
@@ -72,19 +69,18 @@ export function TrainingForm({ program, feature, sessionNumber, userSession }: P
             ...audio,
             value: data.find((d) => d.feature === feature)?.value!,
           }))
-          await STRAPI.submitTraining({
+          await submitTrainingAction({
             programId: program.id,
             feature: feature as 'roughness' | 'breathiness',
             startDate: startDate.current,
             endDate,
-            jwt,
             audios,
           })
         }),
       )
       toast.success('Treinamento finalizado! Retornando para a tela principal.')
       setTimeout(() => {
-        window.location.href = '/startup'
+        router.push('/startup')
       }, 3000)
     } catch (error) {
       console.error(error)

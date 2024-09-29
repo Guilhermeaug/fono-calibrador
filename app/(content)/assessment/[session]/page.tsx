@@ -29,7 +29,7 @@ export default async function Page({ params: { session } }: Props) {
     <main className="container grid w-full auto-cols-fr place-content-center justify-items-center py-10">
       <TypographyH2>{title}</TypographyH2>
       <div className="h-[20px]" />
-      <AsssessmentForm {...{ program, isLastSession, userSession }} />
+      <AsssessmentForm {...{ program, isLastSession }} />
     </main>
   )
 }

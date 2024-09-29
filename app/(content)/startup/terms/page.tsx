@@ -2,6 +2,7 @@ import { TypographyH1, TypographyH4, TypographyP } from '@/components/typography
 import { AUTH } from '@/server/auth'
 import Image from 'next/image'
 import { redirect } from 'next/navigation'
+import * as React from 'react'
 import { AcceptTerms } from './components/accept-terms'
 
 export default async function TermsPage() {
@@ -110,11 +111,11 @@ export default async function TermsPage() {
         height={65}
       />
       {userInfo.hasAcceptedTerms === false && (
-        <>
+        <React.Fragment>
           <TypographyP>Desta forma:</TypographyP>
           <div className="h-[10px]" />
-          <AcceptTerms userId={userInfo.id} jwt={userInfo.jwt} />
-        </>
+          <AcceptTerms userId={userInfo.id} />
+        </React.Fragment>
       )}
     </main>
   )

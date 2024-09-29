@@ -10,5 +10,5 @@ const DEFAULT_VALUES = {
   name: '',
 }
 
-export type FORM_TYPE = z.infer<typeof formSchema>
+export type CreateGroupFormType = z.infer<typeof formSchema>
 export { DEFAULT_VALUES, formSchema }

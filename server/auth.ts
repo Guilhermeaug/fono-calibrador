@@ -1,5 +1,5 @@
 import { RegisterFormType } from '@/app/(content)/register/constants'
-import { AuthOptions, getServerSession, User } from 'next-auth'
+import { AuthOptions, getServerSession } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { revalidatePath } from 'next/cache'
 import { STRAPI } from './strapi'
@@ -69,8 +69,8 @@ async function signUp(data: RegisterFormType) {
   dataCopy.courseLevel = dataCopy.courseLevel.join(';')
 
   try {
-    const res = await STRAPI.signUp(dataCopy)
-    return res as User
+    await STRAPI.signUp(dataCopy)
+    return {}
   } catch (error: any) {
     return error
   }

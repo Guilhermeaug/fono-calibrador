@@ -2,7 +2,7 @@
 
 import { STRAPI } from '@/server/strapi'
 
-export async function sendEmailTemplate(
+export async function sendEmailTemplateAction(
   to: string,
   data: Record<string, any>,
   templateReferenceId: number,

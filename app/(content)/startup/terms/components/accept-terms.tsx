@@ -3,32 +3,33 @@
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { STRAPI } from '@/server/strapi'
+import { putUserAction } from '@/server/actions/put-user-action'
+import { useRouter } from 'next/navigation'
 import * as React from 'react'
 import { toast } from 'sonner'
 
 type Props = {
   userId: number
-  jwt: string
 }
 
-export function AcceptTerms({ userId, jwt }: Props) {
+export function AcceptTerms({ userId }: Props) {
+  const router = useRouter()
+
   const [accepted, setAccepted] = React.useState(false)
 
   async function handleSubmit() {
     if (accepted) {
-      await STRAPI.putUser({
+      await putUserAction({
         data: {
           hasAcceptedTerms: true,
         },
-        jwt,
         userId,
       })
       toast.success(
         'Termo de Consentimento Livre e Esclarecido aceito com sucesso! Redirecionando...',
       )
       setTimeout(() => {
-        window.location.href = '/startup'
+        router.push('/startup')
       }, 2000)
     } else {
       toast.error(

@@ -3,8 +3,9 @@
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { STRAPI } from '@/server/strapi'
+import { putUserAction } from '@/server/actions/put-user-action'
 import { UserInfo } from '@/server/types'
+import { useRouter } from 'next/navigation'
 import * as React from 'react'
 import { toast } from 'sonner'
 
@@ -13,23 +14,25 @@ type Props = {
 }
 
 export function AcceptTerms({ userInfo }: Props) {
+  const router = useRouter()
+
   const [accepted, setAccepted] = React.useState(false)
 
   async function handleSubmit() {
     if (accepted) {
-      await STRAPI.putUser({
+      await putUserAction({
         data: {
           firstPacStatus: 'DONE',
-          finalPacStatus: userInfo.firstPacStatus === 'DONE' ? 'DONE' : userInfo.finalPacStatus,
+          finalPacStatus:
+            userInfo.firstPacStatus === 'DONE' ? 'DONE' : userInfo.finalPacStatus,
         },
         userId: userInfo.id,
-        jwt: userInfo.jwt,
       })
       toast.success(
         'Teste do Processamento Auditivo finalizado com sucesso! Redirecionando...',
       )
       setTimeout(() => {
-        window.location.href = '/startup'
+        router.push('/startup')
       }, 2000)
     } else {
       toast.error(

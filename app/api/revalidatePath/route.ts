@@ -15,5 +15,7 @@ export async function POST(request: NextRequest) {
   const body = (await request.json()) as Data
   revalidatePath(body.path, body.type || 'page')
 
+  console.log('Revalidated path:', body.path)
+
   return NextResponse.json({ revalidated: true, now: Date.now() })
 }
