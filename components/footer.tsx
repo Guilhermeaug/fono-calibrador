@@ -2,7 +2,7 @@ import { DualImage } from './ui/dual-image'
 
 export function Footer() {
   return (
-    <footer className="container my-4 grid grid-cols-3 items-center gap-x-2 sm:grid-cols-6 sm:gap-x-4">
+    <footer className="container mt-2 mb-1 grid grid-cols-3 items-center gap-x-2 sm:grid-cols-6 sm:gap-x-4">
       <div className="relative">
         <DualImage
           lightImage="/images/faculdade_medicina.png"

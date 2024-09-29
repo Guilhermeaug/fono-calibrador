@@ -9,7 +9,7 @@ export default function Home() {
     <React.Fragment>
       <div className="h-8 bg-secondary" />
       <Navbar className="bg-secondary" />
-      <div className="relative h-[100px] bg-secondary md:h-[160px]" />
+      <div className="relative h-[100px] bg-secondary md:h-[120px] xl:h-[160px]" />
       <main className="relative mx-auto flex max-h-[600px] max-w-[900px] flex-col items-center gap-2 px-4 py-2 md:flex-row-reverse">
         <Image
           className="h-auto w-[400px] object-contain dark:brightness-75 dark:grayscale"
