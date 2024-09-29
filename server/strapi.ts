@@ -33,7 +33,7 @@ async function fetchStrapiApi({
   headers?: Record<string, string>
 }) {
   const token = jwt ?? TOKEN
-  const cache = tags.length ? 'default' : 'no-cache'
+  const cache = tags.length ? 'default' : 'no-store'
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
     ...propsHeaders,
