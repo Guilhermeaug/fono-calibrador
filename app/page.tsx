@@ -32,7 +32,11 @@ export default function Home() {
             </p>
             <p>
               Preparado para iniciar seu treinamento?{' '}
-              <Link className="text-sky-600 hover:underline" href="/startup">
+              <Link
+                className="text-sky-600 hover:underline"
+                href="/startup"
+                prefetch={false}
+              >
                 Clique aqui
               </Link>
             </p>
