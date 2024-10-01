@@ -1,5 +1,6 @@
 import { RegisterFormType } from '@/app/(content)/register/constants'
 import { explodeStrapiData } from '@/lib/utils'
+import { redirect } from 'next/navigation'
 import qs from 'qs'
 import {
   AdditionalData,
@@ -8,6 +9,7 @@ import {
   LoginPayload,
   ProgramAssessment,
   ProgramTraining,
+  StrapiError,
   SubmitAssessmentPayload,
   SubmitTrainingPayload,
   UserInfo,
@@ -408,13 +410,7 @@ async function getUser({ userId }: { userId: number }) {
   return explodeStrapiData(data) as UserInfo
 }
 
-async function putUser({
-  userId,
-  data,
-}: {
-  userId: number
-  data: Partial<UserInfo>
-}) {
+async function putUser({ userId, data }: { userId: number; data: Partial<UserInfo> }) {
   return fetchStrapiApi({
     path: `/users/${userId}`,
     body: data,
@@ -527,10 +523,18 @@ async function signUp(data: RegisterFormType) {
 }
 
 async function getCurrentUser(jwt: string) {
-  return fetchStrapiApi({
-    path: '/users/me',
-    jwt,
-  })
+  try {
+    const data = await fetchStrapiApi({
+      path: '/users/me',
+      jwt,
+    })
+    return data
+  } catch (error) {
+    const strapiError = error as StrapiError
+    if (strapiError.error.status === 401) {
+      redirect('/auth/logout')
+    }
+  }
 }
 
 async function sendResetPasswordToken(data: { email: string }) {
