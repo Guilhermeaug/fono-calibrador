@@ -524,7 +524,6 @@ async function signUp(data: RegisterFormType) {
 }
 
 async function getCurrentUser(jwt: string) {
-  console.log('getCurrentUser', jwt)
   try {
     const data = await fetchStrapiApi({
       path: '/users/me',
