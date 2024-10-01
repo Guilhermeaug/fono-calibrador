@@ -17,6 +17,7 @@ import {
 } from './types'
 
 export const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL
+export const APP_URL = process.env.APP_URL
 const TOKEN = process.env.TOKEN
 
 async function fetchStrapiApi({
@@ -532,7 +533,7 @@ async function getCurrentUser(jwt: string) {
   } catch (error) {
     const strapiError = error as StrapiError
     if (strapiError.error.status === 401) {
-      redirect('/auth/logout')
+      redirect('/auth/sign-out')
     }
   }
 }

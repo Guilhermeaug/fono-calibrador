@@ -47,6 +47,7 @@
     "react-day-picker": "8.10.1",
     "react-dom": "^18",
     "react-hook-form": "^7.53.0",
+    "react-loader-spinner": "^6.1.6",
     "react-microsoft-clarity": "^1.2.0",
     "react-player": "^2.16.0",
     "recharts": "^2.12.7",
