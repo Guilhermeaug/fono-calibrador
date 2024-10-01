@@ -528,7 +528,7 @@ async function getCurrentUser(jwt: string) {
   try {
     const data = await fetchStrapiApi({
       path: '/users/me',
-      jwt: jwt + 'aa',
+      jwt,
     })
     return data
   } catch (error) {
