@@ -9,20 +9,23 @@ type Props = {}
 
 export default function SignOutPage({}: Props) {
   React.useEffect(() => {
-    setTimeout(() => {
+    const run = async () => {
       toast.error('Acesso não autorizado, por favor, faça login novamente.')
-      setTimeout(() => {
-        signOut({
+      setTimeout(async () => {
+        await signOut({
           redirect: true,
           callbackUrl: '/login',
         })
       }, 2000)
-    }, 1000)
+    }
+
+    const timeout = setTimeout(() => run(), 1000)
+    return () => clearTimeout(timeout)
   }, [])
 
   return (
     <React.Fragment>
-      <main className="flex h-screen items-center justify-center">
+      <main className="flex h-[75vh] items-center justify-center">
         <ColorRing
           visible={true}
           height="80"
