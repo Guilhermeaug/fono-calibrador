@@ -98,7 +98,13 @@ export const columns: ColumnDef<Students>[] = [
                 <Link href={`results?id=${id}&name=${name}`}>Visualizar resultados</Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <AddLinkModal name={name} userId={id} pacLink={pacLink} userEmail={email} groupId={groupId} />
+              <AddLinkModal
+                name={name}
+                userId={id}
+                pacLink={pacLink}
+                userEmail={email}
+                groupId={groupId}
+              />
             </DropdownMenuContent>
           </DropdownMenu>
           <Dialog>

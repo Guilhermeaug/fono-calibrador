@@ -37,12 +37,12 @@ export default async function ManagePage({
   params: { classId },
   searchParams: { show, id },
 }: Props) {
-  const user = await AUTH.getServerSession()
+  const user = await AUTH.getCurrentUser()
   if (!user) {
     redirect('/login')
   }
 
-  const tableData = await getData(Number(classId), user.user.jwt)
+  const tableData = await getData(Number(classId), user.jwt)
   let userDetails
   if (show === 'details' && id) {
     userDetails = await STRAPI.getUserFullData({ userId: Number(id) })
