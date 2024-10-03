@@ -38,7 +38,7 @@ export default function ContactPage() {
     if (form.formState.isSubmitSuccessful) {
       form.reset()
     }
-  }, [form.formState, form.reset])
+  }, [form])
 
   return (
     <main className="mx-auto max-w-[850px] px-2 py-8 lg:px-0">

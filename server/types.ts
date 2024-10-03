@@ -114,7 +114,7 @@ export type AdditionalData = {
   workUniversity: string
   university: string
   courseLevel: string
-  voiceAreaDisciplines: string
+  voiceAreaDisciplines: boolean
   graduationPeriod: string
   hasExperienceInAuditoryPerceptualAssessment: boolean
   auditoryPerceptualAssessmentTime: string
@@ -128,7 +128,10 @@ export type AdditionalData = {
   hearing: string
   laterality: string
   learningComplaints: boolean
+  phone: string
 } & StrapiDefaultAttributes
+
+export type UserWithAdditionalData = UserInfo & { additionalData: AdditionalData }
 
 export type SubmitAssessmentPayload = {
   programId: number

@@ -1,7 +1,7 @@
 import { AUTH } from '@/server/auth'
 import { STRAPI } from '@/server/strapi'
 import { redirect } from 'next/navigation'
-import { columns, Students } from './components/columns'
+import { columns, Student } from './components/columns'
 import { DataTable } from './components/data-table'
 import { DetailsSheet } from './components/details-sheet'
 
@@ -15,7 +15,7 @@ type Props = {
   }
 }
 
-async function getData(classId: number, jwt: string): Promise<Students[]> {
+async function getData(classId: number, jwt: string): Promise<Student[]> {
   const data = await STRAPI.getStudentsInClass({ groupId: Number(classId), jwt })
   return data.map((student) => {
     let status: 'terms' | 'waiting_pac' | 'pac' | 'progress' = 'progress'
@@ -43,10 +43,8 @@ export default async function ManagePage({
   }
 
   const tableData = await getData(Number(classId), user.jwt)
-  let userDetails
-  if (show === 'details' && id) {
-    userDetails = await STRAPI.getUserFullData({ userId: Number(id) })
-  }
+  const userDetails =
+    tableData.find((student) => student.id === Number(id))?.additionalData || null
 
   return (
     <main className="mx-auto py-2">

@@ -1,42 +1,49 @@
 'use client'
 
 import { Button, ButtonProps } from '@/components/ui/button'
-import { addNewLine, getCsvConfig } from '@/lib/csv'
 import dayjs from 'dayjs'
-import { asString, generateCsv } from 'export-to-csv'
-import JSZip from 'jszip'
+import writeXlsxFile from 'write-excel-file'
+import { Student } from '../[classId]/components/columns'
+import { xlsxSchemaSessionsDetails, xlsxSchemaUserDetails } from '../constants'
 import { exportData } from '../helpers'
 import { getUsersSessionsAction } from './get-users-sessions-action'
 
 type Props = {
   ids: number[]
+  usersDetails?: Student[]
 } & ButtonProps
 
-export function ExportButton({ ids, ...props }: Props) {
-  async function downloadCsv() {
+export function ExportButton({ ids, usersDetails, ...props }: Props) {
+  async function generateSessionsSheetObjects() {
     const usersProgress = await getUsersSessionsAction(ids)
-    const csvRows = usersProgress.map((user) => ({
-      userId: user.user.id,
-      data: exportData(user.sessions),
-    }))
+    const csvRows = usersProgress.map((user) => exportData(user.sessions)).flat()
+    return csvRows
+  }
+
+  async function downloadXlsx() {
+    const sessionsSheetObjects = await generateSessionsSheetObjects()
     const currentTime = dayjs().format('YYYY-MM-DD_HH-mm-ss')
-    const zip = new JSZip()
-    for (const { userId, data } of csvRows) {
-      if (!data.length) continue
-      const csvConfig = getCsvConfig(`resultados_${userId}_${currentTime}.csv`)
-      const csv = generateCsv(csvConfig)(data)
-      const csvBufferStr = addNewLine(asString(csv))
-      zip.file(`resultados_${userId}_${currentTime}.csv`, csvBufferStr)
+    const fileName = `dados_${currentTime}.xlsx`
+
+    if (usersDetails) {
+      // @ts-ignore
+      await writeXlsxFile([usersDetails, sessionsSheetObjects], {
+        schema: [xlsxSchemaUserDetails, xlsxSchemaSessionsDetails],
+        sheets: ['usuários', 'resultados'],
+        fileName,
+      })
+    } else {
+      //@ts-ignore
+      await writeXlsxFile(sessionsSheetObjects, {
+        schema: xlsxSchemaSessionsDetails,
+        sheet: 'resultados',
+        fileName,
+      })
     }
-    const zipData = await zip.generateAsync({ type: 'blob' })
-    const link = document.createElement('a')
-    link.href = URL.createObjectURL(zipData)
-    link.download = `resultados_${currentTime}.zip`
-    link.click()
   }
 
   return (
-    <Button onClick={downloadCsv} {...props}>
+    <Button onClick={downloadXlsx} {...props}>
       {props.children}
     </Button>
   )

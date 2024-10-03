@@ -35,12 +35,12 @@ export default async function ManageUserResultsPage({
     redirect('/manage')
   }
 
-  const { sessions } = await STRAPI.getUserResults({
+  const userProgress = await STRAPI.getUserResults({
     programId: 1,
     userId: id,
   })
 
-  const areResultsEmpty = sessions.every(
+  const areResultsEmpty = userProgress.sessions.every(
     (session) =>
       !session.trainingBreathinessResults &&
       !session.trainingRoughnessResults &&
@@ -48,7 +48,7 @@ export default async function ManageUserResultsPage({
       !session.assessmentRoughnessResults,
   )
 
-  const chartData = computateAssessmentsMeanScores(sessions)
+  const chartData = computateAssessmentsMeanScores(userProgress.sessions)
 
   return (
     <main className="container mx-auto py-2">
@@ -62,7 +62,7 @@ export default async function ManageUserResultsPage({
       ) : (
         <React.Fragment>
           <Accordion type="multiple">
-            {sessions.map((session, index) => (
+            {userProgress.sessions.map((session, index) => (
               <SessionResults key={session.id} session={session} index={index} />
             ))}
           </Accordion>

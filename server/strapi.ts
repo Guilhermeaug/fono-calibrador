@@ -1,5 +1,6 @@
 import { RegisterFormType } from '@/app/(content)/register/constants'
 import { explodeStrapiData } from '@/lib/utils'
+import { isNil } from 'lodash'
 import { redirect } from 'next/navigation'
 import qs from 'qs'
 import {
@@ -14,6 +15,7 @@ import {
   SubmitTrainingPayload,
   UserInfo,
   UserProgress,
+  UserWithAdditionalData,
 } from './types'
 
 export const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL
@@ -25,6 +27,7 @@ async function fetchStrapiApi({
   body,
   jwt,
   tags = [],
+  revalidate = 30 * 60,
   method = 'GET',
   headers: propsHeaders = {},
 }: {
@@ -32,30 +35,32 @@ async function fetchStrapiApi({
   body?: Record<string, any>
   jwt?: string
   tags?: string[]
+  revalidate?: number
   method?: string
   headers?: Record<string, string>
 }) {
   const token = jwt ?? TOKEN
-  const cache: RequestCache = tags.length ? 'force-cache' : 'no-store'
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
     ...propsHeaders,
   }
   token && (headers['Authorization'] = `Bearer ${token}`)
+  const hasBody = !isNil(body)
 
   return fetch(`${STRAPI_URL}/api${path}`, {
     method,
-    body: JSON.stringify(body),
     headers,
-    cache,
+    ...(hasBody && { body: JSON.stringify(body) }),
     ...(tags.length
       ? {
           next: {
-            revalidate: 3600,
+            revalidate,
             tags,
           },
         }
-      : {}),
+      : {
+          cache: 'no-store',
+        }),
   }).then(async (res) => {
     const json = await res.json()
     if (!res.ok) {
@@ -381,14 +386,22 @@ async function getStudentsInClass({ groupId, jwt }: { groupId: number; jwt: stri
   const query = qs.stringify({
     fields: ['id'],
     populate: {
-      students: true,
+      students: {
+        populate: {
+          additionalData: true,
+        },
+      },
     },
   })
-  const data = await fetchStrapiApi({
-    path: `/groups/${groupId}?${query}`,
-    jwt,
-  })
-  return explodeStrapiData(data.data.attributes.students) as UserInfo[]
+  const data = explodeStrapiData(
+    await fetchStrapiApi({
+      path: `/groups/${groupId}?${query}`,
+      tags: [`group-${groupId}`],
+      revalidate: 5 * 60,
+      jwt,
+    }),
+  )
+  return data.students as UserWithAdditionalData[]
 }
 
 async function getUserFullData({ userId }: { userId: number }) {

@@ -5,11 +5,11 @@ import { AUTH } from '@/server/auth'
 import { STRAPI } from '@/server/strapi'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
+import * as React from 'react'
 import { Suspense } from 'react'
 import { CheckList } from './components/check-list'
 import { ProgressSheet } from './components/progress-sheet'
 import { TrainingSelectionModal } from './components/training-selection'
-import * as React from 'react'
 
 type Props = {
   searchParams: {

@@ -14,7 +14,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { translations } from '../../constants'
 
 type Props = {
-  userDetails: AdditionalData
+  userDetails?: AdditionalData
 }
 
 export function DetailsSheet({ userDetails }: Props) {
@@ -43,12 +43,12 @@ export function DetailsSheet({ userDetails }: Props) {
 }
 
 type UserDetailsProps = {
-  userDetails: AdditionalData
+  userDetails?: AdditionalData
 }
 
 function UserDetails({ userDetails }: UserDetailsProps) {
-  const details = cloneDeep(userDetails)
-  details.birthDate = dayjs(userDetails.birthDate).format('DD/MM/YYYY')
+  const details = cloneDeep(userDetails)!
+  details.birthDate = dayjs(userDetails!.birthDate).format('DD/MM/YYYY')
 
   return (
     <div className="grid gap-1 text-base font-normal capitalize">

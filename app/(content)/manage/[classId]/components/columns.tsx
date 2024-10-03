@@ -18,19 +18,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { UserWithAdditionalData } from '@/server/types'
 import { ColumnDef } from '@tanstack/react-table'
 import { MoreHorizontalIcon, TrashIcon } from 'lucide-react'
 import Link from 'next/link'
 import { removeUserFromGroup } from '../remove-user-action'
 import { AddLinkModal } from './add-link-modal'
 
-export type Students = {
-  id: number
-  name: string
-  email: string
-  status: 'terms' | 'waiting_pac' | 'pac' | 'progress'
-  pacLink?: string
-}
+export type Student = UserWithAdditionalData & { status: string }
 
 export const statuses = [
   {
@@ -51,7 +46,7 @@ export const statuses = [
   },
 ]
 
-export const columns: ColumnDef<Students>[] = [
+export const columns: ColumnDef<Student>[] = [
   {
     header: 'Nome',
     accessorKey: 'name',
@@ -79,7 +74,12 @@ export const columns: ColumnDef<Students>[] = [
     id: 'actions',
     cell: ({ row }) => {
       const { id, name, email, pacLink } = row.original
-      const groupId = Number(window.location.pathname.split('/').pop())
+      let groupId: number
+      if (typeof window !== 'undefined') {
+        groupId = Number(window.location.pathname.split('/').pop())
+      } else {
+        groupId = 0
+      }
 
       return (
         <div className="flex items-center gap-2">

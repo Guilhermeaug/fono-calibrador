@@ -32,16 +32,23 @@ export function TrainingSelectionModal({
       'Você está na última sessão e precisa realizar ambos os treinamentos simultaneamente.',
     firstSession:
       'Você deve escolher um dos tipos para realizar agora. O outro ficará disponível em 24 horas e deve ser entregue em até 48 horas.',
-    default: 'Complete o treinamento a seguir. O outro ficará disponível em 24 horas e deve ser entregue em até 48 horas.',
+    default:
+      'Complete o treinamento a seguir. O outro ficará disponível em 24 horas e deve ser entregue em até 48 horas.',
   }
-  const displayText = isLastSession ? text.lastSession : lastSessionIndex === 1 ? text.firstSession : text.default
+  const displayText = isLastSession
+    ? text.lastSession
+    : lastSessionIndex === 1
+      ? text.firstSession
+      : text.default
 
   return (
     <AlertDialog open={true}>
       <AlertDialogContent className="h-[300px] w-[400px]">
         <AlertDialogHeader>
           <AlertDialogTitle>Seleção de treinamento</AlertDialogTitle>
-          <AlertDialogDescription className="text-base">{displayText}</AlertDialogDescription>
+          <AlertDialogDescription className="text-base">
+            {displayText}
+          </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <div className="flex w-full justify-center gap-4">

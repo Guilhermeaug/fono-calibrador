@@ -137,7 +137,7 @@ export function SessionDetails({
         }
 
         return (
-          <div className="flex justify-between">
+          <div key={key} className="flex justify-between">
             <div>
               <TypographyLarge className="text-lg font-bold">
                 {data.title}

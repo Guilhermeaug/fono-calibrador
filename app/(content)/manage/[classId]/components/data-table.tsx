@@ -36,12 +36,12 @@ import * as React from 'react'
 import { toast } from 'sonner'
 import { ExportButton } from '../../components/export-button'
 import { deleteGroup } from '../delete-group-action'
-import { statuses, Students } from './columns'
+import { statuses, Student } from './columns'
 import { DataTableFacetedFilter } from './data-table-faceted-filter'
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<Students, TValue>[]
-  data: Students[]
+  columns: ColumnDef<Student, TValue>[]
+  data: Student[]
   classId: string
 }
 
@@ -52,7 +52,7 @@ export function DataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
 
-  const table = useReactTable<Students>({
+  const table = useReactTable<Student>({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
@@ -100,6 +100,7 @@ export function DataTable<TData, TValue>({
             className="ml-auto self-end justify-self-end"
             variant="outline"
             ids={table.getRowModel().rows.map((row) => row.original.id)}
+            usersDetails={table.getRowModel().rows.map((row) => row.original)}
           >
             Exportar dados
           </ExportButton>
