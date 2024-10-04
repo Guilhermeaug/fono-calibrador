@@ -6,6 +6,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Button } from '@/components/ui/button'
 import {
   Sheet,
   SheetContent,
@@ -14,8 +16,10 @@ import {
   SheetTitle,
 } from '@/components/ui/sheet'
 import { UserProgress } from '@/server/types'
+import { ShieldAlertIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import * as React from 'react'
+import { restartSessionsAction } from '../restart-sessions-action'
 import { SessionDetails } from './session-details'
 
 type Props = {
@@ -24,7 +28,7 @@ type Props = {
 } & React.ComponentPropsWithoutRef<typeof Sheet>
 
 export function ProgressSheet({
-  progress: { sessions, favoriteFeature },
+  progress: { sessions, favoriteFeature, status },
   isOnLastSession,
   ...props
 }: Props) {
@@ -47,6 +51,29 @@ export function ProgressSheet({
             <br /> <br />
             Lembre-se: Você pode fazer apenas um dos treinamentos por dia.
           </SheetDescription>
+          {status === 'INVALID' && (
+            <Alert variant="destructive" className="dark:text-white">
+              <ShieldAlertIcon className="h-4 w-4" />
+              <AlertTitle>Sessão invalidada.</AlertTitle>
+              <AlertDescription>
+                Sua sessão foi invalidada, e por isso, terá que reiniciar todo o processo
+                de avaliação e treinamento.
+              </AlertDescription>
+              <div className="flex justify-center">
+                <Button
+                  variant="destructive"
+                  className="mt-2 w-full"
+                  onClick={() =>
+                    restartSessionsAction({
+                      programId: 1,
+                    })
+                  }
+                >
+                  Reiniciar
+                </Button>
+              </div>
+            </Alert>
+          )}
         </SheetHeader>
         <div className="h-[30px]" />
         <Accordion type="multiple" defaultValue={[String(sessions.length - 1)]}>

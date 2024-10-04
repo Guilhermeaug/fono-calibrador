@@ -342,6 +342,17 @@ async function acceptPac({ userId, jwt }: { userId: number; jwt: string }) {
   })
 }
 
+async function restartSessions({ programId, jwt }: { programId: number; jwt: string }) {
+  return fetchStrapiApi({
+    path: '/users-progress/restartSessions',
+    body: {
+      programId,
+    },
+    jwt,
+    method: 'POST',
+  })
+}
+
 async function alignProgress({
   userId,
   programId,
@@ -356,8 +367,8 @@ async function alignProgress({
     body: {
       userId,
       programId,
-      jwt,
     },
+    jwt,
     method: 'POST',
   })) as UserProgress
 }
@@ -598,6 +609,7 @@ export const STRAPI = {
   setFavoriteFeature,
   getProgramById,
   getUser,
+  restartSessions,
   /////////
   login,
   signUp,
