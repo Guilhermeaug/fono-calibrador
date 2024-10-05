@@ -46,18 +46,14 @@ export default async function PacBeginPage() {
         Importante: após realizar o teste, é necessário retornar nesta página e assinar
         virtualmente o Termo de Conclusão do PAC
       </TypographyP>
-      <div className="mx-auto flex gap-4 py-8">
-        <Button
-          className="w-full uppercase"
-          disabled={isNil(pacLink)}
-          asChild={!isNil(pacLink)}
-        >
+      <div className="mx-auto flex flex-col justify-center gap-4 py-8 uppercase md:flex-row">
+        <Button disabled={isNil(pacLink)} asChild={!isNil(pacLink)}>
           <Link href={startPac} target="_blank">
             Iniciar pac
           </Link>
         </Button>
         {pacLink && needsToAcceptTerms && (
-          <Button className="w-full uppercase" asChild>
+          <Button asChild>
             <Link href="end">Termo de Conclusão PAC</Link>
           </Button>
         )}
