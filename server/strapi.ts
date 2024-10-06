@@ -435,7 +435,7 @@ async function getTeachersGroups({ userId, jwt }: { userId: number; jwt: string 
   return fetchStrapiApi({
     path: `/groups?${query}`,
     jwt,
-  }) as Promise<Group>
+  }) as Promise<Group[]>
 }
 
 async function createGroup({ data }: { data: Partial<Group> }) {
