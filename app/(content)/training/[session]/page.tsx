@@ -41,6 +41,11 @@ export default async function Page({
     <main className="container py-8">
       <TypographyH2>{title}</TypographyH2>
       <div className="h-[20px]" />
+      <p>
+        Se não conseguir escutar o áudio, clique em algum ponto da tela e tente novamente.
+        Em último caso, reinicie a página.
+      </p>
+      <div className="h-[30px]" />
       <div className={style}>
         <TrainingForm sessionNumber={Number(session)} {...{ feature, program }} />
         {isOneFeature && (

@@ -5,9 +5,9 @@ import { redirect } from 'next/navigation'
 import qs from 'qs'
 import {
   AdditionalData,
-  FullProgram,
   Group,
   LoginPayload,
+  Program,
   ProgramAssessment,
   ProgramTraining,
   StrapiError,
@@ -19,7 +19,6 @@ import {
 } from './types'
 
 export const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL
-export const APP_URL = process.env.APP_URL
 const TOKEN = process.env.TOKEN
 
 async function fetchStrapiApi({
@@ -66,17 +65,8 @@ async function fetchStrapiApi({
     if (!res.ok) {
       throw json
     }
-    return json
+    return explodeStrapiData(json)
   })
-}
-
-async function getFullProgram({ id }: { id: number }) {
-  const data = explodeStrapiData(
-    await fetchStrapiApi({
-      path: `/programs/${id}?populate=deep`,
-    }),
-  ) as FullProgram
-  return data
 }
 
 async function getProgramAssessment({ id }: { id: number }) {
@@ -88,12 +78,10 @@ async function getProgramAssessment({ id }: { id: number }) {
     },
   })
 
-  const data = explodeStrapiData(
-    await fetchStrapiApi({
-      path: `/programs/${id}?${query}`,
-      tags: [`program-${id}`],
-    }),
-  ) as ProgramAssessment
+  const data = fetchStrapiApi({
+    path: `/programs/${id}?${query}`,
+    tags: [`program-${id}`],
+  }) as Promise<ProgramAssessment>
 
   return data
 }
@@ -113,13 +101,10 @@ async function getProgramTraining({ id }: { id: number }) {
     },
   })
 
-  const data = explodeStrapiData(
-    await fetchStrapiApi({
-      path: `/programs/${id}?${query}`,
-      tags: [`program-${id}`],
-    }),
-  ) as ProgramTraining
-  return data
+  return fetchStrapiApi({
+    path: `/programs/${id}?${query}`,
+    tags: [`program-${id}`],
+  }) as Promise<ProgramTraining>
 }
 
 async function getUserProgress({
@@ -143,12 +128,11 @@ async function getUserProgress({
     populate: ['sessions'],
   })
 
-  const data = explodeStrapiData(
-    await fetchStrapiApi({
-      path: `/users-progress?${query}`,
-      jwt,
-    }),
-  ) as UserProgress[]
+  const data = (await fetchStrapiApi({
+    path: `/users-progress?${query}`,
+    jwt,
+  })) as UserProgress[]
+
   return data && data[0]
 }
 
@@ -208,12 +192,11 @@ async function getUserResults({
     },
   })
 
-  const data = explodeStrapiData(
-    await fetchStrapiApi({
-      path: `/users-progress?${query}`,
-      jwt,
-    }),
-  ) as UserProgress[]
+  const data = (await fetchStrapiApi({
+    path: `/users-progress?${query}`,
+    jwt,
+  })) as UserProgress[]
+
   return data && data[0]
 }
 
@@ -256,15 +239,15 @@ async function getUsersSessionResults({
     },
   })
 
-  return explodeStrapiData(
-    await fetchStrapiApi({
-      path: `/users-progress?${query}`,
-    }),
-  ) as (UserProgress & {
-    user: {
-      id: number
-    }
-  })[]
+  return fetchStrapiApi({
+    path: `/users-progress?${query}`,
+  }) as Promise<
+    (UserProgress & {
+      user: {
+        id: number
+      }
+    })[]
+  >
 }
 
 async function checkAnswer({
@@ -362,7 +345,7 @@ async function alignProgress({
   programId: number
   jwt: string
 }) {
-  return (await fetchStrapiApi({
+  return fetchStrapiApi({
     path: '/users-progress/alignProgress',
     body: {
       userId,
@@ -370,7 +353,7 @@ async function alignProgress({
     },
     jwt,
     method: 'POST',
-  })) as UserProgress
+  }) as Promise<UserProgress>
 }
 
 async function sendContactEmail(data: { email: string; content: string }) {
@@ -404,14 +387,13 @@ async function getStudentsInClass({ groupId, jwt }: { groupId: number; jwt: stri
       },
     },
   })
-  const data = explodeStrapiData(
-    await fetchStrapiApi({
-      path: `/groups/${groupId}?${query}`,
-      tags: [`group-${groupId}`],
-      revalidate: 5 * 60,
-      jwt,
-    }),
-  )
+  const data = await fetchStrapiApi({
+    path: `/groups/${groupId}?${query}`,
+    tags: [`group-${groupId}`],
+    revalidate: 5 * 60,
+    jwt,
+  })
+
   return data.students as UserWithAdditionalData[]
 }
 
@@ -425,14 +407,13 @@ async function getUserFullData({ userId }: { userId: number }) {
   const data = await fetchStrapiApi({
     path: `/users/${userId}?${query}`,
   })
-  return explodeStrapiData(data.additionalData) as AdditionalData
+  return data.additionalData as AdditionalData
 }
 
 async function getUser({ userId }: { userId: number }) {
-  const data = await fetchStrapiApi({
+  return fetchStrapiApi({
     path: `/users/${userId}`,
-  })
-  return explodeStrapiData(data) as UserInfo
+  }) as Promise<UserInfo>
 }
 
 async function putUser({ userId, data }: { userId: number; data: Partial<UserInfo> }) {
@@ -451,11 +432,10 @@ async function getTeachersGroups({ userId, jwt }: { userId: number; jwt: string 
       },
     },
   })
-  const data = await fetchStrapiApi({
+  return fetchStrapiApi({
     path: `/groups?${query}`,
     jwt,
-  })
-  return explodeStrapiData(data) as Group[]
+  }) as Promise<Group>
 }
 
 async function createGroup({ data }: { data: Partial<Group> }) {
@@ -525,7 +505,7 @@ async function getProgramById({ id }: { id: number }) {
   return fetchStrapiApi({
     path: `/programs/${id}`,
     tags: [`program-${id}`],
-  })
+  }) as Promise<Program>
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -583,7 +563,6 @@ async function resetPassword(data: { code: string; password: string }) {
 }
 
 export const STRAPI = {
-  getFullProgram,
   getProgramAssessment,
   getProgramTraining,
   checkAnswer,

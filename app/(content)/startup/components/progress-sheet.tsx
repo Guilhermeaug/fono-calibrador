@@ -15,7 +15,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet'
-import { UserProgress } from '@/server/types'
+import { Program, UserProgress } from '@/server/types'
 import { ShieldAlertIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import * as React from 'react'
@@ -24,12 +24,12 @@ import { SessionDetails } from './session-details'
 
 type Props = {
   progress: UserProgress
-  isOnLastSession: boolean
+  program: Program
 } & React.ComponentPropsWithoutRef<typeof Sheet>
 
 export function ProgressSheet({
   progress: { sessions, favoriteFeature, status },
-  isOnLastSession,
+  program,
   ...props
 }: Props) {
   const router = useRouter()
@@ -39,6 +39,8 @@ export function ProgressSheet({
       router.push('/startup')
     }
   }
+
+  const isOnLastSession = sessions.length === program.numberOfSessions
 
   return (
     <Sheet defaultOpen onOpenChange={handleOpenChange} {...props}>
@@ -50,6 +52,11 @@ export function ProgressSheet({
             itens pendentes de ação ou que estão bloqueados.
             <br /> <br />
             Lembre-se: Você pode fazer apenas um dos treinamentos por dia.
+            <br /> <br />
+            <span className="text-blue-600">
+              Você está atualmente na sessão {sessions.length + 1} de{' '}
+              {program.numberOfSessions}
+            </span>
           </SheetDescription>
           {status === 'INVALID' && (
             <Alert variant="destructive" className="dark:text-white">
@@ -65,7 +72,7 @@ export function ProgressSheet({
                   className="mt-2 w-full"
                   onClick={() =>
                     restartSessionsAction({
-                      programId: 1,
+                      programId: program.id,
                     })
                   }
                 >

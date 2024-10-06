@@ -52,26 +52,28 @@ export type SessionResults = {
   trainingBreathinessStatus: Status
 } & StrapiDefaultAttributes
 
-export type FullProgram = {
-  assessment: Audio[]
-  training: Audio[]
-  roughnessAnchor: Audio[]
-  breathinessAnchor: Audio[]
+export type Program = {
   numberOfSessions: number
+  sessionsThreshold: number[]
 } & StrapiDefaultAttributes
 
 export type ProgramAssessment = {
   assessment: Audio[]
-  numberOfSessions: number
-} & StrapiDefaultAttributes
+} & Program
 
 export type ProgramTraining = {
   training: Audio[]
   roughnessAnchor: Audio[]
   breathinessAnchor: Audio[]
-  numberOfSessions: number
-  sessionsThreshold: number[]
-} & StrapiDefaultAttributes
+} & Program
+
+export type FullProgram = {
+  training: Audio[]
+  roughnessAnchor: Audio[]
+  breathinessAnchor: Audio[]
+} & Program &
+  ProgramAssessment &
+  ProgramTraining
 
 export type UserProgress = {
   sessions: SessionResults[]
