@@ -12,12 +12,8 @@ export default async function PacBeginPage() {
   }
 
   let { pacLink, firstPacStatus, finalPacStatus } = userInfo
-  if (!pacLink) {
-    pacLink = 'https://www.audbility.com.br/'
-  }
 
   const startPac = pacLink ? pacLink : '#'
-
   const needsToAcceptTerms = firstPacStatus !== 'DONE' || finalPacStatus !== 'DONE'
 
   return (
