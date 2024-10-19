@@ -6,7 +6,7 @@ import { redirect } from 'next/navigation'
 
 async function deleteGroup(groupId: number) {
   await STRAPI.deleteGroup({ groupId })
-  revalidatePath('/manage', 'layout')
+  revalidatePath('/manage')
   redirect('/manage/add')
 }
 

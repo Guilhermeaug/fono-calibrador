@@ -18,16 +18,19 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { UserWithAdditionalData } from '@/server/types'
+import { UserStatus, UserWithAdditionalData } from '@/server/types'
 import { ColumnDef } from '@tanstack/react-table'
 import { MoreHorizontalIcon, TrashIcon } from 'lucide-react'
 import Link from 'next/link'
 import { removeUserFromGroup } from '../remove-user-action'
 import { AddLinkModal } from './add-link-modal'
 
-export type Student = UserWithAdditionalData & { status: string }
+export type Student = UserWithAdditionalData & {
+  userStatus: string
+  sessionStatus: UserStatus
+}
 
-export const statuses = [
+export const userStatuses = [
   {
     value: 'terms',
     label: 'Aguardando aceite dos termos',
@@ -46,6 +49,25 @@ export const statuses = [
   },
 ]
 
+export const progressStatuses = [
+  {
+    value: 'WAITING',
+    label: 'Esperando',
+  },
+  {
+    value: 'DONE',
+    label: 'Completo',
+  },
+  {
+    value: 'INVALID',
+    label: 'Inválido',
+  },
+  {
+    value: 'READY',
+    label: 'Pronto',
+  },
+]
+
 export const columns: ColumnDef<Student>[] = [
   {
     header: 'Nome',
@@ -57,9 +79,9 @@ export const columns: ColumnDef<Student>[] = [
   },
   {
     header: 'Status',
-    accessorKey: 'status',
+    accessorKey: 'userStatus',
     cell: ({ row }) => {
-      const status = row.original.status
+      const status = row.original.userStatus
       return (
         <span className="whitespace-nowrap rounded-md bg-fuchsia-300 px-2 py-1 text-xs uppercase dark:bg-fuchsia-700">
           {status === 'terms' && 'Aguardando aceite dos termos'}
@@ -68,6 +90,27 @@ export const columns: ColumnDef<Student>[] = [
           {status === 'progress' && 'Em progresso'}
         </span>
       )
+    },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id))
+    },
+  },
+  {
+    header: 'Progresso',
+    accessorKey: 'sessionStatus',
+    cell: ({ row }) => {
+      const status = row.original.sessionStatus
+      return (
+        <span className="whitespace-nowrap rounded-md bg-fuchsia-300 px-2 py-1 text-xs uppercase dark:bg-fuchsia-700">
+          {status === 'DONE' && 'Completo'}
+          {status === 'INVALID' && 'Inválido'}
+          {status === 'READY' && 'Pronto'}
+          {status === 'WAITING' && 'Esperando'}
+        </span>
+      )
+    },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id))
     },
   },
   {

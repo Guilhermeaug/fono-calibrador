@@ -1,6 +1,7 @@
 import { AUTH } from '@/server/auth'
 import { STRAPI } from '@/server/strapi'
 import { redirect } from 'next/navigation'
+import * as React from 'react'
 import { columns, Student } from './components/columns'
 import { DataTable } from './components/data-table'
 import { DetailsSheet } from './components/details-sheet'
@@ -17,17 +18,18 @@ type Props = {
 
 async function getData(classId: number, jwt: string): Promise<Student[]> {
   const data = await STRAPI.getStudentsInClass({ groupId: Number(classId), jwt })
-  return data.map((student) => {
-    let status: 'terms' | 'waiting_pac' | 'pac' | 'progress' = 'progress'
+  return data.map(({ userProgress: { status: sessionStatus }, ...student }) => {
+    let userStatus: 'terms' | 'waiting_pac' | 'pac' | 'progress' = 'progress'
     if (!student.hasAcceptedTerms) {
-      status = 'terms'
+      userStatus = 'terms'
     } else if (!student.pacLink) {
-      status = 'waiting_pac'
+      userStatus = 'waiting_pac'
     } else if (student.firstPacStatus === 'READY') {
-      status = 'pac'
+      userStatus = 'pac'
     }
     return {
-      status,
+      userStatus,
+      sessionStatus,
       ...student,
     }
   })
@@ -47,9 +49,9 @@ export default async function ManagePage({
     tableData.find((student) => student.id === Number(id))?.additionalData || null
 
   return (
-    <main className="mx-auto py-2">
+    <React.Fragment>
       <DataTable columns={columns} data={tableData} classId={classId} />
       {show === 'details' && id && <DetailsSheet userDetails={userDetails!} />}
-    </main>
+    </React.Fragment>
   )
 }

@@ -4,7 +4,6 @@ import { isNil } from 'lodash'
 import { redirect } from 'next/navigation'
 import qs from 'qs'
 import {
-  AdditionalData,
   Group,
   LoginPayload,
   Program,
@@ -15,7 +14,7 @@ import {
   SubmitTrainingPayload,
   UserInfo,
   UserProgress,
-  UserWithAdditionalData,
+  UserWithAdditionalDataAndProgressStatus,
 } from './types'
 
 export const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL
@@ -381,8 +380,12 @@ async function getStudentsInClass({ groupId, jwt }: { groupId: number; jwt: stri
     fields: ['id'],
     populate: {
       students: {
+        fields: ['id', 'name', 'email', 'hasAcceptedTerms', 'pacLink', 'firstPacStatus'],
         populate: {
           additionalData: true,
+          userProgress: {
+            fields: ['status'],
+          },
         },
       },
     },
@@ -394,20 +397,7 @@ async function getStudentsInClass({ groupId, jwt }: { groupId: number; jwt: stri
     jwt,
   })
 
-  return data.students as UserWithAdditionalData[]
-}
-
-async function getUserFullData({ userId }: { userId: number }) {
-  const query = qs.stringify({
-    fields: ['id'],
-    populate: {
-      additionalData: true,
-    },
-  })
-  const data = await fetchStrapiApi({
-    path: `/users/${userId}?${query}`,
-  })
-  return data.additionalData as AdditionalData
+  return data.students as UserWithAdditionalDataAndProgressStatus[]
 }
 
 async function getUser({ userId }: { userId: number }) {
@@ -577,7 +567,6 @@ export const STRAPI = {
   sendContactEmail,
   sendEmailTemplate,
   getStudentsInClass,
-  getUserFullData,
   putUser,
   getTeachersGroups,
   createGroup,

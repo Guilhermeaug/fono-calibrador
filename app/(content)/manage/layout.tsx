@@ -36,7 +36,7 @@ export default async function ManageLayout({ children }: SettingsLayoutProps) {
   const sidebarNavItems = await getGroups(userInfo.id, userInfo.jwt)
 
   return (
-    <div className="container mx-auto space-y-6 p-8">
+    <div className="container mx-auto space-y-6 p-3">
       <div className="space-y-0.5">
         <TypographyH2>Gerenciamento de turmas</TypographyH2>
         <TypographyP>Crie novas turmas e veja dados de turmas existentes.</TypographyP>
@@ -46,7 +46,7 @@ export default async function ManageLayout({ children }: SettingsLayoutProps) {
         <aside className="-mx-4 overflow-x-auto lg:w-1/5">
           <SidebarNav items={sidebarNavItems} />
         </aside>
-        <div className="flex-1">{children}</div>
+        <main className="flex-1">{children}</main>
       </div>
     </div>
   )

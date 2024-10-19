@@ -75,9 +75,11 @@ export type FullProgram = {
   ProgramAssessment &
   ProgramTraining
 
+export type UserStatus = 'READY' | 'DONE' | 'WAITING' | 'INVALID'
+
 export type UserProgress = {
   sessions: SessionResults[]
-  status: 'READY' | 'DONE' | 'WAITING' | 'INVALID'
+  status: UserStatus
   favoriteFeature?: 'roughness' | 'breathiness'
   nextDueDate?: string
   timeoutEndDate?: string
@@ -133,7 +135,16 @@ export type AdditionalData = {
   phone: string
 } & StrapiDefaultAttributes
 
-export type UserWithAdditionalData = UserInfo & { additionalData: AdditionalData }
+export type UserWithAdditionalData = UserInfo & {
+  additionalData: AdditionalData
+}
+
+export type UserWithAdditionalDataAndProgressStatus = UserWithAdditionalData & {
+  userProgress: {
+    id: number
+    status: UserStatus
+  }
+}
 
 export type SubmitAssessmentPayload = {
   programId: number

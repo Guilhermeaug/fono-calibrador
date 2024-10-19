@@ -36,7 +36,7 @@ import * as React from 'react'
 import { toast } from 'sonner'
 import { ExportButton } from '../../components/export-button'
 import { deleteGroup } from '../delete-group-action'
-import { statuses, Student } from './columns'
+import { progressStatuses, Student, userStatuses } from './columns'
 import { DataTableFacetedFilter } from './data-table-faceted-filter'
 
 interface DataTableProps<TData, TValue> {
@@ -51,7 +51,6 @@ export function DataTable<TData, TValue>({
   classId,
 }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
-
   const table = useReactTable<Student>({
     data,
     columns,
@@ -72,8 +71,8 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-1 items-center justify-between space-x-2 overflow-x-auto">
-        <div className="flex items-center gap-2">
+      <div className="flex flex-col gap-4 overflow-x-auto">
+        <div className="flex gap-2 px-0.5">
           <Input
             placeholder="Filtre por email"
             value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
@@ -82,11 +81,20 @@ export function DataTable<TData, TValue>({
             }
             className="h-8 w-[200px] lg:w-[250px]"
           />
-          <DataTableFacetedFilter
-            column={table.getColumn('status')}
-            title="Status"
-            options={statuses}
-          />
+          {table.getColumn('userStatus') && (
+            <DataTableFacetedFilter
+              column={table.getColumn('userStatus')}
+              title="Status"
+              options={userStatuses}
+            />
+          )}
+          {table.getColumn('sessionStatus') && (
+            <DataTableFacetedFilter
+              column={table.getColumn('sessionStatus')}
+              title="Progresso"
+              options={progressStatuses}
+            />
+          )}
         </div>
         <div className="space-x-2">
           <Button
