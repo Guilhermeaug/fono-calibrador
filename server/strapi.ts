@@ -355,6 +355,16 @@ async function alignProgress({
   }) as Promise<UserProgress>
 }
 
+async function clearUserTimeout({ userId }: { userId: number }) {
+  return fetchStrapiApi({
+    path: '/users-progress/clearTimeout',
+    body: {
+      userId,
+    },
+    method: 'POST',
+  }) as Promise<UserProgress>
+}
+
 async function sendContactEmail(data: { email: string; content: string }) {
   return fetchStrapiApi({
     path: '/email/contact',
@@ -562,6 +572,7 @@ export const STRAPI = {
   acceptTerms,
   acceptPac,
   alignProgress,
+  clearUserTimeout,
   submitAssessment,
   submitTraining,
   sendContactEmail,

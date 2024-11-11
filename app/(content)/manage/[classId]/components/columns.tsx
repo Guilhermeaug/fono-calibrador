@@ -22,6 +22,8 @@ import { UserStatus, UserWithAdditionalData } from '@/server/types'
 import { ColumnDef } from '@tanstack/react-table'
 import { MoreHorizontalIcon, TrashIcon } from 'lucide-react'
 import Link from 'next/link'
+import { toast } from 'sonner'
+import { clearUserTimeout } from '../clear-user-timeout-action'
 import { removeUserFromGroup } from '../remove-user-action'
 import { AddLinkModal } from './add-link-modal'
 
@@ -124,6 +126,11 @@ export const columns: ColumnDef<Student>[] = [
         groupId = 0
       }
 
+      async function removeTimeout() {
+        await clearUserTimeout(id)
+        toast.success('Tempo de espera removido com sucesso!')
+      }
+
       return (
         <div className="flex items-center gap-2">
           <DropdownMenu>
@@ -139,6 +146,9 @@ export const columns: ColumnDef<Student>[] = [
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Link href={`results?id=${id}&name=${name}`}>Visualizar resultados</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={removeTimeout}>
+                Remover tempo de espera
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <AddLinkModal

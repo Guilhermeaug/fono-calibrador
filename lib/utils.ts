@@ -22,7 +22,7 @@ function explodeStrapiData(obj: any): any {
         id: item.id,
         ...explodeStrapiData(item.attributes),
       }))
-    } else if ('data' in obj && 'attributes' in obj.data) {
+    } else if ('data' in obj && obj.data && 'attributes' in obj.data) {
       return {
         id: obj.data.id,
         ...explodeStrapiData(obj.data.attributes),
