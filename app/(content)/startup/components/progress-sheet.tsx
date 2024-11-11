@@ -54,7 +54,7 @@ export function ProgressSheet({
             Lembre-se: Você pode fazer apenas um dos treinamentos por dia.
             <br /> <br />
             <span className="text-blue-600">
-              Você está atualmente na sessão {sessions.length + 1} de{' '}
+              Você está atualmente na sessão {sessions.length} de{' '}
               {program.numberOfSessions}
             </span>
           </SheetDescription>
