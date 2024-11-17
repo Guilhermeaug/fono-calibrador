@@ -5,7 +5,7 @@ function sortAudiosByIdentifier(a: AudioResult, b: AudioResult) {
   return a.identifier.localeCompare(b.identifier)
 }
 
-function exportData(sessions: SessionResults[]) {
+function exportData(sessions: SessionResults[], userId: number) {
   const data: CsvRow[] = []
 
   sessions.forEach((session, idx) => {
@@ -17,6 +17,7 @@ function exportData(sessions: SessionResults[]) {
     if (trainingBreathinessResults) {
       trainingBreathinessResults.audios.sort(sortAudiosByIdentifier).forEach((audio) => {
         data.push({
+          idUsuario: userId,
           sessão: idx + 1,
           identificador: audio.identifier,
           tipo: 'Treino',
@@ -32,6 +33,7 @@ function exportData(sessions: SessionResults[]) {
     if (trainingRoughnessResults) {
       trainingRoughnessResults.audios.sort(sortAudiosByIdentifier).forEach((audio) => {
         data.push({
+          idUsuario: userId,
           sessão: idx + 1,
           identificador: audio.identifier,
           tipo: 'Treino',
@@ -49,6 +51,7 @@ function exportData(sessions: SessionResults[]) {
         .sort(sortAudiosByIdentifier)
         .forEach((audio) => {
           data.push({
+            idUsuario: userId,
             sessão: idx + 1,
             identificador: audio.identifier,
             tipo: 'Avaliação',
@@ -64,6 +67,7 @@ function exportData(sessions: SessionResults[]) {
     if (assessmentRoughnessResults) {
       assessmentRoughnessResults.audios.sort(sortAudiosByIdentifier).forEach((audio) => {
         data.push({
+          idUsuario: userId,
           sessão: idx + 1,
           identificador: audio.identifier,
           tipo: 'Avaliação',

@@ -394,6 +394,7 @@ async function getStudentsInClass({ groupId, jwt }: { groupId: number; jwt: stri
         populate: {
           additionalData: true,
           userProgress: {
+            populate: ['sessions'],
             fields: ['status'],
           },
         },
@@ -489,18 +490,6 @@ async function acceptInvite({ userId, groupId }: { userId: number; groupId: numb
   })
 }
 
-async function setFavoriteFeature({ id, feature }: { id: number; feature: string }) {
-  return fetchStrapiApi({
-    path: `/users-progress/${id}`,
-    body: {
-      data: {
-        favoriteFeature: feature,
-      },
-    },
-    method: 'PUT',
-  })
-}
-
 async function getProgramById({ id }: { id: number }) {
   return fetchStrapiApi({
     path: `/programs/${id}`,
@@ -585,7 +574,6 @@ export const STRAPI = {
   deleteGroup,
   removeUserFromGroup,
   getUsersSessionResults,
-  setFavoriteFeature,
   getProgramById,
   getUser,
   restartSessions,

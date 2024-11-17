@@ -41,6 +41,7 @@ export type VoiceFormDataBackup = {
 }
 
 export type CsvRow = {
+  idUsuario: number
   sessão: number
   identificador: string
   tipo: string

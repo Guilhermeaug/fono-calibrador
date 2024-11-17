@@ -16,7 +16,9 @@ type Props = {
 export function ExportButton({ ids, usersDetails, ...props }: Props) {
   async function generateSessionsSheetObjects() {
     const usersProgress = await getUsersSessionsAction(ids)
-    const csvRows = usersProgress.map((user) => exportData(user.sessions)).flat()
+    const csvRows = usersProgress
+      .map((user) => exportData(user.sessions, user.user.id))
+      .flat()
     return csvRows
   }
 

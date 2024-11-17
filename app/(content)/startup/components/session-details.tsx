@@ -3,7 +3,6 @@
 import { TypographyLarge } from '@/components/typography'
 import { Button } from '@/components/ui/button'
 import { SessionResults } from '@/server/types'
-import { isNil } from 'lodash'
 import { PlayIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import * as React from 'react'
@@ -12,16 +11,10 @@ import { colors, status } from '../constants'
 type Props = {
   session: SessionResults
   index: number
-  isOnLastSession: boolean
-  favoriteFeature?: 'roughness' | 'breathiness'
+  numberOfSessions: number
 }
 
-export function SessionDetails({
-  session,
-  index,
-  isOnLastSession,
-  favoriteFeature,
-}: Props) {
+export function SessionDetails({ session, index, numberOfSessions }: Props) {
   const router = useRouter()
 
   const statuses = {
@@ -30,104 +23,97 @@ export function SessionDetails({
     trainingBreathiness: session.trainingBreathinessStatus,
   }
 
-  const favoriteFeatureEquals = (feature: 'roughness' | 'breathiness') =>
-    favoriteFeature === feature
+  const isLastSession = index + 1 === numberOfSessions
 
-  const isTrainingRoughnessOnClickEnabled =
-    statuses.trainingRoughness === 'READY' &&
-    (favoriteFeatureEquals('roughness') ||
-      statuses.trainingBreathiness === 'DONE' ||
-      isNil(favoriteFeature))
-  const isTrainingBreathinessOnClickEnabled =
-    statuses.trainingBreathiness === 'READY' &&
-    (favoriteFeatureEquals('breathiness') ||
-      statuses.trainingRoughness === 'DONE' ||
-      isNil(favoriteFeature))
+  const content = React.useMemo(() => {
+    const trainingRoughnessDescription = () => {
+      if (statuses.assessment === 'READY' || statuses.assessment === 'WAITING') {
+        return 'Status: Aguardando o término da avaliação'
+      }
+      return `Status: ${status[statuses.trainingRoughness]}`
+    }
 
-  const trainingRoughnessDescription = () => {
-    if (statuses.assessment === 'READY' || statuses.assessment === 'WAITING') {
-      return 'Status: Aguardando o término da avaliação'
+    const trainingBreathinessDescription = () => {
+      if (statuses.assessment === 'READY' || statuses.assessment === 'WAITING') {
+        return 'Status: Aguardando o término da avaliação'
+      }
+      return `Status: ${status[statuses.trainingBreathiness]}`
     }
-    if (statuses.trainingRoughness === 'READY' && !isTrainingRoughnessOnClickEnabled) {
-      return 'Status: Aguardando o término do treinamento de soprosidade'
-    }
-    return `Status: ${status[statuses.trainingRoughness]}`
-  }
 
-  const trainingBreathinessDescription = () => {
-    if (statuses.assessment === 'READY' || statuses.assessment === 'WAITING') {
-      return 'Status: Aguardando o término da avaliação'
+    return {
+      assessment: {
+        title: 'Avaliação',
+        description: `Status: ${status[statuses.assessment]}`,
+        color: colors[statuses.assessment],
+        onClick: () => {
+          if (session.assessmentStatus === 'READY') {
+            router.replace(
+              `/startup/instructions/overview/assessment?session=${index + 1}`,
+            )
+          }
+        },
+        enabled: statuses.assessment !== 'NOT_NEEDED',
+        onClickEnabled: statuses.assessment === 'READY',
+      },
+      trainingRoughness: {
+        title: 'Treinamento - Rugosidade',
+        description: trainingRoughnessDescription(),
+        color: colors[statuses.trainingRoughness],
+        onClick: () => {
+          if (statuses.trainingRoughness === 'READY') {
+            const feature = isLastSession ? 'both' : 'roughness'
+            router.replace(
+              `/startup/instructions/overview/training?feature=${feature}&session=${index + 1}`,
+            )
+          }
+        },
+        enabled: !isLastSession,
+        onClickEnabled: statuses.trainingRoughness === 'READY',
+      },
+      trainingBreathiness: {
+        title: 'Treinamento - Soprosidade',
+        description: trainingBreathinessDescription(),
+        color: colors[statuses.trainingBreathiness],
+        onClick: () => {
+          if (statuses.trainingBreathiness === 'READY') {
+            const feature = isLastSession ? 'both' : 'breathiness'
+            router.replace(
+              `/startup/instructions/overview/training?feature=${feature}&session=${index + 1}`,
+            )
+          }
+        },
+        enabled: !isLastSession,
+        onClickEnabled: statuses.trainingBreathiness === 'READY',
+      },
+      trainingBoth: {
+        title: 'Treinamento - Rugosidade e Soprosidade',
+        description: ['DONE', 'NOT_NEEDED'].includes(statuses.assessment)
+          ? `Status: ${status[statuses.trainingBreathiness]}`
+          : 'Status: Aguardando o término da avaliação',
+        color: colors[statuses.trainingBreathiness],
+        onClick: () => {
+          if (statuses.trainingBreathiness === 'READY') {
+            const feature = 'both'
+            router.replace(
+              `/startup/instructions/overview/training?feature=${feature}&session=${index + 1}`,
+            )
+          }
+        },
+        enabled: isLastSession,
+        onClickEnabled:
+          statuses.trainingBreathiness === 'READY' &&
+          statuses.trainingRoughness === 'READY',
+      },
     }
-    if (
-      statuses.trainingBreathiness === 'READY' &&
-      !isTrainingBreathinessOnClickEnabled
-    ) {
-      return 'Status: Aguardando o término do treinamento de rugosidade'
-    }
-    return `Status: ${status[statuses.trainingBreathiness]}`
-  }
-
-  const content = {
-    assessment: {
-      title: 'Avaliação',
-      description: `Status: ${status[statuses.assessment]}`,
-      color: colors[statuses.assessment],
-      onClick: () => {
-        if (session.assessmentStatus === 'READY') {
-          router.replace(`/startup/instructions/overview/assessment?session=${index + 1}`)
-        }
-      },
-      enabled: statuses.assessment !== 'NOT_NEEDED',
-      onClickEnabled: statuses.assessment === 'READY',
-    },
-    trainingRoughness: {
-      title: 'Treinamento - Rugosidade',
-      description: trainingRoughnessDescription(),
-      color: colors[statuses.trainingRoughness],
-      onClick: () => {
-        if (statuses.trainingRoughness === 'READY') {
-          const feature = isOnLastSession ? 'both' : 'roughness'
-          router.replace(
-            `/startup/instructions/overview/training?feature=${feature}&session=${index + 1}`,
-          )
-        }
-      },
-      enabled: !isOnLastSession,
-      onClickEnabled: isTrainingRoughnessOnClickEnabled,
-    },
-    trainingBreathiness: {
-      title: 'Treinamento - Soprosidade',
-      description: trainingBreathinessDescription(),
-      color: colors[statuses.trainingBreathiness],
-      onClick: () => {
-        if (statuses.trainingBreathiness === 'READY') {
-          const feature = isOnLastSession ? 'both' : 'breathiness'
-          router.replace(
-            `/startup/instructions/overview/training?feature=${feature}&session=${index + 1}`,
-          )
-        }
-      },
-      enabled: !isOnLastSession,
-      onClickEnabled: isTrainingBreathinessOnClickEnabled,
-    },
-    trainingBoth: {
-      title: 'Treinamento - Rugosidade e Soprosidade',
-      description: ['DONE', 'NOT_NEEDED'].includes(statuses.assessment)
-        ? `Status: ${status[statuses.trainingBreathiness]}`
-        : 'Status: Aguardando o término da avaliação',
-      color: colors[statuses.trainingBreathiness],
-      onClick: () => {
-        if (statuses.trainingBreathiness === 'READY') {
-          const feature = 'both'
-          router.replace(
-            `/startup/instructions/overview/training?feature=${feature}&session=${index + 1}`,
-          )
-        }
-      },
-      enabled: isOnLastSession,
-      onClickEnabled: statuses.trainingBreathiness === 'READY',
-    },
-  }
+  }, [
+    index,
+    isLastSession,
+    router,
+    session.assessmentStatus,
+    statuses.assessment,
+    statuses.trainingBreathiness,
+    statuses.trainingRoughness,
+  ])
 
   return (
     <React.Fragment>

@@ -1,6 +1,7 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
 import {
   Dialog,
   DialogClose,
@@ -30,6 +31,7 @@ import { AddLinkModal } from './add-link-modal'
 export type Student = UserWithAdditionalData & {
   userStatus: string
   sessionStatus: UserStatus
+  currentSession: number | null
 }
 
 export const userStatuses = [
@@ -72,6 +74,28 @@ export const progressStatuses = [
 
 export const columns: ColumnDef<Student>[] = [
   {
+    id: 'select',
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && 'indeterminate')
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
     header: 'Nome',
     accessorKey: 'name',
   },
@@ -108,6 +132,21 @@ export const columns: ColumnDef<Student>[] = [
           {status === 'INVALID' && 'Inválido'}
           {status === 'READY' && 'Pronto'}
           {status === 'WAITING' && 'Esperando'}
+        </span>
+      )
+    },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id))
+    },
+  },
+  {
+    header: 'Sessão atual',
+    id: 'currentSession',
+    cell: ({ row }) => {
+      const currentSession = row.original.currentSession
+      return (
+        <span className="whitespace-nowrap rounded-md bg-amber-300 px-2 py-1 text-xs uppercase dark:bg-amber-700">
+          {currentSession}
         </span>
       )
     },

@@ -143,6 +143,7 @@ export type UserWithAdditionalDataAndProgressStatus = UserWithAdditionalData & {
   userProgress: {
     id: number
     status: UserStatus
+    sessions: SessionResults[]
   }
 }
 

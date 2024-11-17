@@ -6,6 +6,7 @@ import { Student } from './[classId]/components/columns'
 const booleanToYesNo = (value: boolean) => (value ? 'Sim' : 'Não')
 
 export const translations = {
+  id: 'Identificador Usuário',
   name: 'Nome',
   birthDate: 'Data de Nascimento',
   isMusician: 'É músico?',
@@ -35,6 +36,11 @@ export const translations = {
 } as Record<keyof AdditionalData, string>
 
 export const xlsxSchemaUserDetails = [
+  {
+    column: translations.id,
+    type: Number,
+    value: (student: Student) => student.id,
+  },
   {
     column: translations.name,
     type: String,
@@ -178,12 +184,17 @@ export const xlsxSchemaUserDetails = [
 
 export const xlsxSchemaSessionsDetails = [
   {
+    column: 'Usuário',
+    type: Number,
+    value: (session: CsvRow) => session.idUsuario,
+  },
+  {
     column: 'Sessão',
     type: Number,
     value: (session: CsvRow) => session.sessão,
   },
   {
-    column: 'Identificador',
+    column: 'Audio',
     type: String,
     value: (session: CsvRow) => session.identificador,
   },
@@ -211,5 +222,10 @@ export const xlsxSchemaSessionsDetails = [
     column: 'Vezes que escutou o áudio',
     type: Number,
     value: (session: CsvRow) => session.tentativasAudio,
+  },
+  {
+    column: 'Duração',
+    type: Number,
+    value: (session: CsvRow) => session.duração,
   },
 ]

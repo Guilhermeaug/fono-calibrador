@@ -51,6 +51,7 @@ export function DataTable<TData, TValue>({
   classId,
 }: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
+  const [rowSelection, setRowSelection] = React.useState({})
   const table = useReactTable<Student>({
     data,
     columns,
@@ -58,8 +59,10 @@ export function DataTable<TData, TValue>({
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    onRowSelectionChange: setRowSelection,
     state: {
       columnFilters,
+      rowSelection,
     },
   })
 
@@ -107,8 +110,8 @@ export function DataTable<TData, TValue>({
           <ExportButton
             className="ml-auto self-end justify-self-end"
             variant="outline"
-            ids={table.getRowModel().rows.map((row) => row.original.id)}
-            usersDetails={table.getRowModel().rows.map((row) => row.original)}
+            ids={table.getSelectedRowModel().rows.map((row) => row.original.id)}
+            usersDetails={table.getSelectedRowModel().rows.map((row) => row.original)}
           >
             Exportar dados
           </ExportButton>

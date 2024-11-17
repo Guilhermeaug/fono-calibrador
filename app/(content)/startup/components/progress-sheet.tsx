@@ -40,8 +40,6 @@ export function ProgressSheet({
     }
   }
 
-  const isOnLastSession = sessions.length === program.numberOfSessions
-
   return (
     <Sheet defaultOpen onOpenChange={handleOpenChange} {...props}>
       <SheetContent className="w-full overflow-y-scroll sm:w-3/4">
@@ -90,9 +88,8 @@ export function ProgressSheet({
               <AccordionContent className="grid gap-2">
                 <SessionDetails
                   session={session}
+                  numberOfSessions={program.numberOfSessions}
                   index={index}
-                  isOnLastSession={isOnLastSession}
-                  favoriteFeature={favoriteFeature}
                 />
               </AccordionContent>
             </AccordionItem>
