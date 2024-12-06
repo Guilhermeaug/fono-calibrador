@@ -18,7 +18,6 @@ type Props = {
 
 async function getData(classId: number, jwt: string): Promise<Student[]> {
   const data = await STRAPI.getStudentsInClass({ groupId: Number(classId), jwt })
-  console.log(data[0])
   return data.map(({ userProgress: { status: sessionStatus, sessions }, ...student }) => {
     let userStatus: 'terms' | 'waiting_pac' | 'pac' | 'progress' = 'progress'
     if (!student.hasAcceptedTerms) {

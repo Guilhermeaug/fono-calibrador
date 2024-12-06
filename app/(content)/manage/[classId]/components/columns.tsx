@@ -26,6 +26,7 @@ import Link from 'next/link'
 import { toast } from 'sonner'
 import { clearUserTimeout } from '../clear-user-timeout-action'
 import { removeUserFromGroup } from '../remove-user-action'
+import { revalidateUser } from '../revalidate-user-action'
 import { AddLinkModal } from './add-link-modal'
 
 export type Student = UserWithAdditionalData & {
@@ -170,6 +171,11 @@ export const columns: ColumnDef<Student>[] = [
         toast.success('Tempo de espera removido com sucesso!')
       }
 
+      async function revalidate() {
+        await revalidateUser(id, groupId)
+        toast.success('O usuário está pronto para realizar o teste novamente!')
+      }
+
       return (
         <div className="flex items-center gap-2">
           <DropdownMenu>
@@ -188,6 +194,9 @@ export const columns: ColumnDef<Student>[] = [
               </DropdownMenuItem>
               <DropdownMenuItem onClick={removeTimeout}>
                 Remover tempo de espera
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={revalidate}>
+                Remover invalidação
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <AddLinkModal

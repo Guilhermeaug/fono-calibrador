@@ -365,6 +365,18 @@ async function clearUserTimeout({ userId }: { userId: number }) {
   }) as Promise<UserProgress>
 }
 
+async function revalidateUser({ userId, groupId }: { userId: number; groupId: number }) {
+  return fetchStrapiApi({
+    path: '/users-progress/revalidateUser',
+    body: {
+      programId: 1,
+      groupId,
+      userId,
+    },
+    method: 'POST',
+  }) as Promise<UserProgress>
+}
+
 async function sendContactEmail(data: { email: string; content: string }) {
   return fetchStrapiApi({
     path: '/email/contact',
@@ -577,6 +589,7 @@ export const STRAPI = {
   getProgramById,
   getUser,
   restartSessions,
+  revalidateUser,
   /////////
   login,
   signUp,
