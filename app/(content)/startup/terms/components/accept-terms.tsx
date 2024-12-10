@@ -7,6 +7,7 @@ import { putUserAction } from '@/server/actions/put-user-action'
 import { useRouter } from 'next/navigation'
 import * as React from 'react'
 import { toast } from 'sonner'
+import { sendTermsEmailAction } from '../../send-terms-email-action'
 
 type Props = {
   userId: number
@@ -25,6 +26,7 @@ export function AcceptTerms({ userId }: Props) {
         },
         userId,
       })
+      await sendTermsEmailAction()
       toast.success(
         'Termo de Consentimento Livre e Esclarecido aceito com sucesso! Redirecionando...',
       )

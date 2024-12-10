@@ -385,6 +385,14 @@ async function sendContactEmail(data: { email: string; content: string }) {
   })
 }
 
+async function sendTermsEmail(data: { jwt: string }) {
+  return fetchStrapiApi({
+    path: '/email/terms',
+    method: 'POST',
+    jwt: data.jwt,
+  })
+}
+
 async function sendEmailTemplate(data: {
   templateReferenceId: number
   to: string
@@ -577,6 +585,7 @@ export const STRAPI = {
   submitAssessment,
   submitTraining,
   sendContactEmail,
+  sendTermsEmail,
   sendEmailTemplate,
   getStudentsInClass,
   putUser,

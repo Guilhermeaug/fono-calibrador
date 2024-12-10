@@ -18,7 +18,7 @@ import * as React from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { ContactFormType, schema } from './constants'
-import { sendContactEmailAction } from './send-contanct-email-action'
+import { sendContactEmailAction } from './send-contact-email-action'
 
 export default function ContactPage() {
   const form = useForm<ContactFormType>({
