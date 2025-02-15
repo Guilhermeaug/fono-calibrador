@@ -2,9 +2,9 @@ import { AUTH } from '@/server/auth'
 import { STRAPI } from '@/server/strapi'
 import { redirect } from 'next/navigation'
 import * as React from 'react'
-import { columns, Student } from './components/columns'
-import { DataTable } from './components/data-table'
+import { Student } from './components/columns'
 import { DetailsSheet } from './components/details-sheet'
+import { Table } from './Table'
 
 type Props = {
   params: {
@@ -51,7 +51,7 @@ export default async function ManagePage({
 
   return (
     <React.Fragment>
-      <DataTable columns={columns} data={tableData} classId={classId} />
+      <Table userInfo={user} data={tableData} classId={classId} />
       {show === 'details' && id && <DetailsSheet userDetails={userDetails!} />}
     </React.Fragment>
   )

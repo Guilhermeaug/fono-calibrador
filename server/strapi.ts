@@ -536,11 +536,12 @@ async function signUp(data: RegisterFormType) {
   })
 }
 
-async function getCurrentUser(jwt: string) {
+async function getCurrentUser(jwt: string, id: number) {
   try {
     const data = await fetchStrapiApi({
-      path: '/users/me',
+      path: '/users/me?populate=additionalData',
       jwt,
+      tags: [`user-${id}`],
     })
     return data
   } catch (error) {

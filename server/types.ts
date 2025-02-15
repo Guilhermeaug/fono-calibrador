@@ -105,6 +105,7 @@ export type UserInfo = {
   finalPacStatus: UserInfoStepsStatus
   jwt: string
   pacLink?: string
+  isAdmin: boolean
 } & StrapiDefaultAttributes
 
 export type AdditionalData = {

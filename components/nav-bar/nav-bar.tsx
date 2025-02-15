@@ -1,3 +1,4 @@
+import { isUserTeacher } from '@/lib/user'
 import { cn } from '@/lib/utils'
 import { AUTH } from '@/server/auth'
 import { isNil } from 'lodash'
@@ -15,7 +16,9 @@ type Props = {
 
 export async function Navbar({ className }: Props) {
   const userInfo = await AUTH.getCurrentUser()
+
   const hasAuth = !isNil(userInfo)
+  const isTeacher = isUserTeacher(userInfo?.additionalData)
 
   const style = cn('flex h-16 items-center gap-4 bg-background px-4 md:px-8', className)
   return (
@@ -58,7 +61,7 @@ export async function Navbar({ className }: Props) {
             Login
           </Link>
         )}
-        {hasAuth && (
+        {hasAuth && isTeacher && (
           <Link
             href="/manage/add"
             className="text-muted-foreground transition-colors hover:text-foreground"

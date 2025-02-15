@@ -3,7 +3,7 @@ import { AuthOptions, getServerSession } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { revalidatePath } from 'next/cache'
 import { STRAPI } from './strapi'
-import { LoginPayload, StrapiError, UserInfo } from './types'
+import { LoginPayload, StrapiError, UserWithAdditionalData } from './types'
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -79,12 +79,14 @@ async function signUp(data: RegisterFormType) {
 async function getCurrentUser() {
   const session = await getServerSession(authOptions)
   const jwt = session?.user.jwt
+  const id = session?.user.id
   if (jwt == null) return null
-  const strapiUser = await STRAPI.getCurrentUser(jwt)
+  if (id == null) return null
+  const strapiUser = await STRAPI.getCurrentUser(jwt, id)
   return {
     ...strapiUser,
     jwt,
-  } as Promise<UserInfo>
+  } as Promise<UserWithAdditionalData>
 }
 
 async function getUserJwt() {
