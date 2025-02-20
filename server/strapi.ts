@@ -3,6 +3,7 @@ import { explodeStrapiData } from '@/lib/utils'
 import { isNil } from 'lodash'
 import { redirect } from 'next/navigation'
 import qs from 'qs'
+import { AUTH } from './auth'
 import {
   Group,
   LoginPayload,
@@ -446,15 +447,26 @@ async function putUser({ userId, data }: { userId: number; data: Partial<UserInf
 }
 
 async function getTeachersGroups({ userId, jwt }: { userId: number; jwt: string }) {
-  const query = qs.stringify({
-    filters: {
-      teacher: {
-        $eq: userId,
+  const user = await AUTH.getCurrentUser()
+  if (!user) {
+    redirect('/login')
+  }
+
+  const isAdmin = user.isAdmin
+
+  let query = ''
+  if (!isAdmin) {
+    query = qs.stringify({
+      filters: {
+        teacher: {
+          $eq: userId,
+        },
       },
-    },
-  })
+    })
+  }
+
   return fetchStrapiApi({
-    path: `/groups?${query}`,
+    path: `/groups${query ? `?${query}` : ''}`,
     jwt,
   }) as Promise<Group[]>
 }
