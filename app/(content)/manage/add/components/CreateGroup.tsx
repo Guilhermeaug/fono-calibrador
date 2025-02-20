@@ -33,6 +33,7 @@ export function CreateGroup({ userInfo }: Props) {
     await createGroupAction({
       data: {
         teacher: userInfo.id,
+        program: 1,
         ...data,
       } as unknown as Partial<Group>,
     })
