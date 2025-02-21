@@ -13,7 +13,7 @@ type TableProps = {
 export function Table({ userInfo, data, classId }: TableProps) {
   const { isAdmin } = userInfo
 
-  const columns = getColumns(isAdmin)
+  const columns = getColumns(isAdmin, Number(classId))
 
   return <DataTable columns={columns} data={data} classId={classId} />
 }

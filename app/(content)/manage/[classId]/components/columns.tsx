@@ -74,7 +74,7 @@ export const progressStatuses = [
   },
 ]
 
-export function getColumns(isAdmin: boolean): ColumnDef<Student>[] {
+export function getColumns(isAdmin: boolean, groupId: number): ColumnDef<Student>[] {
   return [
     {
       id: 'select',
@@ -161,8 +161,6 @@ export function getColumns(isAdmin: boolean): ColumnDef<Student>[] {
       id: 'actions',
       cell: ({ row }) => {
         const { id, name, email, pacLink } = row.original
-        let groupId: number
-        groupId = Number(window.location.pathname.split('/').pop())
 
         async function removeTimeout() {
           await clearUserTimeout(id)
@@ -236,7 +234,7 @@ export function getColumns(isAdmin: boolean): ColumnDef<Student>[] {
                     <Button
                       variant="destructive"
                       onClick={async () => {
-                        await removeUserFromGroup(Number(groupId), id)
+                        await removeUserFromGroup(groupId, id)
                       }}
                     >
                       Remover usuário
