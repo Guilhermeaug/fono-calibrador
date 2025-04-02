@@ -73,16 +73,16 @@ export function DataTable<TData, TValue>({
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 ">
       <div className="flex flex-col gap-4 overflow-x-auto">
-        <div className="flex gap-2 px-0.5">
+        <div className="flex gap-2 ">
           <Input
             placeholder="Filtre por email"
             value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
             onChange={(event) =>
               table.getColumn('email')?.setFilterValue(event.target.value)
             }
-            className="h-8 w-[200px] lg:w-[250px]"
+            className="h-8 w-[200px] lg:w-[250px] ring-0 focus:ring-0 focus-visible:ring-0"
           />
           {table.getColumn('userStatus') && (
             <DataTableFacetedFilter

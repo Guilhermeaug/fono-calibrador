@@ -407,25 +407,33 @@ async function sendEmailTemplate(data: {
 }
 
 async function getStudentsInClass({ groupId, jwt }: { groupId: number; jwt: string }) {
-  const query = qs.stringify({
-    fields: ['id'],
-    populate: {
-      students: {
-        fields: ['id', 'name', 'email', 'hasAcceptedTerms', 'pacLink', 'firstPacStatus'],
-        populate: {
-          additionalData: true,
-          userProgress: {
-            populate: ['sessions'],
-            fields: ['status'],
+  const query = qs.stringify(
+    {
+      fields: ['id'],
+      populate: {
+        students: {
+          fields: [
+            'id',
+            'name',
+            'email',
+            'hasAcceptedTerms',
+            'pacLink',
+            'firstPacStatus',
+          ],
+          populate: {
+            additionalData: true,
+            userProgress: {
+              populate: ['sessions'],
+              fields: ['status'],
+            },
           },
         },
       },
     },
-  })
+  )
+
   const data = await fetchStrapiApi({
     path: `/groups/${groupId}?${query}`,
-    tags: [`group-${groupId}`],
-    revalidate: 5 * 60,
     jwt,
   })
 
