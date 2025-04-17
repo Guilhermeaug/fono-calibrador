@@ -40,7 +40,7 @@ async function getData(classId: number, jwt: string): Promise<Student[]> {
         userProgress.timeoutEndDate &&
         now.isAfter(dayjs(userProgress.timeoutEndDate))
       ) {
-        sessionStatus = 'WAITING'
+        sessionStatus = 'READY'
       }
 
       return {
