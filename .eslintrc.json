@@ -4,7 +4,7 @@
     "es2021": true,
     "node": true
   },
-  "extends": ["plugin:react-hooks/recommended", "prettier", "next"],
+  "extends": ["next/babel", "plugin:react-hooks/recommended", "prettier", "next"],
   "plugins": ["prettier"],
   "parser": "@babel/eslint-parser",
   "parserOptions": {

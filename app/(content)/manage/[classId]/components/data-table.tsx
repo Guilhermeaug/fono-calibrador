@@ -32,6 +32,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table'
 import copy from 'clipboard-copy'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import * as React from 'react'
 import { toast } from 'sonner'
 import { ExportButton } from '../../components/export-button'
@@ -50,8 +51,27 @@ export function DataTable<TData, TValue>({
   data,
   classId,
 }: DataTableProps<TData, TValue>) {
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
-  const [rowSelection, setRowSelection] = React.useState({})
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+
+  const initialFilters: ColumnFiltersState = React.useMemo(() => {
+    const filters: ColumnFiltersState = []
+    const email = searchParams.get('email')
+    const userStatus = searchParams.get('userStatus')
+    const sessionStatus = searchParams.get('sessionStatus')
+
+    if (email) filters.push({ id: 'email', value: email })
+    if (userStatus) filters.push({ id: 'userStatus', value: userStatus.split(',') })
+    if (sessionStatus)
+      filters.push({ id: 'sessionStatus', value: sessionStatus.split(',') })
+
+    return filters
+  }, [searchParams])
+
+  const [columnFilters, setColumnFilters] =
+    React.useState<ColumnFiltersState>(initialFilters)
+
   const table = useReactTable<Student>({
     data,
     columns,
@@ -59,12 +79,66 @@ export function DataTable<TData, TValue>({
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    onRowSelectionChange: setRowSelection,
     state: {
       columnFilters,
-      rowSelection,
+    },
+    initialState: {
+      columnFilters: initialFilters,
     },
   })
+
+  React.useEffect(() => {
+    const handler = setTimeout(() => {
+      const params = new URLSearchParams(searchParams)
+      const emailFilter = columnFilters.find((f) => f.id === 'email')
+      const nameFilter = columnFilters.find((f) => f.id === 'name')
+      const userStatusFilter = columnFilters.find((f) => f.id === 'userStatus')
+      const sessionStatusFilter = columnFilters.find((f) => f.id === 'sessionStatus')
+
+      if (emailFilter && emailFilter.value) {
+        params.set('email', String(emailFilter.value))
+      } else {
+        params.delete('email')
+      }
+
+      if (nameFilter && nameFilter.value) {
+        params.set('name', String(nameFilter.value))
+      } else {
+        params.delete('name')
+      }
+
+      if (
+        userStatusFilter &&
+        Array.isArray(userStatusFilter.value) &&
+        userStatusFilter.value.length > 0
+      ) {
+        params.set('userStatus', userStatusFilter.value.join(','))
+      } else {
+        params.delete('userStatus')
+      }
+
+      if (
+        sessionStatusFilter &&
+        Array.isArray(sessionStatusFilter.value) &&
+        sessionStatusFilter.value.length > 0
+      ) {
+        params.set('sessionStatus', sessionStatusFilter.value.join(','))
+      } else {
+        params.delete('sessionStatus')
+      }
+
+      table.setPageIndex(0)
+      params.delete('page')
+
+      router.replace(`${pathname}?${params.toString()}`, { scroll: false })
+    }, 500)
+
+    return () => {
+      clearTimeout(handler)
+    }
+  }, [columnFilters, router, pathname, searchParams, table])
+
+  const { rows } = table.getRowModel()
 
   async function copyInviteLink() {
     const inviteLink = `${window.location.origin}/invite/${classId}`
@@ -74,8 +148,8 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col gap-4 overflow-x-auto">
-        <div className="flex gap-2">
+      <div className="flex flex-col gap-3 overflow-x-auto md:gap-4">
+        <div className="flex gap-3 overflow-x-auto">
           <Input
             placeholder="Filtre por email"
             value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
@@ -84,31 +158,34 @@ export function DataTable<TData, TValue>({
             }
             className="h-8 w-[200px] ring-0 focus:ring-0 focus-visible:ring-0 lg:w-[250px]"
           />
+           <Input
+            placeholder="Filtre por nome"
+            value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
+            onChange={(event) =>
+              table.getColumn('name')?.setFilterValue(event.target.value)
+            }
+            className="h-8 w-[200px] ring-0 focus:ring-0 focus-visible:ring-0 lg:w-[250px]"
+          />
           {table.getColumn('userStatus') && (
             <DataTableFacetedFilter
               column={table.getColumn('userStatus')}
-              title="Status"
+              title="Situação do usuário"
               options={userStatuses}
             />
           )}
           {table.getColumn('sessionStatus') && (
             <DataTableFacetedFilter
               column={table.getColumn('sessionStatus')}
-              title="Progresso"
+              title="Status da sessão atual"
               options={progressStatuses}
             />
           )}
         </div>
-        <div className="space-x-2">
-          <Button
-            className="ml-auto self-end justify-self-end"
-            variant="outline"
-            onClick={copyInviteLink}
-          >
+        <div className="flex gap-3 overflow-x-auto">
+          <Button variant="outline" onClick={copyInviteLink}>
             Compartilhar convite
           </Button>
           <ExportButton
-            className="ml-auto self-end justify-self-end"
             variant="outline"
             ids={table.getSelectedRowModel().rows.map((row) => row.original.id)}
             usersDetails={table.getSelectedRowModel().rows.map((row) => row.original)}
@@ -138,7 +215,7 @@ export function DataTable<TData, TValue>({
           </AlertDialog>
         </div>
       </div>
-      <div className="rounded-md border">
+      <div className="relative h-[450px] overflow-auto rounded-md border md:h-[500px] lg:h-[570px] 2xl:h-[600px]">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -156,8 +233,8 @@ export function DataTable<TData, TValue>({
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
+            {rows?.length ? (
+              rows.map((row) => (
                 <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>

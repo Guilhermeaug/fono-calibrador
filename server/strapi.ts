@@ -7,6 +7,7 @@ import { AUTH } from './auth'
 import {
   Group,
   LoginPayload,
+  Meta,
   Program,
   ProgramAssessment,
   ProgramTraining,
@@ -29,6 +30,7 @@ async function fetchStrapiApi({
   revalidate = 30 * 60,
   method = 'GET',
   headers: propsHeaders = {},
+  includeMeta = false,
 }: {
   path: string
   body?: Record<string, any>
@@ -37,6 +39,7 @@ async function fetchStrapiApi({
   revalidate?: number
   method?: string
   headers?: Record<string, string>
+  includeMeta?: boolean
 }) {
   const token = jwt ?? TOKEN
   const headers: Record<string, string> = {
@@ -65,7 +68,7 @@ async function fetchStrapiApi({
     if (!res.ok) {
       throw json
     }
-    return explodeStrapiData(json)
+    return explodeStrapiData(json, includeMeta)
   })
 }
 
@@ -409,35 +412,37 @@ async function sendEmailTemplate(data: {
 async function getStudentsInClass({ groupId, jwt }: { groupId: number; jwt: string }) {
   const query = qs.stringify(
     {
-      fields: ['id'],
+      fields: ['id', 'name', 'email', 'hasAcceptedTerms', 'pacLink', 'firstPacStatus'],
       populate: {
-        students: {
-          fields: [
-            'id',
-            'name',
-            'email',
-            'hasAcceptedTerms',
-            'pacLink',
-            'firstPacStatus',
-          ],
-          populate: {
-            additionalData: true,
-            userProgress: {
-              populate: ['sessions'],
-              fields: ['status'],
-            },
-          },
+        additionalData: true,
+        userProgress: {
+          populate: ['sessions'],
+          fields: ['status', 'timeoutEndDate', 'nextDueDate'],
         },
       },
+      filters: {
+        groups: {
+          $in: groupId,
+        },
+      },
+      pagination: {
+        page: 1,
+        pageSize: 2000,
+      },
     },
+    { encodeValuesOnly: true },
   )
 
-  const data = await fetchStrapiApi({
-    path: `/groups/${groupId}?${query}`,
+  return fetchStrapiApi({
+    path: `/users?${query}`,
     jwt,
-  })
-
-  return data.students as UserWithAdditionalDataAndProgressStatus[]
+    includeMeta: true,
+    revalidate: 3 * 60,
+    tags: [`group-${groupId}`],
+  }) as Promise<{
+    data: UserWithAdditionalDataAndProgressStatus[]
+    meta: Meta
+  }>
 }
 
 async function getUser({ userId }: { userId: number }) {
@@ -562,7 +567,7 @@ async function getCurrentUser(jwt: string, id: number) {
       path: `/users/me?id=${id}&populate=additionalData`,
       jwt,
       tags: ['currentUser'],
-      revalidate: 1 * 60,
+      revalidate: 5 * 60,
     })
     return data
   } catch (error) {

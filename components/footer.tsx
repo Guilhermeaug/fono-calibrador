@@ -2,7 +2,7 @@ import { DualImage } from './ui/dual-image'
 
 export function Footer() {
   return (
-    <footer className="container mb-1 mt-2 grid grid-cols-3 items-center gap-x-2 sm:grid-cols-6 sm:gap-x-4">
+    <footer className="container mb-1 mt-2 grid h-16 grid-cols-3 items-center gap-x-2 sm:grid-cols-6 sm:gap-x-4">
       <div className="relative">
         <DualImage
           lightImage="/images/faculdade_medicina.png"
@@ -13,7 +13,7 @@ export function Footer() {
             height: 0,
             sizes: '100vw',
           }}
-          className="h-28 w-full max-w-[300px] object-contain"
+          className="h-16 w-full max-w-[300px] object-contain"
         />
       </div>
       <div className="relative">
@@ -26,7 +26,7 @@ export function Footer() {
             height: 0,
             sizes: '100vw',
           }}
-          className="h-28 w-full max-w-[300px] object-contain"
+          className="h-16 w-full max-w-[300px] object-contain"
         />
       </div>
       <div className="relative">
@@ -39,7 +39,7 @@ export function Footer() {
             height: 0,
             sizes: '100vw',
           }}
-          className="h-28 w-full max-w-[300px] object-contain dark:brightness-[0.7] dark:grayscale"
+          className="h-16 w-full max-w-[300px] object-contain dark:brightness-[0.7] dark:grayscale"
         />
       </div>
       <div className="relative">
@@ -52,7 +52,7 @@ export function Footer() {
             height: 0,
             sizes: '100vw',
           }}
-          className="h-28 w-full max-w-[300px] object-contain"
+          className="h-16 w-full max-w-[300px] object-contain"
         />
       </div>
       <div className="relative">
@@ -65,7 +65,7 @@ export function Footer() {
             height: 0,
             sizes: '100vw',
           }}
-          className="h-28 w-full max-w-[300px] object-contain"
+          className="h-16 w-full max-w-[300px] object-contain"
         />
       </div>
       <div className="relative">
@@ -78,7 +78,7 @@ export function Footer() {
             height: 0,
             sizes: '100vw',
           }}
-          className="h-28 w-full max-w-[300px] object-contain dark:brightness-[0.7] dark:grayscale"
+          className="h-16 w-full max-w-[300px] object-contain dark:brightness-[0.7] dark:grayscale"
         />
       </div>
     </footer>

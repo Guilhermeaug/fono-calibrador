@@ -1,6 +1,12 @@
 'use client'
 
 import { buttonVariants } from '@/components/ui/button'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -25,19 +31,23 @@ export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
       {...props}
     >
       {items.map((item) => (
-        <Link
-          key={item.href}
-          href={item.href}
-          className={cn(
-            buttonVariants({ variant: 'ghost' }),
-            pathnameIncludes(item.href)
-              ? 'bg-muted hover:bg-muted'
-              : 'hover:bg-transparent hover:underline',
-            'justify-start',
-          )}
-        >
-          {item.title}
-        </Link>
+        <TooltipProvider key={item.href}>
+          <Link
+            href={item.href}
+            className={cn(
+              buttonVariants({ variant: 'ghost' }),
+              pathnameIncludes(item.href)
+                ? 'bg-muted hover:bg-muted'
+                : 'hover:bg-transparent hover:underline',
+              'justify-start overflow-clip',
+            )}
+          >
+            <Tooltip>
+              <TooltipTrigger>{item.title}</TooltipTrigger>
+              <TooltipContent>{item.title}</TooltipContent>
+            </Tooltip>
+          </Link>
+        </TooltipProvider>
       ))}
     </nav>
   )

@@ -18,8 +18,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { UserStatus, UserWithAdditionalData } from '@/server/types'
+import { UserWithAdditionalData } from '@/server/types'
 import { ColumnDef } from '@tanstack/react-table'
+import dayjs from 'dayjs'
 import { MoreHorizontalIcon, TrashIcon } from 'lucide-react'
 import Link from 'next/link'
 import * as React from 'react'
@@ -29,47 +30,56 @@ import { removeUserFromGroup } from '../remove-user-action'
 import { revalidateUser } from '../revalidate-user-action'
 import { AddLinkModal } from './add-link-modal'
 
+export type UserStatusType = 'TERMS' | 'WAITING_PAC' | 'PAC' | 'PROGRESS' | 'DONE'
+export type ProgressStatusType = 'WAITING' | 'DONE' | 'INVALID' | 'READY'
+
 export type Student = UserWithAdditionalData & {
-  userStatus: string
-  sessionStatus: UserStatus
+  userStatus: UserStatusType
+  sessionStatus: ProgressStatusType
   currentSession: number | null
+  timeoutEndDate: string | null
+  nextDueDate: string | null
 }
 
 export const userStatuses = [
   {
-    value: 'terms',
+    value: 'TERMS',
     label: 'Aguardando aceite dos termos',
   },
   {
-    value: 'waiting_pac',
+    value: 'WAITING_PAC',
     label: 'Sem link PAC',
   },
   {
-    value: 'pac',
-    label: 'Aguardando PAC',
+    value: 'PAC',
+    label: 'Aguardando conclusão do PAC',
   },
   {
-    value: 'progress',
+    value: 'PROGRESS',
     label: 'Em progresso',
+  },
+  {
+    value: 'DONE',
+    label: 'Completo',
   },
 ]
 
 export const progressStatuses = [
   {
     value: 'WAITING',
-    label: 'Esperando',
+    label: 'Em espera',
   },
   {
     value: 'DONE',
-    label: 'Completo',
+    label: 'Completa',
   },
   {
     value: 'INVALID',
-    label: 'Inválido',
+    label: 'Inválida',
   },
   {
     value: 'READY',
-    label: 'Pronto',
+    label: 'Pronta',
   },
 ]
 
@@ -84,16 +94,13 @@ export function getColumns(isAdmin: boolean, groupId: number): ColumnDef<Student
       accessorKey: 'email',
     },
     {
-      header: 'Status',
+      header: 'Situação',
       accessorKey: 'userStatus',
       cell: ({ row }) => {
         const status = row.original.userStatus
         return (
-          <span className="whitespace-nowrap rounded-md bg-fuchsia-300 px-2 py-1 text-xs uppercase dark:bg-fuchsia-700">
-            {status === 'terms' && 'Aguardando aceite dos termos'}
-            {status === 'waiting_pac' && 'Sem link PAC'}
-            {status === 'pac' && 'Aguardando PAC'}
-            {status === 'progress' && 'Em progresso'}
+          <span className="whitespace-nowrap rounded-md bg-emerald-300 px-2 py-1 text-xs uppercase dark:bg-emerald-700">
+            {userStatuses.find((s) => s.value === status)?.label}
           </span>
         )
       },
@@ -102,16 +109,13 @@ export function getColumns(isAdmin: boolean, groupId: number): ColumnDef<Student
       },
     },
     {
-      header: 'Progresso',
+      header: 'Status da Sessão',
       accessorKey: 'sessionStatus',
       cell: ({ row }) => {
         const status = row.original.sessionStatus
         return (
           <span className="whitespace-nowrap rounded-md bg-fuchsia-300 px-2 py-1 text-xs uppercase dark:bg-fuchsia-700">
-            {status === 'DONE' && 'Completo'}
-            {status === 'INVALID' && 'Inválido'}
-            {status === 'READY' && 'Pronto'}
-            {status === 'WAITING' && 'Esperando'}
+            {progressStatuses.find((s) => s.value === status)?.label}
           </span>
         )
       },
@@ -120,7 +124,7 @@ export function getColumns(isAdmin: boolean, groupId: number): ColumnDef<Student
       },
     },
     {
-      header: 'Sessão atual',
+      header: 'Sessão Atual',
       id: 'currentSession',
       cell: ({ row }) => {
         const currentSession = row.original.currentSession
@@ -135,12 +139,38 @@ export function getColumns(isAdmin: boolean, groupId: number): ColumnDef<Student
       },
     },
     {
+      header: 'Próxima liberação',
+      id: 'timeoutEndDate',
+      cell: ({ row }) => {
+        const timeout = row.original.timeoutEndDate
+
+        return dayjs(timeout).isValid() ? (
+          <span className="whitespace-nowrap rounded-md bg-secondary px-2 py-1 text-xs uppercase text-secondary-foreground">
+            {dayjs(timeout).format('DD/MM/YYYY HH:mm')}
+          </span>
+        ) : null
+      },
+    },
+    {
+      header: 'Prazo',
+      id: 'nextDueDate',
+      cell: ({ row }) => {
+        const nextDueDate = row.original.nextDueDate
+
+        return dayjs(nextDueDate).isValid() ? (
+          <span className="whitespace-nowrap rounded-md bg-red-300 px-2 py-1 text-xs uppercase dark:bg-red-700">
+            {dayjs(nextDueDate).format('DD/MM/YYYY HH:mm')}
+          </span>
+        ) : null
+      },
+    },
+    {
       id: 'actions',
       cell: ({ row }) => {
         const { id, name, email, pacLink } = row.original
 
         async function removeTimeout() {
-          await clearUserTimeout(id)
+          await clearUserTimeout(id, groupId)
           toast.success('Tempo de espera removido com sucesso!')
         }
 
@@ -189,7 +219,7 @@ export function getColumns(isAdmin: boolean, groupId: number): ColumnDef<Student
             </DropdownMenu>
             <Dialog>
               <DialogTrigger asChild>
-                <Button variant="ghost" size="icon">
+                <Button variant="ghost" className="h-8 w-8 p-0" size="icon">
                   <TrashIcon className="h-4 w-4" />
                 </Button>
               </DialogTrigger>
@@ -209,6 +239,7 @@ export function getColumns(isAdmin: boolean, groupId: number): ColumnDef<Student
                   </DialogClose>
                   <DialogTrigger asChild>
                     <Button
+                      className="h-8 w-8 p-0"
                       variant="destructive"
                       onClick={async () => {
                         await removeUserFromGroup(groupId, id)

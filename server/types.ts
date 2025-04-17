@@ -5,6 +5,15 @@ type StrapiDefaultAttributes = {
   publishedAt: string
 }
 
+export type Meta = {
+  pagination: {
+    page: number
+    pageSize: number
+    pageCount: number
+    total: number
+  }
+}
+
 type File = {
   name: string
   alternativeText: string | null
@@ -145,6 +154,8 @@ export type UserWithAdditionalDataAndProgressStatus = UserWithAdditionalData & {
     id: number
     status: UserStatus
     sessions: SessionResults[]
+    nextDueDate: string | null
+    timeoutEndDate: string | null
   }
 }
 

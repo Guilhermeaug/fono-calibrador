@@ -5,7 +5,7 @@ import { revalidatePath } from 'next/cache'
 
 async function revalidateUser(userId: number, groupId: number) {
   await STRAPI.revalidateUser({ userId, groupId })
-  revalidatePath('/manage', 'layout')
+  revalidatePath(`/manage/${groupId}`)
 }
 
 export { revalidateUser }

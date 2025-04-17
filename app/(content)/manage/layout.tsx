@@ -1,5 +1,3 @@
-import { TypographyH2, TypographyP } from '@/components/typography'
-import { Separator } from '@/components/ui/separator'
 import { AUTH } from '@/server/auth'
 import { STRAPI } from '@/server/strapi'
 import { redirect } from 'next/navigation'
@@ -36,14 +34,9 @@ export default async function ManageLayout({ children }: SettingsLayoutProps) {
   const sidebarNavItems = await getGroups(userInfo.id, userInfo.jwt)
 
   return (
-    <div className="container mx-auto space-y-6 p-3">
-      <div className="space-y-0.5">
-        <TypographyH2>Gerenciamento de turmas</TypographyH2>
-        <TypographyP>Crie novas turmas e veja dados de turmas existentes.</TypographyP>
-      </div>
-      <Separator className="my-6" />
-      <div className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0">
-        <aside className="-mx-4 overflow-x-auto lg:w-1/5">
+    <div className="space-y-6 p-3 md:p-6 lg:p-8">
+      <div className="flex max-h-[calc(100vh-64px)] flex-col space-y-8 lg:flex-row lg:gap-4 lg:space-y-0">
+        <aside className="flex-shrink-0 lg:h-[calc(100vh-150px)] overflow-y-auto lg:mb-0 lg:w-48 xl:w-64">
           <SidebarNav items={sidebarNavItems} />
         </aside>
         <main className="flex-1">{children}</main>
