@@ -22,8 +22,8 @@ export default async function InvitePage({ params: { classId } }: Props) {
   }
 
   return (
-    <main className="mx-auto max-w-[900px] p-3 md:p-8">
-      <Card>
+    <main className="mx-auto flex h-full max-w-[500px] items-center justify-center p-4 lg:max-w-[600px] lg:p-8">
+      <Card className="w-full">
         <CardHeader>
           <CardTitle className="text-2xl">
             Convite para entrar em uma nova turma

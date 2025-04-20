@@ -69,11 +69,11 @@ export default async function ManagePage({
     tableData.find((student) => student.id === Number(id))?.additionalData || null
 
   return (
-    <React.Fragment>
+    <div className='w-full'>
       <React.Suspense fallback={<div className="h-[600px] w-full animate-pulse"></div>}>
         <Table userInfo={user} data={tableData} classId={classId} />
       </React.Suspense>
       {show === 'details' && id && <DetailsSheet userDetails={userDetails!} />}
-    </React.Fragment>
+    </div>
   )
 }

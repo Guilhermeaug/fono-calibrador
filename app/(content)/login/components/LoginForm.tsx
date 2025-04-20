@@ -36,6 +36,7 @@ export function LoginForm() {
     })
 
     if (res?.ok) {
+      toast.success('Login realizado com sucesso')
       router.replace('/')
       router.refresh()
       return
@@ -60,46 +61,40 @@ export function LoginForm() {
     <React.Fragment>
       <Form {...form}>
         <form className="grid gap-4" onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="grid gap-2">
-            <FormField
-              control={form.control}
-              name="identifier"
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <FormLabel>Identificador</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Seu usuário ou email" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="grid gap-2">
-            <div className="flex items-center">
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem className="flex flex-1 flex-col">
-                    <div className="flex items-center">
-                      <FormLabel>Senha</FormLabel>
-                      <Link
-                        href="/forgot-password"
-                        className="ml-auto inline-block text-sm underline"
-                      >
-                        Esqueceu sua senha?
-                      </Link>
-                    </div>
-                    <FormControl>
-                      <Input type="password" placeholder="Sua senha" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-          </div>
+          <FormField
+            control={form.control}
+            name="identifier"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel>Identificador</FormLabel>
+                <FormControl>
+                  <Input placeholder="Seu usuário ou email" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="password"
+            render={({ field }) => (
+              <FormItem className="flex flex-1 flex-col">
+                <div className="flex items-center">
+                  <FormLabel>Senha</FormLabel>
+                  <Link
+                    href="/forgot-password"
+                    className="ml-auto inline-block text-sm underline"
+                  >
+                    Esqueceu sua senha?
+                  </Link>
+                </div>
+                <FormControl>
+                  <Input type="password" placeholder="Sua senha" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <Button type="submit" className="w-full">
             Login
           </Button>

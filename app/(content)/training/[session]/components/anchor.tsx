@@ -1,13 +1,11 @@
 'use client'
 
+import { AudioButton } from '@/components/audio-button'
 import { TypographyP } from '@/components/typography'
 import { VoiceSlider } from '@/components/VoiceSlider'
-import Animation from '@/public/animations/sound-animation.json'
 import { STRAPI_URL } from '@/server/strapi'
 import { ProgramTraining } from '@/server/types'
-import { useLottie } from 'lottie-react'
 import * as React from 'react'
-import useSound from 'use-sound'
 import { anchors } from '../constants'
 
 type Props = {
@@ -22,9 +20,14 @@ export function Anchor({
   const anchorsData = feature === 'roughness' ? roughnessAnchor : breathinessAnchor
 
   return (
-    <div className="max-w-[600px] flex-1">
+    <React.Fragment>
+      {feature === 'roughness'
+        ? 'Rugosidade (R): qualquer irregularidade perceptível durante a produção vocal.'
+        : 'Soprosidade (B): qualquer escape de ar audível durante a produção vocal.'}
+      <div className="h-[12px]" />
       <div className="grid gap-4">
         {anchorsData.map((anchor) => {
+          const url = `${STRAPI_URL}${anchor.file.url}`
           const values = anchor[feature]
           const [min, max] = [values[0], values[values.length - 1]]
 
@@ -34,7 +37,12 @@ export function Anchor({
                 <TypographyP>
                   {anchors[anchor.identifier as keyof typeof anchors]}
                 </TypographyP>
-                <AudioButton url={anchor.file.url} />
+                <AudioButton
+                  src={url}
+                  className="size-10"
+                  iconClassName="size-5"
+                  showStatus={false}
+                />
               </div>
               <div className="mt-3 flex w-full flex-1 flex-col items-center gap-4">
                 <VoiceSlider
@@ -50,42 +58,6 @@ export function Anchor({
           )
         })}
       </div>
-    </div>
+    </React.Fragment>
   )
-}
-
-function AudioButton({ url }: { url: string }) {
-  const [play, { stop }] = useSound(`${STRAPI_URL}${url}`, {
-    loop: true,
-    interrupt: true,
-  })
-
-  const {
-    View,
-    play: playAnimation,
-    stop: stopAnimation,
-    setSpeed,
-  } = useLottie({
-    animationData: Animation,
-    loop: true,
-    onMouseEnter: () => {
-      play()
-      playAnimation()
-    },
-    onMouseLeave: () => {
-      stop()
-      stopAnimation()
-    },
-    style: {
-      width: 40,
-      cursor: 'pointer',
-    },
-  })
-
-  React.useEffect(() => {
-    setSpeed(0.7)
-    stopAnimation()
-  }, [setSpeed, stopAnimation])
-
-  return <>{View}</>
 }

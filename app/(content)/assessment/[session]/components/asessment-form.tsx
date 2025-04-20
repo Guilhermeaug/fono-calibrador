@@ -36,7 +36,7 @@ export function AsssessmentForm({ program, isLastSession }: Props) {
     setShowAlert(open)
   }
 
-  async function onSubmitTraining(data: VoiceFormData[]) {
+  async function onSubmitAssessment(data: VoiceFormData[]) {
     voiceFormData.current = data
     handleOpenChange(true)
   }
@@ -56,10 +56,10 @@ export function AsssessmentForm({ program, isLastSession }: Props) {
         endDate,
         audios,
       })
-      toast.success('Avaliação finalizada! Prosseguindo para a próxima etapa...')
-      setTimeout(() => {
-        router.replace(`/startup?show=training-selection&isLastSession=${isLastSession}`)
-      }, 3000)
+
+      toast.success('Avaliação finalizada!')
+      router.replace(`/startup?show=training-selection&isLastSession=${isLastSession}`)
+      router.refresh()
     } catch (error) {
       console.error(error)
     }
@@ -68,12 +68,10 @@ export function AsssessmentForm({ program, isLastSession }: Props) {
   return (
     <React.Fragment>
       <VoiceForm
+        type="assessment"
         features={['roughness', 'breathiness']}
         audios={program.assessment}
-        endText="Terminar Avaliação"
-        onSubmit={onSubmitTraining}
-        isAssessment
-        enableBackButton
+        onSubmit={onSubmitAssessment}
       />
       <AlertDialog open={showAlert} onOpenChange={handleOpenChange}>
         <AlertDialogContent>

@@ -1,10 +1,11 @@
+import { BackButton } from '@/components/back-button'
 import { TypographyH1, TypographyMuted, TypographyP } from '@/components/typography'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 
 export default function ReasoningPage() {
   return (
-    <main className="mx-auto max-w-[850px] p-8">
+    <main className="mx-auto max-w-[850px] p-4 lg:p-8 xl:p-16">
       <TypographyH1 className="text-center">
         Por que fazer um treinamento de avaliação perceptivo-auditiva da voz?
       </TypographyH1>
@@ -49,13 +50,12 @@ export default function ReasoningPage() {
         Pesquisas anteriores* mostraram uma curva de aprendizagem ascendente a partir do
         treinamento para R e B, com melhora importante da concordância após o treinamento.
       </TypographyP>
-      <div className="h-[10px]" />
       <div className="flex justify-center gap-4 py-8">
-        <Button asChild>
+        <BackButton variant="secondary" className="w-full">
+          Voltar
+        </BackButton>
+        <Button className="w-full" asChild>
           <Link href="/startup">Iniciar</Link>
-        </Button>
-        <Button asChild>
-          <Link href="/presentation">Voltar</Link>
         </Button>
       </div>
       <TypographyMuted>
@@ -67,7 +67,6 @@ export default function ReasoningPage() {
         Quinino RC. Auditory Training with Synthesized Voice Anchors: Effect on Rater
         Agreement
       </TypographyMuted>
-      <div className="h-[30px]" />
     </main>
   )
 }

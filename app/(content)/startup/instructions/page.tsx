@@ -4,14 +4,14 @@ import Link from 'next/link'
 
 export default function InstructionsPage() {
   return (
-    <main className="mx-auto max-w-[850px] space-y-4 p-8 text-justify">
+    <main className="mx-auto max-w-[850px] space-y-4 p-4 text-justify lg:p-8 xl:p-16">
       <TypographyH2 className="text-center">
         Preparado para iniciar o Treinamento Perceptivo-Auditivo da Voz?
       </TypographyH2>
       <TypographyP>
         Antes de iniciar, <b>leia atentamente</b> as orientações à seguir.
       </TypographyP>
-      <ul className="list-disc">
+      <ul className="list-disc p-4">
         <li>Realize todo o treinamento em um ambiente silencioso.</li>
         <li>
           Use um fone de ouvido, de preferência supra-auricular, durante todo o
@@ -31,7 +31,7 @@ export default function InstructionsPage() {
           O treinamento inclui 3 avaliações, para a construção do gráfico da curva de
           aprendizagem. Deste forma, segue a estruturação do treinamento em cada sessão:​
         </li>
-        <ul className="my-2 ml-4 list-disc">
+        <ul className="my-2 list-disc pl-4">
           <li>Teste PAC</li>
           <li>Sessão 1 – Avaliação inicial + Treinamento</li>
           <li>Sessão 2 – Treinamento</li>
@@ -42,7 +42,7 @@ export default function InstructionsPage() {
           <li>Teste PAC</li>
         </ul>
         <li>
-          O treinamento é divido em dois blocos: treino do parâmetro Rugosidade e treino
+          O treinamento é dividido em dois blocos: treino do parâmetro Rugosidade e treino
           do parâmetro Soprosidade. Deverá haver intervalo de 1 dia (mínimo 24h e máximo
           48h) entre o treino de cada parâmetro.. O intervalo entre as sessões será de{' '}
           <b>7 dias</b>. Exemplo: Se você fez a sessão 1 para Rugosidade dia 02 de agosto
@@ -54,11 +54,10 @@ export default function InstructionsPage() {
       </ul>
       <div className="h-[10px]" />
       <div className="flex justify-center">
-        <Button size="lg" asChild>
+        <Button className="w-full uppercase" asChild>
           <Link href="/startup">Voltar</Link>
         </Button>
       </div>
-      <div className="h-[30px]" />
     </main>
   )
 }

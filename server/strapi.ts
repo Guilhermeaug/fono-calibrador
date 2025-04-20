@@ -166,34 +166,39 @@ async function getUserResults({
   programId: number
   jwt?: string
 }) {
-  const query = qs.stringify({
-    filters: {
-      program: {
-        $eq: programId,
+  const query = qs.stringify(
+    {
+      filters: {
+        program: {
+          $eq: programId,
+        },
+        user: {
+          $in: userId,
+        },
       },
-      user: {
-        $in: userId,
-      },
-    },
-    populate: {
-      sessions: {
-        populate: {
-          assessmentRoughnessResults: {
-            populate: ['audios'],
-          },
-          assessmentBreathinessResults: {
-            populate: ['audios'],
-          },
-          trainingRoughnessResults: {
-            populate: ['audios'],
-          },
-          trainingBreathinessResults: {
-            populate: ['audios'],
+      populate: {
+        sessions: {
+          populate: {
+            assessmentRoughnessResults: {
+              populate: ['audios'],
+            },
+            assessmentBreathinessResults: {
+              populate: ['audios'],
+            },
+            trainingRoughnessResults: {
+              populate: ['audios'],
+            },
+            trainingBreathinessResults: {
+              populate: ['audios'],
+            },
           },
         },
       },
     },
-  })
+    {
+      encodeValuesOnly: true,
+    },
+  )
 
   const data = (await fetchStrapiApi({
     path: `/users-progress?${query}`,

@@ -167,7 +167,7 @@ export function getColumns(isAdmin: boolean, groupId: number): ColumnDef<Student
     {
       id: 'actions',
       cell: ({ row }) => {
-        const { id, name, email, pacLink } = row.original
+        const { id, name, email, pacLink, sessionStatus } = row.original
 
         async function removeTimeout() {
           await clearUserTimeout(id, groupId)
@@ -199,10 +199,16 @@ export function getColumns(isAdmin: boolean, groupId: number): ColumnDef<Student
                 </DropdownMenuItem>
                 {isAdmin && (
                   <React.Fragment>
-                    <DropdownMenuItem onClick={removeTimeout}>
+                    <DropdownMenuItem
+                      onClick={removeTimeout}
+                      disabled={sessionStatus !== 'WAITING'}
+                    >
                       Remover tempo de espera
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={revalidate}>
+                    <DropdownMenuItem
+                      onClick={revalidate}
+                      disabled={sessionStatus !== 'INVALID'}
+                    >
                       Remover invalidação
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />

@@ -20,8 +20,8 @@ export default function ForgotPasswordPage({ searchParams: { code } }: Props) {
     : 'Escolha uma nova senha para compor sua conta'
 
   return (
-    <main className="mx-auto max-w-[850px] p-3 md:p-8">
-      <Card>
+    <main className="mx-auto flex h-full max-w-[600px] items-center justify-center p-4 lg:max-w-[700px] lg:p-8">
+      <Card className="w-full">
         <CardHeader>
           <CardTitle className="text-2xl">Recuperação de Senha</CardTitle>
           <CardDescription>{description}</CardDescription>

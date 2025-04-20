@@ -16,14 +16,15 @@ import { Input } from '@/components/ui/input'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import {
+  Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
 import { cn } from '@/lib/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Select, SelectGroup } from '@radix-ui/react-select'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { CalendarIcon } from 'lucide-react'
@@ -94,7 +95,7 @@ export function RegisterForm() {
   return (
     <React.Fragment>
       <div className="flex items-center justify-center py-4">
-        <div className="mx-auto grid w-[600px] gap-4">
+        <div className="mx-auto grid gap-4">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 px-4">
               <FormField

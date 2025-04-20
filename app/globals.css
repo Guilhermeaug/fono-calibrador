@@ -2,6 +2,33 @@
 @tailwind components;
 @tailwind utilities;
 
+.base-layout {
+  display: grid;
+  grid-template-areas:
+    "header header"
+    "content content"
+    "footer footer";
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+}
+
+.header {
+  grid-area: header;
+}
+
+.sidebar {
+  grid-area: sidebar;
+}
+
+.content {
+  grid-area: content;
+  min-width: 0;
+}
+
+.footer {
+  grid-area: footer;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

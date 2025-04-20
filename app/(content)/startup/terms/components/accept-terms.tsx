@@ -41,27 +41,27 @@ export function AcceptTerms({ userId }: Props) {
   }
 
   return (
-    <React.Fragment>
-      <div className="grid place-content-center gap-4">
-        <RadioGroup
-          defaultValue="not-accepted"
-          onValueChange={(value: string) =>
-            setAccepted(value === 'accepted' ? true : false)
-          }
-        >
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="accepted" id="accepted" />
-            <Label htmlFor="accepted">Estou de acordo em participar da pesquisa</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="not-accepted" id="not-accepted" />
-            <Label htmlFor="not-accepted">
-              Não estou de acordo em participar da pesquisa
-            </Label>
-          </div>
-        </RadioGroup>
-        <Button onClick={handleSubmit}>Enviar</Button>
-      </div>
-    </React.Fragment>
+    <div className="space-y-6">
+      <RadioGroup
+        defaultValue="not-accepted"
+        onValueChange={(value: string) =>
+          setAccepted(value === 'accepted' ? true : false)
+        }
+      >
+        <div className="flex items-center space-x-2">
+          <RadioGroupItem value="accepted" id="accepted" />
+          <Label htmlFor="accepted">Estou de acordo em participar da pesquisa</Label>
+        </div>
+        <div className="flex items-center space-x-2">
+          <RadioGroupItem value="not-accepted" id="not-accepted" />
+          <Label htmlFor="not-accepted">
+            Não estou de acordo em participar da pesquisa
+          </Label>
+        </div>
+      </RadioGroup>
+      <Button onClick={handleSubmit} className="w-full uppercase">
+        Enviar
+      </Button>
+    </div>
   )
 }

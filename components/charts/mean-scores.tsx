@@ -1,6 +1,5 @@
 'use client'
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   ChartConfig,
   ChartContainer,
@@ -28,35 +27,28 @@ type Props = {
 
 export function MeanScoresChart({ chartData }: Props) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Evolução das avaliações</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <ChartContainer config={chartConfig} className="min-h-[300px] w-full">
-          <LineChart accessibilityLayer data={chartData}>
-            <CartesianGrid vertical={false} />
-            <YAxis tickLine={false} axisLine={false} domain={[0, 100]} />
-            <XAxis dataKey="session" tickLine={false} axisLine={false} tickMargin={8} />
-            <ChartLegend content={<ChartLegendContent />} />
-            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-            <Line
-              dataKey="roughness"
-              type="monotone"
-              stroke="var(--color-roughness)"
-              strokeWidth={2}
-              dot={false}
-            />
-            <Line
-              dataKey="breathiness"
-              type="monotone"
-              stroke="var(--color-breathiness)"
-              strokeWidth={2}
-              dot={false}
-            />
-          </LineChart>
-        </ChartContainer>
-      </CardContent>
-    </Card>
+    <ChartContainer config={chartConfig} className='max-h-[500px] mx-auto' >
+      <LineChart accessibilityLayer data={chartData}>
+        <CartesianGrid vertical={false} />
+        <YAxis tickLine={false} axisLine={false} domain={[0, 100]} />
+        <XAxis dataKey="session" tickLine={false} axisLine={false} tickMargin={8} />
+        <ChartLegend content={<ChartLegendContent />} />
+        <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+        <Line
+          dataKey="roughness"
+          type="monotone"
+          stroke="var(--color-roughness)"
+          strokeWidth={2}
+          dot={false}
+        />
+        <Line
+          dataKey="breathiness"
+          type="monotone"
+          stroke="var(--color-breathiness)"
+          strokeWidth={2}
+          dot={false}
+        />
+      </LineChart>
+    </ChartContainer>
   )
 }
