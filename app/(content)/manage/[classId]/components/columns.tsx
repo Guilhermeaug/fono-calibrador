@@ -245,7 +245,6 @@ export function getColumns(isAdmin: boolean, groupId: number): ColumnDef<Student
                   </DialogClose>
                   <DialogTrigger asChild>
                     <Button
-                      className="h-8 w-8 p-0"
                       variant="destructive"
                       onClick={async () => {
                         await removeUserFromGroup(groupId, id)
