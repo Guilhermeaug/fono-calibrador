@@ -149,7 +149,7 @@ export function DataTable<TData, TValue>({
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 p-2">
       <div className="space-y-2 md:space-y-4">
         <div className="flex gap-3 overflow-x-auto md:flex-wrap">
           <Input
