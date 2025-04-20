@@ -40,6 +40,7 @@ async function getData(classId: number, jwt: string): Promise<Student[]> {
       if (nextDueDate && now.isAfter(dayjs(nextDueDate))) {
         sessionStatus = 'INVALID'
         nextDueDate = null
+        timeoutEndDate = null
       } else if (timeoutEndDate && now.isAfter(dayjs(timeoutEndDate))) {
         sessionStatus = 'READY'
         timeoutEndDate = null
