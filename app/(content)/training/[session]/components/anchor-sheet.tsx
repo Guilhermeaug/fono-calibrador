@@ -27,7 +27,7 @@ export function AnchorSheet({ feature, program, ...props }: AnchorSheetProps) {
           <span className="text-sm">{initialLetter}</span>
         </Button>
       </SheetTrigger>
-      <SheetContent className="w-[85%] [&>svg:first-of-type]:size-16">
+      <SheetContent className="w-[85%]" aria-describedby={undefined}>
         <SheetHeader>
           <SheetTitle>
             {feature === 'roughness' ? 'Âncoras de rugosidade' : 'Âncoras de soprosidade'}

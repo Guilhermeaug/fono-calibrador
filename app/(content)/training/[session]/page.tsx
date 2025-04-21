@@ -39,7 +39,7 @@ export default async function Page({
   const hasBreathinessFeature = feature === 'breathiness' || feature === 'both'
 
   return (
-    <main className="mx-auto p-2 lg:p-4 xl:p-8">
+    <main className="mx-auto max-w-screen-lg p-2 lg:p-4 xl:p-8">
       <TypographyH2 className="text-center">{title}</TypographyH2>
       <div className="mt-1 flex items-center justify-center gap-3 md:hidden">
         <TypographyH4 className="font-bold text-blue-600 dark:text-blue-500">
@@ -48,11 +48,14 @@ export default async function Page({
         {hasRoughnessFeature && <AnchorSheet feature="roughness" program={program} />}
         {hasBreathinessFeature && <AnchorSheet feature="breathiness" program={program} />}
       </div>
-      <div className="mt-4 md:grid md:grid-cols-2">
+      <div className="gap-4 md:mt-6 md:grid md:grid-cols-2">
         <Suspense>
-          <TrainingForm sessionNumber={Number(session)} {...{ feature, program }} />
+          <div>
+            <div className="hidden h-5 md:block" />
+            <TrainingForm sessionNumber={Number(session)} {...{ feature, program }} />
+          </div>
         </Suspense>
-        <div className="hidden md:block">
+        <div className="hidden max-w-md md:block">
           <AnchorGroup type="single" feature={feature} program={program} />
         </div>
       </div>

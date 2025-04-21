@@ -31,7 +31,7 @@ export function AnchorGroup({ feature, program, ...props }: AnchorGroupProps) {
   const hasBreathinessFeature = feature === 'breathiness' || feature === 'both'
 
   return (
-    <div className="space-y-6">
+    <div>
       <ToggleGroup value={value} onValueChange={handleChange} {...props}>
         {hasRoughnessFeature && (
           <ToggleGroupItem
@@ -56,7 +56,7 @@ export function AnchorGroup({ feature, program, ...props }: AnchorGroupProps) {
           </ToggleGroupItem>
         )}
       </ToggleGroup>
-      <div>
+      <div className="mt-3">
         <Anchor feature={value} program={program} />
       </div>
     </div>
