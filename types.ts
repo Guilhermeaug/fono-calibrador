@@ -46,6 +46,7 @@ export type CsvRow = {
   identificador: string
   tipo: string
   parâmetro: string
+  resposta: number
   pontuação: number
   duração: number
   tentativas: number

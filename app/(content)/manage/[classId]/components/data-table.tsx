@@ -141,6 +141,12 @@ export function DataTable<TData, TValue>({
   }, [columnFilters, router, pathname, searchParams, table])
 
   const { rows } = table.getRowModel()
+  const [idsToExport, userDetailsToExport] = React.useMemo(() => {
+    const ids = rows.map((row) => row.original.id)
+    const userDetails = rows.map((row) => row.original)
+
+    return [ids, userDetails]
+  }, [rows])
 
   async function copyInviteLink() {
     const inviteLink = `${window.location.origin}/invite/${classId}`
@@ -189,8 +195,8 @@ export function DataTable<TData, TValue>({
           </Button>
           <ExportButton
             variant="outline"
-            ids={table.getSelectedRowModel().rows.map((row) => row.original.id)}
-            usersDetails={table.getSelectedRowModel().rows.map((row) => row.original)}
+            ids={idsToExport}
+            usersDetails={userDetailsToExport}
           >
             Exportar dados
           </ExportButton>
@@ -217,7 +223,7 @@ export function DataTable<TData, TValue>({
           </AlertDialog>
         </div>
       </div>
-      <div className="rounded-md border overflow-auto max-h-full h-[500px] lg:h-[550px] xl:h-[700px]">
+      <div className="h-[500px] max-h-full overflow-auto rounded-md border lg:h-[550px] xl:h-[700px]">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

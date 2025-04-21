@@ -215,40 +215,46 @@ async function getUsersSessionResults({
   userIds: number[]
   programId: number
 }) {
-  const query = qs.stringify({
-    filters: {
-      program: {
-        $eq: programId,
-      },
-      user: {
-        $in: userIds,
-      },
-    },
-    populate: {
-      sessions: {
-        populate: {
-          assessmentRoughnessResults: {
-            populate: ['audios'],
-          },
-          assessmentBreathinessResults: {
-            populate: ['audios'],
-          },
-          trainingRoughnessResults: {
-            populate: ['audios'],
-          },
-          trainingBreathinessResults: {
-            populate: ['audios'],
-          },
+  const query = qs.stringify(
+    {
+      filters: {
+        program: {
+          $eq: programId,
+        },
+        user: {
+          $in: userIds,
         },
       },
-      user: {
-        fields: ['id'],
+      populate: {
+        sessions: {
+          populate: {
+            assessmentRoughnessResults: {
+              populate: ['audios'],
+            },
+            assessmentBreathinessResults: {
+              populate: ['audios'],
+            },
+            trainingRoughnessResults: {
+              populate: ['audios'],
+            },
+            trainingBreathinessResults: {
+              populate: ['audios'],
+            },
+          },
+        },
+        user: {
+          fields: ['id'],
+        },
       },
     },
-  })
+    {
+      encodeValuesOnly: true,
+    },
+  )
 
   return fetchStrapiApi({
     path: `/users-progress?${query}`,
+    revalidate: 3 * 60,
   }) as Promise<
     (UserProgress & {
       user: {
