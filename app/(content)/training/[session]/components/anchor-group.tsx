@@ -29,6 +29,7 @@ export function AnchorGroup({ feature, program, ...props }: AnchorGroupProps) {
 
   const hasRoughnessFeature = feature === 'roughness' || feature === 'both'
   const hasBreathinessFeature = feature === 'breathiness' || feature === 'both'
+  const disabled = feature === 'both' ? false : true
 
   return (
     <div>
@@ -36,10 +37,11 @@ export function AnchorGroup({ feature, program, ...props }: AnchorGroupProps) {
         {hasRoughnessFeature && (
           <ToggleGroupItem
             value="roughness"
+            disabled={disabled}
             aria-label="toggle roughness anchors"
             asChild
           >
-            <Button variant="outline" className="rounded-full">
+            <Button variant="outline" className="rounded-full disabled:opacity-100">
               Rugosidade
             </Button>
           </ToggleGroupItem>
@@ -47,10 +49,11 @@ export function AnchorGroup({ feature, program, ...props }: AnchorGroupProps) {
         {hasBreathinessFeature && (
           <ToggleGroupItem
             value="breathiness"
+            disabled={disabled}
             aria-label="toggle breathiness anchors"
             asChild
           >
-            <Button variant="outline" className="rounded-full">
+            <Button variant="outline" className="rounded-full disabled:opacity-100">
               Soprosidade
             </Button>
           </ToggleGroupItem>
