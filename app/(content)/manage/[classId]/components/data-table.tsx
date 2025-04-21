@@ -223,7 +223,7 @@ export function DataTable<TData, TValue>({
           </AlertDialog>
         </div>
       </div>
-      <div className="h-[500px] max-h-full overflow-auto rounded-md border lg:h-[550px] xl:h-[700px]">
+      <div className="h-[500px] max-h-full overflow-auto rounded-md border lg:h-[550px] xl:h-[650px]">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
