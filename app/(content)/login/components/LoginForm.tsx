@@ -53,6 +53,7 @@ export function LoginForm() {
       }
       default: {
         toast.error('Erro desconhecido')
+        console.error(res?.error)
       }
     }
   }
