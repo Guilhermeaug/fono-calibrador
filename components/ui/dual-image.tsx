@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/alt-text */
 'use client'
 
 import { useTheme } from 'next-themes'
@@ -8,11 +7,9 @@ import * as React from 'react'
 type Props = {
   lightImage: string
   darkImage: string
-  className?: string
-  imageProps: Omit<React.ComponentProps<typeof Image>, 'src'>
-}
+} & Omit<React.ComponentProps<typeof Image>, 'src'>
 
-export function DualImage({ lightImage, darkImage, imageProps, className = '' }: Props) {
+export function DualImage({ lightImage, darkImage, ...props }: Props) {
   const [mounted, setMounted] = React.useState(false)
   const { resolvedTheme = 'light' } = useTheme()
 
@@ -25,11 +22,11 @@ export function DualImage({ lightImage, darkImage, imageProps, className = '' }:
   }
 
   if (resolvedTheme === 'light') {
-    return <Image src={lightImage} className={className} {...imageProps} />
+    return <Image src={lightImage} {...props} />
   }
 
   if (resolvedTheme === 'dark') {
-    return <Image src={darkImage} className={className} {...imageProps} />
+    return <Image src={darkImage} {...props} />
   }
 
   return null

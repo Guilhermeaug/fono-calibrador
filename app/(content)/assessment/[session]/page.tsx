@@ -4,6 +4,7 @@ import { STRAPI } from '@/server/strapi'
 import { shuffle } from 'fast-shuffle'
 import { redirect } from 'next/navigation'
 import { AsssessmentForm } from './components/asessment-form'
+import { Suspense } from 'react'
 
 type Props = {
   params: {
@@ -13,7 +14,6 @@ type Props = {
 
 export default async function Page({ params: { session } }: Props) {
   const userSession = await AUTH.getServerSession()
-
   if (!userSession) {
     redirect('/login')
   }
@@ -21,15 +21,16 @@ export default async function Page({ params: { session } }: Props) {
   const program = await STRAPI.getProgramAssessment({ id: 1 })
   program.assessment = shuffle(program.assessment)
 
-  const isLastSession = Number(session) === program.numberOfSessions
-
   const asessmentIndex = Math.ceil(Math.sqrt(Number(session)))
   const title = `Sessão ${session} - Avaliação ${asessmentIndex}`
+  const isLastSession = Number(session) === program.numberOfSessions
+
   return (
-    <main className="container grid w-full auto-cols-fr place-content-center justify-items-center py-10">
-      <TypographyH2>{title}</TypographyH2>
-      <div className="h-[20px]" />
-      <AsssessmentForm {...{ program, isLastSession }} />
+    <main className="mx-auto max-w-screen-md p-2 lg:p-4 xl:p-8">
+      <TypographyH2 className="text-center">{title}</TypographyH2>
+      <Suspense>
+        <AsssessmentForm {...{ program, isLastSession }} />
+      </Suspense>
     </main>
   )
 }

@@ -1,10 +1,11 @@
+import { BackButton } from '@/components/back-button'
 import { TypographyH1, TypographyH4, TypographyP } from '@/components/typography'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 
 export default function PresentationPage() {
   return (
-    <main className="mx-auto max-w-[850px] p-8">
+    <main className="mx-auto max-w-[850px] p-4 lg:p-8 xl:p-16">
       <TypographyH1 className="text-center">
         Seja bem vindo ao Calibrador Auditivo!
       </TypographyH1>
@@ -42,13 +43,12 @@ export default function PresentationPage() {
         curva de aprendizado para que o usuário acompanhe com precisão este processo.
       </TypographyP>
       <TypographyH4>Está preparado?</TypographyH4>
-      <div className="h-[10px]" />
       <div className="flex justify-center gap-4 py-8">
-        <Button asChild>
+        <BackButton variant="secondary" className="w-full">
+          Voltar
+        </BackButton>
+        <Button className="w-full" asChild>
           <Link href="/reasoning">Continuar</Link>
-        </Button>
-        <Button asChild>
-          <Link href="/">Voltar</Link>
         </Button>
       </div>
     </main>

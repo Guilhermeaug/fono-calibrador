@@ -25,7 +25,6 @@ export function TrainingForm({ program, feature, sessionNumber }: Props) {
     feature !== 'both'
       ? [feature]
       : (['roughness', 'breathiness'] as ('roughness' | 'breathiness')[])
-
   const currentThreshold = program.sessionsThreshold[sessionNumber - 1]
 
   async function onNextVoice(current: VoiceFormData): Promise<boolean> {
@@ -78,10 +77,9 @@ export function TrainingForm({ program, feature, sessionNumber }: Props) {
           })
         }),
       )
-      toast.success('Treinamento finalizado! Retornando para a tela principal.')
-      setTimeout(() => {
-        router.push('/startup')
-      }, 3000)
+      toast.success('Treinamento finalizado! Respostas salvas com sucesso.')
+      router.push('/startup')
+      router.refresh()
     } catch (error) {
       console.error(error)
     }
@@ -89,9 +87,9 @@ export function TrainingForm({ program, feature, sessionNumber }: Props) {
 
   return (
     <VoiceForm
+      type="training"
       features={features}
       audios={program.training}
-      endText="Terminar treinamento"
       onNext={onNextVoice}
       onSubmit={onSubmitTraining}
     />

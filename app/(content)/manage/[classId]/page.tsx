@@ -23,7 +23,10 @@ async function getData(classId: number, jwt: string): Promise<Student[]> {
   const now = dayjs()
 
   return res.data.map(
-    ({ userProgress: { status, sessions, ...userProgress }, ...student }) => {
+    ({
+      userProgress: { status, sessions, nextDueDate, timeoutEndDate, ...userProgress },
+      ...student
+    }) => {
       let userStatus: UserStatusType = 'PROGRESS'
       if (!student.hasAcceptedTerms) {
         userStatus = 'TERMS'
@@ -34,21 +37,21 @@ async function getData(classId: number, jwt: string): Promise<Student[]> {
       }
 
       let sessionStatus = status
-      if (userProgress.nextDueDate && now.isAfter(dayjs(userProgress.nextDueDate))) {
+      if (nextDueDate && now.isAfter(dayjs(nextDueDate))) {
         sessionStatus = 'INVALID'
-      } else if (
-        userProgress.timeoutEndDate &&
-        now.isAfter(dayjs(userProgress.timeoutEndDate))
-      ) {
+        nextDueDate = null
+        timeoutEndDate = null
+      } else if (timeoutEndDate && now.isAfter(dayjs(timeoutEndDate))) {
         sessionStatus = 'READY'
+        timeoutEndDate = null
       }
 
       return {
+        currentSession: sessions?.length ? sessions?.length : null,
         userStatus,
         sessionStatus,
-        currentSession: sessions?.length ? sessions?.length : null,
-        timeoutEndDate: userProgress.timeoutEndDate,
-        nextDueDate: userProgress.nextDueDate,
+        timeoutEndDate,
+        nextDueDate,
         ...student,
       }
     },
@@ -69,11 +72,11 @@ export default async function ManagePage({
     tableData.find((student) => student.id === Number(id))?.additionalData || null
 
   return (
-    <React.Fragment>
+    <div className="w-full">
       <React.Suspense fallback={<div className="h-[600px] w-full animate-pulse"></div>}>
         <Table userInfo={user} data={tableData} classId={classId} />
       </React.Suspense>
       {show === 'details' && id && <DetailsSheet userDetails={userDetails!} />}
-    </React.Fragment>
+    </div>
   )
 }

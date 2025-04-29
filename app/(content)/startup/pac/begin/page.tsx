@@ -17,7 +17,7 @@ export default async function PacBeginPage() {
   const needsToAcceptTerms = firstPacStatus !== 'DONE' || finalPacStatus !== 'DONE'
 
   return (
-    <main className="mx-auto max-w-[850px] p-8">
+    <main className="mx-auto max-w-[850px] p-4 lg:p-8 xl:p-16">
       <TypographyH1 className="text-center">
         Teste do Processamento Auditivo (PAC)
       </TypographyH1>
@@ -42,14 +42,14 @@ export default async function PacBeginPage() {
         Importante: após realizar o teste, é necessário retornar nesta página e assinar
         virtualmente o Termo de Conclusão do PAC
       </TypographyP>
-      <div className="mx-auto flex flex-col justify-center gap-4 py-8 uppercase md:flex-row">
-        <Button disabled={isNil(pacLink)} asChild={!isNil(pacLink)}>
+      <div className="mt-8 flex gap-3 uppercase">
+        <Button disabled={isNil(pacLink)} asChild={!isNil(pacLink)} className="w-full">
           <Link href={startPac} target="_blank">
             Iniciar pac
           </Link>
         </Button>
         {pacLink && needsToAcceptTerms && (
-          <Button asChild>
+          <Button className="w-full" asChild>
             <Link href="end">Termo de Conclusão PAC</Link>
           </Button>
         )}

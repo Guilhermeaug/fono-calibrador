@@ -58,10 +58,12 @@ export function DataTable<TData, TValue>({
   const initialFilters: ColumnFiltersState = React.useMemo(() => {
     const filters: ColumnFiltersState = []
     const email = searchParams.get('email')
+    const name = searchParams.get('name')
     const userStatus = searchParams.get('userStatus')
     const sessionStatus = searchParams.get('sessionStatus')
 
     if (email) filters.push({ id: 'email', value: email })
+    if (name) filters.push({ id: 'name', value: name })
     if (userStatus) filters.push({ id: 'userStatus', value: userStatus.split(',') })
     if (sessionStatus)
       filters.push({ id: 'sessionStatus', value: sessionStatus.split(',') })
@@ -139,6 +141,12 @@ export function DataTable<TData, TValue>({
   }, [columnFilters, router, pathname, searchParams, table])
 
   const { rows } = table.getRowModel()
+  const [idsToExport, userDetailsToExport] = React.useMemo(() => {
+    const ids = rows.map((row) => row.original.id)
+    const userDetails = rows.map((row) => row.original)
+
+    return [ids, userDetails]
+  }, [rows])
 
   async function copyInviteLink() {
     const inviteLink = `${window.location.origin}/invite/${classId}`
@@ -147,9 +155,9 @@ export function DataTable<TData, TValue>({
   }
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-col gap-3 overflow-x-auto md:gap-4">
-        <div className="flex gap-3 overflow-x-auto">
+    <div className="space-y-4 p-2">
+      <div className="space-y-2 md:space-y-4">
+        <div className="flex gap-3 overflow-x-auto md:flex-wrap">
           <Input
             placeholder="Filtre por email"
             value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
@@ -158,7 +166,7 @@ export function DataTable<TData, TValue>({
             }
             className="h-8 w-[200px] ring-0 focus:ring-0 focus-visible:ring-0 lg:w-[250px]"
           />
-           <Input
+          <Input
             placeholder="Filtre por nome"
             value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
             onChange={(event) =>
@@ -181,14 +189,14 @@ export function DataTable<TData, TValue>({
             />
           )}
         </div>
-        <div className="flex gap-3 overflow-x-auto">
+        <div className="flex gap-3 overflow-x-auto md:flex-wrap">
           <Button variant="outline" onClick={copyInviteLink}>
             Compartilhar convite
           </Button>
           <ExportButton
             variant="outline"
-            ids={table.getSelectedRowModel().rows.map((row) => row.original.id)}
-            usersDetails={table.getSelectedRowModel().rows.map((row) => row.original)}
+            ids={idsToExport}
+            usersDetails={userDetailsToExport}
           >
             Exportar dados
           </ExportButton>
@@ -215,7 +223,7 @@ export function DataTable<TData, TValue>({
           </AlertDialog>
         </div>
       </div>
-      <div className="relative h-[450px] overflow-auto rounded-md border md:h-[500px] lg:h-[570px] 2xl:h-[600px]">
+      <div className="h-[500px] max-h-full overflow-auto rounded-md border lg:h-[550px] xl:h-[650px]">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

@@ -20,9 +20,7 @@ export function Invite({ userInfo, classId }: Props) {
       userId: userInfo.id,
     })
     toast.success('Convite aceito com sucesso!')
-    setTimeout(() => {
-      router.push('/')
-    }, 2000)
+    router.push('/')
   }
 
   return (

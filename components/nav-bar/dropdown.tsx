@@ -10,11 +10,9 @@ import {
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu'
 
-type Props = {
-  hasAuth: boolean
-}
+type Props = {}
 
-export function NavbarDropdown({ hasAuth }: Props) {
+export function NavbarDropdown({ }: Props) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -23,11 +21,9 @@ export function NavbarDropdown({ hasAuth }: Props) {
           <span className="sr-only">Navegação do usuário</span>
         </Button>
       </DropdownMenuTrigger>
-      {hasAuth && (
-        <DropdownMenuContent align="end">
-          <DropdownMenuItem onClick={() => signOut()}>Sair do sistema</DropdownMenuItem>
-        </DropdownMenuContent>
-      )}
+      <DropdownMenuContent align="end">
+        <DropdownMenuItem onClick={() => signOut()}>Sair do sistema</DropdownMenuItem>
+      </DropdownMenuContent>
     </DropdownMenu>
   )
 }

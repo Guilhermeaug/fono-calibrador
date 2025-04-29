@@ -12,7 +12,7 @@ export default async function TermsPage() {
   }
 
   return (
-    <main className="mx-auto max-w-[850px] p-8">
+    <main className="mx-auto max-w-[850px] p-4 lg:p-8 xl:p-16">
       <TypographyH1 className="text-center">
         TERMO DE CONSENTIMENTO LIVRE E ESCLARECIDO
       </TypographyH1>
@@ -110,7 +110,7 @@ export default async function TermsPage() {
         width={467}
         height={65}
       />
-      {userInfo.hasAcceptedTerms === false && (
+      {userInfo.hasAcceptedTerms === true && (
         <React.Fragment>
           <TypographyP>Desta forma:</TypographyP>
           <div className="h-[10px]" />

@@ -10,7 +10,7 @@ export default async function PacEndPage() {
   }
 
   return (
-    <main className="mx-auto max-w-[850px] p-8">
+    <main className="mx-auto max-w-[850px] p-4 lg:p-8 xl:p-16">
       <TypographyH1 className="text-center">
         Teste do Processamento Auditivo (PAC)
       </TypographyH1>

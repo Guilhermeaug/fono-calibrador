@@ -4,7 +4,7 @@ import { AdjustmentForm } from './components/adjustment-form'
 
 export default function VolumeAdjustmentPage() {
   return (
-    <main className="mx-auto max-w-[850px] p-8">
+    <main className="mx-auto max-w-[850px] p-4 lg:p-8 xl:p-16">
       <TypographyH1 className="text-center">
         Ajuste do volume do fone de ouvido
       </TypographyH1>

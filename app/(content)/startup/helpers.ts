@@ -1,18 +1,18 @@
 import { UserInfo, UserProgress } from '@/server/types'
 
+export type CheckListItemType = {
+  text: string
+  href: string
+  status: CheckListStatus
+  canClickIf: boolean
+}
+
 enum CheckListStatus {
   READY = 'READY',
   WAITING = 'WAITING',
   UNAVAILABLE = 'UNAVAILABLE',
   DONE = 'DONE',
   INVALID = 'INVALID',
-}
-
-export type CheckListItemType = {
-  text: string
-  href: string
-  status: CheckListStatus
-  canClickIf: boolean
 }
 
 function getStatusForTerms(hasAcceptedTerms: boolean): CheckListStatus {

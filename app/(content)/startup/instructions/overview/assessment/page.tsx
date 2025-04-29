@@ -10,10 +10,10 @@ type Props = {
 
 export default function OverviewAssessment({ searchParams }: Props) {
   return (
-    <main className="mx-auto max-w-[850px] space-y-4 p-8 text-justify">
+    <main className="mx-auto max-w-[850px] space-y-4 p-4 text-justify lg:p-8 xl:p-16">
       <TypographyH1 className="text-center">Avaliação</TypographyH1>
       <TypographyP>Essa sessão inicia com a Avaliação de 20 vozes.</TypographyP>
-      <ul className="list-disc">
+      <ul className="list-disc pl-4">
         <li>
           Para cada voz avaliada há duas retas, uma para avaliar a Rugosidade (R) e outra
           para Soprosidade (B).
@@ -35,8 +35,8 @@ export default function OverviewAssessment({ searchParams }: Props) {
         </li>
       </ul>
       <div className="h-[8px]" />
-      <div className="grid place-content-center">
-        <Button asChild className="mx-auto" size="lg">
+      <div className="grid md:place-content-center">
+        <Button asChild className="w-full md:mx-auto md:w-auto" size="lg">
           <Link
             className="uppercase"
             href={{
@@ -51,7 +51,6 @@ export default function OverviewAssessment({ searchParams }: Props) {
           </Link>
         </Button>
       </div>
-      <div className="h-[30px]" />
     </main>
   )
 }

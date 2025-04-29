@@ -12,7 +12,10 @@ type PutUserAction = {
 
 export async function putUserAction(payload: PutUserAction) {
   const res = await STRAPI.putUser(payload)
-  payload.groupId && revalidatePath(`/manage/${payload.groupId}`)
+
+  if (payload.groupId) {
+    revalidatePath(`/manage/${payload.groupId}`)
+  }
   revalidatePath('/startup')
   return res
 }

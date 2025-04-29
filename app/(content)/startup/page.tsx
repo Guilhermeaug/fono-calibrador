@@ -36,9 +36,9 @@ export default async function StartupPage({ searchParams: { show } }: Props) {
 
   return (
     <React.Fragment>
-      <main className="mx-auto max-w-[850px] p-8">
+      <main className="mx-auto max-w-[850px] p-4 lg:p-8 xl:p-16">
         <TypographyH1 className="text-center">
-          Seja bem vindo ao Calibrador Auditivo!
+          Progresso no programa
         </TypographyH1>
         <TypographyP>
           As atividades do treinamento devem ser realizadas respeitando a ordem abaixo.
@@ -57,7 +57,6 @@ export default async function StartupPage({ searchParams: { show } }: Props) {
         <TypographyP className="text-center">
           Os resultados são atualizados a cada sessão.
         </TypographyP>
-        <div className="h-[30px]" />
       </main>
       <Suspense>
         {showProgress && <ProgressSheet progress={userProgress} program={program} />}

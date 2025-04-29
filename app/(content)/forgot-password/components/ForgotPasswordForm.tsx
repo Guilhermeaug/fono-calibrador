@@ -51,15 +51,15 @@ export function ForgotPasswordForm({ code }: Props) {
       password: password,
       redirect: false,
     })
-    toast.success('Sua senha foi alterada com sucesso.')
+    toast.success('Sua senha foi alterada com sucesso. Redirecionando...')
     setTimeout(() => {
       window.location.href = '/'
-    }, 2000)
+    }, 3000)
   }
 
   return (
     <React.Fragment>
-      <div className="grid gap-4">
+      <div className="grid gap-3">
         {isNil(code) && (
           <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
@@ -92,10 +92,10 @@ export function ForgotPasswordForm({ code }: Props) {
           Recuperar senha
         </Button>
       </div>
-      <div className="mt-4 text-center text-sm">
+      <div className="text-md mt-3 text-center">
         Ainda não tem uma conta? {'  '}
         <Link href="/register" className="underline">
-          Se cadastre
+          Cadastre-se
         </Link>
       </div>
     </React.Fragment>

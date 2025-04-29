@@ -1,5 +1,6 @@
 'use client'
 
+import { TypographyH1 } from '@/components/typography'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -41,7 +42,8 @@ export default function ContactPage() {
   }, [form])
 
   return (
-    <main className="mx-auto max-w-[850px] px-2 py-8 lg:px-0">
+    <main className="mx-auto max-w-[850px] space-y-6 p-4 lg:p-8 xl:p-16">
+      <TypographyH1>Formulário para dúvidas ou sugestões</TypographyH1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
@@ -51,7 +53,7 @@ export default function ContactPage() {
               <FormItem>
                 <FormLabel>Seu email principal</FormLabel>
                 <FormControl>
-                  <Input placeholder="mm@gmail.com" {...field} />
+                  <Input placeholder="mm@gmail.com" type="email" {...field} />
                 </FormControl>
                 <FormDescription>Esse será seu email de contato</FormDescription>
                 <FormMessage />

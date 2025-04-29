@@ -34,13 +34,11 @@ export default async function ManageLayout({ children }: SettingsLayoutProps) {
   const sidebarNavItems = await getGroups(userInfo.id, userInfo.jwt)
 
   return (
-    <div className="space-y-6 p-3 md:p-6 lg:p-8">
-      <div className="flex max-h-[calc(100vh-64px)] flex-col space-y-8 lg:flex-row lg:gap-4 lg:space-y-0">
-        <aside className="flex-shrink-0 lg:h-[calc(100vh-150px)] overflow-y-auto lg:mb-0 lg:w-48 xl:w-64">
-          <SidebarNav items={sidebarNavItems} />
-        </aside>
-        <main className="flex-1">{children}</main>
-      </div>
+    <div className="flex flex-col gap-8 p-4 lg:flex-row lg:gap-4 lg:space-x-6 lg:space-y-0 lg:p-8 max-h-[calc(100vh-64px)]">
+      <aside className="flex-shrink-0 overflow-auto lg:mb-0 lg:w-48 lg:overflow-y-auto lg:overflow-x-clip xl:w-64">
+        <SidebarNav items={sidebarNavItems} />
+      </aside>
+      <main className="flex-1 min-w-0">{children}</main>
     </div>
   )
 }

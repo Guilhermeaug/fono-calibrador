@@ -47,12 +47,11 @@ export default async function ManageUserResultsPage({
       !session.assessmentBreathinessResults &&
       !session.assessmentRoughnessResults,
   )
-
   const chartData = computateAssessmentsMeanScores(userProgress.sessions)
 
   return (
-    <main className="container mx-auto py-2">
-      <div className="flex justify-between">
+    <main className="mx-auto max-w-[850px] space-y-8 p-4 lg:p-8">
+      <div className="flex justify-between w-full">
         <TypographyH2>{name}</TypographyH2>
         <ExportButton ids={[id]}>Exportar dados</ExportButton>
       </div>
@@ -67,7 +66,9 @@ export default async function ManageUserResultsPage({
             ))}
           </Accordion>
           <div className="h-[40px]" />
-          <MeanScoresChart chartData={chartData} />
+          <div className="relative">
+            <MeanScoresChart chartData={chartData} />
+          </div>
         </React.Fragment>
       )}
     </main>
@@ -88,6 +89,7 @@ function SessionResultTable({ data }: TableType) {
       <TableHeader>
         <TableRow>
           <TableHead>ID</TableHead>
+          <TableHead>Resposta</TableHead>
           <TableHead>Score</TableHead>
           <TableHead>Tempo</TableHead>
           <TableHead>N°Ten.</TableHead>
@@ -98,6 +100,7 @@ function SessionResultTable({ data }: TableType) {
         {data.audios.sort(sortAudiosByIdentifier).map((audio) => (
           <TableRow key={audio.id}>
             <TableCell>{audio.identifier}</TableCell>
+            <TableCell>{audio.answer}</TableCell>
             <TableCell>{audio.score}</TableCell>
             <TableCell>{audio.duration}</TableCell>
             <TableCell>{audio.numberOfAttempts}</TableCell>

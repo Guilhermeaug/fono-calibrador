@@ -10,12 +10,12 @@ type Props = {
 
 export default function OverviewTraining({ searchParams }: Props) {
   return (
-    <main className="mx-auto max-w-[850px] space-y-4 p-8 text-justify">
+    <main className="mx-auto max-w-[850px] space-y-4 p-4 text-justify lg:p-8 xl:p-16">
       <TypographyH1 className="text-center">Treinamento</TypographyH1>
       <TypographyP>
         O treinamento será realizado por meio da avaliação de 20 vozes.
       </TypographyP>
-      <ul className="list-disc">
+      <ul className="list-disc pl-4">
         <li>
           Em cada sessão os parâmetros rugosidade e soprosidade devem ser treinados, com
           intervalo de 1 dia entre os treinamentos de cada parâmetro. Ou seja, se hoje
@@ -24,7 +24,7 @@ export default function OverviewTraining({ searchParams }: Props) {
           do parâmetro Soprosidade.
         </li>
         <li>Você deve:</li>
-        <ul className="ml-4 list-square">
+        <ul className="pl-4 list-square">
           <li>Escutar a voz a ser avaliada</li>
           <li>Escutar as vozes referências no quadro ao lado</li>
           <li>
@@ -42,8 +42,8 @@ export default function OverviewTraining({ searchParams }: Props) {
         </ul>
       </ul>
       <div className="h-[8px]" />
-      <div className="grid place-content-center">
-        <Button asChild className="mx-auto" size="lg">
+      <div className="grid md:place-content-center">
+        <Button asChild className="mx-auto w-full md:w-auto" size="lg">
           <Link
             className="uppercase"
             href={{
@@ -58,7 +58,6 @@ export default function OverviewTraining({ searchParams }: Props) {
           </Link>
         </Button>
       </div>
-      <div className="h-[30px]" />
     </main>
   )
 }

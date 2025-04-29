@@ -1,10 +1,12 @@
-import { TypographyH2 } from '@/components/typography'
-import { cn, translateFeature } from '@/lib/utils'
+import { TypographyH2, TypographyH4 } from '@/components/typography'
+import { translateFeature } from '@/lib/utils'
 import { AUTH } from '@/server/auth'
 import { STRAPI } from '@/server/strapi'
 import { shuffle } from 'fast-shuffle'
 import { redirect } from 'next/navigation'
-import { Anchor } from './components/anchor'
+import { Suspense } from 'react'
+import { AnchorGroup } from './components/anchor-group'
+import { AnchorSheet } from './components/anchor-sheet'
 import { TrainingForm } from './components/training-form'
 
 type Props = {
@@ -32,32 +34,31 @@ export default async function Page({
   const program = await STRAPI.getProgramTraining({ id: 1 })
   program.training = shuffle(program.training)
 
-  const isOneFeature = feature === 'both' ? false : true
   const title = `Sessão ${session} - Treinamento de ${translateFeature(feature)}`
-
-  const style = cn('flex flex-col gap-6 md:flex-row', !isOneFeature && 'justify-center')
+  const hasRoughnessFeature = feature === 'roughness' || feature === 'both'
+  const hasBreathinessFeature = feature === 'breathiness' || feature === 'both'
 
   return (
-    <main className="container py-8">
-      <TypographyH2>{title}</TypographyH2>
-      <div className="h-[20px]" />
-      <p>
-        Se não conseguir escutar o áudio, clique em algum ponto da tela e tente novamente.
-        Em último caso, reinicie a página ou faça login novamente.
-      </p>
-      <div className="h-[30px]" />
-      <div className={style}>
-        <TrainingForm sessionNumber={Number(session)} {...{ feature, program }} />
-        {isOneFeature && (
-          <Anchor feature={feature as 'roughness' | 'breathiness'} program={program} />
-        )}
+    <main className="mx-auto max-w-screen-lg p-2 lg:p-4 xl:p-8">
+      <TypographyH2 className="text-center">{title}</TypographyH2>
+      <div className="mt-1 flex items-center justify-center gap-3 md:hidden">
+        <TypographyH4 className="font-bold text-blue-600 dark:text-blue-500">
+          Âncoras:
+        </TypographyH4>
+        {hasRoughnessFeature && <AnchorSheet feature="roughness" program={program} />}
+        {hasBreathinessFeature && <AnchorSheet feature="breathiness" program={program} />}
       </div>
-      {!isOneFeature && (
-        <div className="mt-12 grid gap-4 sm:grid-cols-2">
-          <Anchor feature="roughness" program={program} />
-          <Anchor feature="breathiness" program={program} />
+      <div className="gap-4 md:mt-6 md:grid md:grid-cols-2">
+        <Suspense>
+          <div>
+            <div className="hidden h-5 md:block" />
+            <TrainingForm sessionNumber={Number(session)} {...{ feature, program }} />
+          </div>
+        </Suspense>
+        <div className="hidden max-w-md md:block">
+          <AnchorGroup type="single" feature={feature} program={program} />
         </div>
-      )}
+      </div>
     </main>
   )
 }

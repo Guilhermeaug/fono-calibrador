@@ -209,6 +209,11 @@ export const xlsxSchemaSessionsDetails = [
     value: (session: CsvRow) => session.parâmetro,
   },
   {
+    column: 'Resposta',
+    type: Number,
+    value: (session: CsvRow) => session.resposta,
+  },
+  {
     column: 'Pontuação',
     type: Number,
     value: (session: CsvRow) => session.pontuação,

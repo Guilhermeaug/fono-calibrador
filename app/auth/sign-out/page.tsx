@@ -20,22 +20,21 @@ export default function SignOutPage({}: Props) {
     }
 
     const timeout = setTimeout(() => run(), 1000)
+
     return () => clearTimeout(timeout)
   }, [])
 
   return (
-    <React.Fragment>
-      <main className="flex h-[75vh] items-center justify-center">
-        <ColorRing
-          visible={true}
-          height="80"
-          width="80"
-          ariaLabel="color-ring-loading"
-          wrapperStyle={{}}
-          wrapperClass="color-ring-wrapper"
-          colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
-        />
-      </main>
-    </React.Fragment>
+    <main className="flex h-full items-center justify-center">
+      <ColorRing
+        visible={true}
+        height="80"
+        width="80"
+        ariaLabel="color-ring-loading"
+        wrapperStyle={{}}
+        wrapperClass="color-ring-wrapper"
+        colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+      />
+    </main>
   )
 }

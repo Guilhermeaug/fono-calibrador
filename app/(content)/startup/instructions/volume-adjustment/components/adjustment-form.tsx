@@ -3,9 +3,8 @@
 import { Button } from '@/components/ui/button'
 import * as React from 'react'
 import { toast } from 'sonner'
-import useSound from 'use-sound'
 
-import { useAnimatedPlayer } from '@/hooks/use-animated-player'
+import { AudioButton } from '@/components/audio-button'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { sounds } from '../constants'
 
@@ -31,7 +30,7 @@ export function AdjustmentForm() {
       </section>
       <div className="h-[30px]" />
       <Button
-        className="mx-auto block"
+        className="mx-auto block w-full md:w-auto"
         disabled={!isDone}
         size="lg"
         onClick={() => {
@@ -61,14 +60,6 @@ function AudioForm({
 }) {
   const [disabled, setDisabled] = React.useState(false)
 
-  const [play] = useSound(path, {
-    onend: () => {
-      stopAnimation()
-    },
-  })
-
-  const { View, stopAnimation } = useAnimatedPlayer({ play })
-
   function submit(value: string) {
     if (value === answer) {
       toast.success('Correto. Continue com os próximos testes.')
@@ -81,7 +72,9 @@ function AudioForm({
 
   return (
     <div className="flex flex-grow flex-col space-y-4">
-      <div className="mx-auto">{View}</div>
+      <div className="mx-auto">
+        <AudioButton src={path} />
+      </div>
       <div className="grid flex-shrink gap-2">
         <Button disabled={disabled} variant="outline" onClick={() => submit('Apito')}>
           Apito

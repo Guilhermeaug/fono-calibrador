@@ -1,4 +1,3 @@
-import { Navbar } from '@/components/nav-bar/nav-bar'
 import * as React from 'react'
 
 type Props = {
@@ -8,8 +7,7 @@ type Props = {
 export default function ContentLayout({ children }: Props) {
   return (
     <React.Fragment>
-      <Navbar />
-      <div className="relative flex-grow">{children}</div>
+      {children}
     </React.Fragment>
   )
 }

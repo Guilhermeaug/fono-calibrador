@@ -5,30 +5,30 @@ import { LoginForm } from './components/LoginForm'
 
 export default function Page() {
   return (
-    <main className="p-3 lg:grid lg:grid-cols-2 lg:pt-12">
-      <div className="flex items-center justify-center">
-        <div className="mx-auto grid w-[350px] gap-6">
-          <div className="grid gap-2 text-center">
+    <main className="h-full gap-12 p-4 lg:grid lg:grid-cols-2 lg:p-8 xl:p-16">
+      <div className="flex h-full items-center justify-center">
+        <div className="max-w-lg flex-1 space-y-6">
+          <div className="space-y-2 text-center">
             <h1 className="text-3xl font-bold">Login</h1>
             <p className="text-balance text-muted-foreground">
               Entre com seu e-mail ou nome de usuário abaixo
             </p>
           </div>
           <LoginForm />
-          <div className="mt-4 text-center text-sm">
+          <div className="mt-2 text-center text-md">
             Não tem uma conta?{'  '}
             <Link href="/register" className="underline">
-              Se cadastre
+              Cadastre-se
             </Link>
           </div>
         </div>
       </div>
-      <div className="relative hidden lg:block">
+      <div className="relative hidden max-w-lg lg:block">
         <Image
-          src="/images/auth-image.png"
-          alt="Image"
+          src="/images/logo.png"
+          className="block max-w-full self-center object-contain dark:grayscale"
+          alt=""
           fill
-          className="max-w-full object-cover dark:brightness-[0.3] dark:grayscale"
         />
       </div>
     </main>

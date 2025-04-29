@@ -19,7 +19,7 @@ export default async function ResultsPage() {
   const chartData = computateAssessmentsMeanScores(sessions)
 
   return (
-    <main className="mx-auto max-w-[850px] space-y-4 px-8 py-8">
+    <main className="mx-auto max-w-[850px] space-y-8 p-4 lg:p-8 xl:p-16">
       <TypographyH1>Seus resultados</TypographyH1>
       <MeanScoresChart chartData={chartData} />
     </main>

@@ -6,7 +6,17 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 import {
   Sheet,
@@ -16,7 +26,6 @@ import {
   SheetTitle,
 } from '@/components/ui/sheet'
 import { Program, UserProgress } from '@/server/types'
-import { ShieldAlertIcon } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import * as React from 'react'
 import { restartSessionsAction } from '../restart-sessions-action'
@@ -28,7 +37,7 @@ type Props = {
 } & React.ComponentPropsWithoutRef<typeof Sheet>
 
 export function ProgressSheet({
-  progress: { sessions, favoriteFeature, status },
+  progress: { sessions, status },
   program,
   ...props
 }: Props) {
@@ -37,6 +46,7 @@ export function ProgressSheet({
   function handleOpenChange(open: boolean) {
     if (open === false) {
       router.push('/startup')
+      router.refresh()
     }
   }
 
@@ -57,27 +67,34 @@ export function ProgressSheet({
             </span>
           </SheetDescription>
           {status === 'INVALID' && (
-            <Alert variant="destructive" className="dark:text-white">
-              <ShieldAlertIcon className="h-4 w-4" />
-              <AlertTitle>Sessão invalidada.</AlertTitle>
-              <AlertDescription>
-                Sua sessão foi invalidada, e por isso, terá que reiniciar todo o processo
-                de avaliação e treinamento.
-              </AlertDescription>
-              <div className="flex justify-center">
-                <Button
-                  variant="destructive"
-                  className="mt-2 w-full"
-                  onClick={() =>
-                    restartSessionsAction({
-                      programId: program.id,
-                    })
-                  }
-                >
-                  Reiniciar
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="destructive" className="mt-2 w-full">
+                  Reiniciar progresso
                 </Button>
-              </div>
-            </Alert>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Sessão invalidada.</AlertDialogTitle>
+                </AlertDialogHeader>
+                <AlertDialogDescription>
+                  Sua sessão foi invalidada, e por isso, terá que reiniciar todo o
+                  processo de avaliação e treinamento. Tem certeza que deseja continuar?
+                </AlertDialogDescription>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={() =>
+                      restartSessionsAction({
+                        programId: program.id,
+                      })
+                    }
+                  >
+                    Continuar
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           )}
         </SheetHeader>
         <div className="h-[30px]" />

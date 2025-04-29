@@ -1,21 +1,22 @@
-import { Inter as FontSans } from 'next/font/google'
+import { Inter } from 'next/font/google'
 import './globals.css'
 
 import { Footer } from '@/components/footer'
+import { Navbar } from '@/components/nav-bar/nav-bar'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from '@/components/ui/sonner'
 import MicrosoftClarity from '@/contexts/clarity'
 import { cn } from '@/lib/utils'
 import { Metadata } from 'next'
-
-const fontSans = FontSans({
-  subsets: ['latin'],
-  variable: '--font-sans',
-})
+import { AUTH } from '@/server/auth'
 
 type RootLayoutProps = {
   children: React.ReactNode
 }
+
+const inter = Inter({
+  subsets: ['latin'],
+})
 
 export const metadata: Metadata = {
   title: 'Calibrador Auditivo',
@@ -23,26 +24,23 @@ export const metadata: Metadata = {
     'Sistema especialista feito pela Universidade Federal de Minas Gerais para melhorar o ensino de Avaliação Perceptivo da Voz e Calibração Auditiva.',
 }
 
-export default function RootLayout({ children }: RootLayoutProps) {
+export default async function RootLayout({ children }: RootLayoutProps) {
+  const session = await AUTH.getServerSession()
+
   return (
     <html lang="pt-BR" suppressHydrationWarning>
-      <body
-        className={cn(
-          'flex min-h-screen flex-col bg-background pb-4 font-sans antialiased',
-          fontSans.variable,
-        )}
-      >
+      <body className={cn('base-layout', 'font-sans antialiased', inter.className)}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >
-          <div className="relative flex-grow">{children}</div>
+          <Navbar />
+          <div className="content">{children}</div>
           <Footer />
           <Toaster richColors />
         </ThemeProvider>
-        <MicrosoftClarity />
+        <MicrosoftClarity userId={session?.user?.id} />
       </body>
     </html>
   )

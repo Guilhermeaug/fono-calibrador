@@ -35,13 +35,11 @@ export default function EquipmentCheck() {
     const feature = searchParams.get('feature')
 
     const pathName = `volume-adjustment?session=${session}&step=${step}${feature ? `&feature=${feature}` : ''}`
-    setTimeout(() => {
-      router.push(pathName)
-    }, 2000)
+    router.push(pathName)
   }
 
   return (
-    <main className="mx-auto grid max-w-[850px] place-content-center space-y-12 px-8 pt-12 text-justify">
+    <main className="mx-auto grid max-w-[850px] place-content-center space-y-12 p-4 text-justify lg:p-8 xl:p-16">
       <TypographyH1 className="text-center">
         Passos necessários para iniciar o treinamento
       </TypographyH1>
@@ -91,7 +89,7 @@ export default function EquipmentCheck() {
               </FormItem>
             )}
           />
-          <Button className="mx-auto block" type="submit" size="lg">
+          <Button className="block w-full md:mx-auto" type="submit" size="lg">
             Próximo
           </Button>
         </form>
