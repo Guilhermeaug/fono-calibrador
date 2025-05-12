@@ -215,53 +215,60 @@ async function getUsersSessionResults({
   userIds: number[]
   programId: number
 }) {
-  const query = qs.stringify(
-    {
-      filters: {
-        program: {
-          $eq: programId,
-        },
-        user: {
-          $in: userIds,
-        },
-      },
-      populate: {
-        sessions: {
-          populate: {
-            assessmentRoughnessResults: {
-              populate: ['audios'],
-            },
-            assessmentBreathinessResults: {
-              populate: ['audios'],
-            },
-            trainingRoughnessResults: {
-              populate: ['audios'],
-            },
-            trainingBreathinessResults: {
-              populate: ['audios'],
-            },
+  const chunkSize = 100;
+  let allResults: (UserProgress & { user: { id: number } })[] = [];
+
+  for (let i = 0; i < userIds.length; i += chunkSize) {
+    const chunkUserIds = userIds.slice(i, i + chunkSize);
+    const query = qs.stringify(
+      {
+        filters: {
+          program: {
+            $eq: programId,
+          },
+          user: {
+            $in: chunkUserIds,
           },
         },
-        user: {
-          fields: ['id'],
+        populate: {
+          sessions: {
+            populate: {
+              assessmentRoughnessResults: {
+                populate: ['audios'],
+              },
+              assessmentBreathinessResults: {
+                populate: ['audios'],
+              },
+              trainingRoughnessResults: {
+                populate: ['audios'],
+              },
+              trainingBreathinessResults: {
+                populate: ['audios'],
+              },
+            },
+          },
+          user: {
+            fields: ['id'],
+          },
         },
       },
-    },
-    {
-      encodeValuesOnly: true,
-    },
-  )
+      {
+        encodeValuesOnly: true,
+      },
+    );
 
-  return fetchStrapiApi({
-    path: `/users-progress?${query}`,
-    revalidate: 3 * 60,
-  }) as Promise<
-    (UserProgress & {
+    const chunkResults = await fetchStrapiApi({
+      path: `/users-progress?${query}`,
+      revalidate: 3 * 60,
+    }) as (UserProgress & {
       user: {
         id: number
       }
-    })[]
-  >
+    })[];
+    allResults = allResults.concat(chunkResults);
+  }
+
+  return allResults;
 }
 
 async function checkAnswer({
