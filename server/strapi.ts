@@ -215,11 +215,11 @@ async function getUsersSessionResults({
   userIds: number[]
   programId: number
 }) {
-  const chunkSize = 100;
-  let allResults: (UserProgress & { user: { id: number } })[] = [];
+  const chunkSize = 25
+  let allResults: (UserProgress & { user: { id: number } })[] = []
 
   for (let i = 0; i < userIds.length; i += chunkSize) {
-    const chunkUserIds = userIds.slice(i, i + chunkSize);
+    const chunkUserIds = userIds.slice(i, i + chunkSize)
     const query = qs.stringify(
       {
         filters: {
@@ -255,20 +255,21 @@ async function getUsersSessionResults({
       {
         encodeValuesOnly: true,
       },
-    );
+    )
 
-    const chunkResults = await fetchStrapiApi({
+    const chunkResults = (await fetchStrapiApi({
       path: `/users-progress?${query}`,
+      tags: ['user-sessions-chunk'],
       revalidate: 3 * 60,
-    }) as (UserProgress & {
+    })) as (UserProgress & {
       user: {
         id: number
       }
-    })[];
-    allResults = allResults.concat(chunkResults);
+    })[]
+    allResults = allResults.concat(chunkResults)
   }
 
-  return allResults;
+  return allResults
 }
 
 async function checkAnswer({
