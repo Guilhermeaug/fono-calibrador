@@ -110,7 +110,7 @@ export default async function TermsPage() {
         width={467}
         height={65}
       />
-      {userInfo.hasAcceptedTerms === true && (
+      {userInfo.hasAcceptedTerms === false && (
         <React.Fragment>
           <TypographyP>Desta forma:</TypographyP>
           <div className="h-[10px]" />
