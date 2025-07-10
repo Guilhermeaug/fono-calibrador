@@ -1,11 +1,11 @@
-import { AdditionalData } from '@/server/types'
+import { AdditionalData, UserInfo } from '@/server/types'
 import { CsvRow } from '@/types'
 import dayjs from 'dayjs'
 import { Student } from './[classId]/components/columns'
 
 const booleanToYesNo = (value: boolean) => (value ? 'Sim' : 'Não')
 
-export const translations = {
+export const additionalDataTranslations = {
   id: 'Identificador Usuário',
   name: 'Nome',
   birthDate: 'Data de Nascimento',
@@ -35,14 +35,19 @@ export const translations = {
   phone: 'Telefone',
 } as Record<keyof AdditionalData, string>
 
+export const userInfoTranslations = {
+  hasAcceptedTerms: 'Aceitou os termos?',
+  firstPacStatus: 'Status do PAC',
+} as Record<keyof UserInfo, string>
+
 export const xlsxSchemaUserDetails = [
   {
-    column: translations.id,
+    column: additionalDataTranslations.id,
     type: Number,
     value: (student: Student) => student.id,
   },
   {
-    column: translations.name,
+    column: additionalDataTranslations.name,
     type: String,
     value: (student: Student) => student.name,
   },
@@ -52,133 +57,143 @@ export const xlsxSchemaUserDetails = [
     value: (student: Student) => student.email,
   },
   {
-    column: translations.phone,
+    column: additionalDataTranslations.phone,
     type: String,
     value: (student: Student) => student.additionalData.phone,
   },
   {
-    column: translations.birthDate,
+    column: additionalDataTranslations.birthDate,
     type: String,
     value: (student: Student) =>
       dayjs(student.additionalData.birthDate).format('DD/MM/YYYY'),
   },
   {
-    column: translations.isMusician,
+    column: additionalDataTranslations.isMusician,
     type: String,
     value: (student: Student) => booleanToYesNo(student.additionalData.isMusician),
   },
   {
-    column: translations.musicianType,
+    column: additionalDataTranslations.musicianType,
     type: String,
     value: (student: Student) => student.additionalData.musicianType,
   },
   {
-    column: translations.musicianRole,
+    column: additionalDataTranslations.musicianRole,
     type: String,
     value: (student: Student) => student.additionalData.musicianRole,
   },
   {
-    column: translations.musicianTime,
+    column: additionalDataTranslations.musicianTime,
     type: String,
     value: (student: Student) => student.additionalData.musicianTime,
   },
   {
-    column: translations.job,
+    column: additionalDataTranslations.job,
     type: String,
     value: (student: Student) => student.additionalData.job,
   },
   {
-    column: translations.workUniversity,
+    column: additionalDataTranslations.workUniversity,
     type: String,
     value: (student: Student) => student.additionalData.workUniversity,
   },
   {
-    column: translations.university,
+    column: additionalDataTranslations.university,
     type: String,
     value: (student: Student) => student.additionalData.university,
   },
   {
-    column: translations.courseLevel,
+    column: additionalDataTranslations.courseLevel,
     type: String,
     value: (student: Student) => student.additionalData.courseLevel,
   },
   {
-    column: translations.voiceAreaDisciplines,
+    column: additionalDataTranslations.voiceAreaDisciplines,
     type: String,
     value: (student: Student) =>
       booleanToYesNo(student.additionalData.voiceAreaDisciplines),
   },
   {
-    column: translations.graduationPeriod,
+    column: additionalDataTranslations.graduationPeriod,
     type: String,
     value: (student: Student) => student.additionalData.graduationPeriod,
   },
   {
-    column: translations.hasExperienceInAuditoryPerceptualAssessment,
+    column: additionalDataTranslations.hasExperienceInAuditoryPerceptualAssessment,
     type: String,
     value: (student: Student) =>
       booleanToYesNo(student.additionalData.hasExperienceInAuditoryPerceptualAssessment),
   },
   {
-    column: translations.auditoryPerceptualAssessmentTime,
+    column: additionalDataTranslations.auditoryPerceptualAssessmentTime,
     type: String,
     value: (student: Student) => student.additionalData.auditoryPerceptualAssessmentTime,
   },
   {
-    column: translations.isVoiceSpecialist,
+    column: additionalDataTranslations.isVoiceSpecialist,
     type: String,
     value: (student: Student) => booleanToYesNo(student.additionalData.isVoiceSpecialist),
   },
   {
-    column: translations.auditoryPerceptualAssessmentExperience,
+    column: additionalDataTranslations.auditoryPerceptualAssessmentExperience,
     type: String,
     value: (student: Student) =>
       student.additionalData.auditoryPerceptualAssessmentExperience,
   },
   {
-    column: translations.isAuditoryPerceptualAssessmentTrained,
+    column: additionalDataTranslations.isAuditoryPerceptualAssessmentTrained,
     type: String,
     value: (student: Student) =>
       booleanToYesNo(student.additionalData.isAuditoryPerceptualAssessmentTrained),
   },
   {
-    column: translations.hasMasterDegree,
+    column: additionalDataTranslations.hasMasterDegree,
     type: String,
     value: (student: Student) => booleanToYesNo(student.additionalData.hasMasterDegree),
   },
   {
-    column: translations.hasDoctorateDegree,
+    column: additionalDataTranslations.hasDoctorateDegree,
     type: String,
     value: (student: Student) =>
       booleanToYesNo(student.additionalData.hasDoctorateDegree),
   },
   {
-    column: translations.hasResearchExperience,
+    column: additionalDataTranslations.hasResearchExperience,
     type: String,
     value: (student: Student) =>
       booleanToYesNo(student.additionalData.hasResearchExperience),
   },
   {
-    column: translations.hasAcademicArticle,
+    column: additionalDataTranslations.hasAcademicArticle,
     type: String,
     value: (student: Student) =>
       booleanToYesNo(student.additionalData.hasAcademicArticle),
   },
   {
-    column: translations.hearing,
+    column: additionalDataTranslations.hearing,
     type: String,
     value: (student: Student) => student.additionalData.hearing,
   },
   {
-    column: translations.laterality,
+    column: additionalDataTranslations.laterality,
     type: String,
     value: (student: Student) => student.additionalData.laterality,
   },
   {
-    column: translations.learningComplaints,
+    column: additionalDataTranslations.learningComplaints,
     type: String,
     value: (student: Student) =>
       booleanToYesNo(student.additionalData.learningComplaints),
+  },
+  {
+    column: userInfoTranslations.hasAcceptedTerms,
+    type: String,
+    value: (student: Student) => booleanToYesNo(student.hasAcceptedTerms),
+  },
+  {
+    column: userInfoTranslations.firstPacStatus,
+    type: String,
+    value: (student: Student) => student.firstPacStatus,
   },
 ]
 

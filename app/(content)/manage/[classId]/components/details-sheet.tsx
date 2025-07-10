@@ -11,7 +11,7 @@ import { AdditionalData } from '@/server/types'
 import dayjs from 'dayjs'
 import { cloneDeep, isEmpty } from 'lodash'
 import { usePathname, useRouter } from 'next/navigation'
-import { translations } from '../../constants'
+import { additionalDataTranslations } from '../../constants'
 
 type Props = {
   userDetails?: AdditionalData
@@ -53,7 +53,7 @@ function UserDetails({ userDetails }: UserDetailsProps) {
   return (
     <div className="grid gap-1 text-base font-normal capitalize">
       {Object.entries(details).map(([key, value]) => {
-        const translatedKey = translations[key as keyof AdditionalData]
+        const translatedKey = additionalDataTranslations[key as keyof AdditionalData]
         if (!translatedKey) {
           return null
         }

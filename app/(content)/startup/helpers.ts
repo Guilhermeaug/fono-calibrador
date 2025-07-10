@@ -59,37 +59,39 @@ export function generateChecklistItems(
     progress,
   )
   const finalPacChecklistStatus = getStatusForFinalPac(
-    trainingStatus === CheckListStatus.DONE,
+    // trainingStatus === CheckListStatus.DONE,
+    true,
     finalPacStatus as CheckListStatus,
   )
 
   return [
+    // {
+    //   text: '1. Termo de Consentimento Livre e Esclarecido',
+    //   href: '/startup/terms',
+    //   status: termsStatus,
+    //   canClickIf: true,
+    // },
+    // {
+    //   text: '2. Teste do Processamento Auditivo',
+    //   href: '/startup/pac/begin',
+    //   status: firstPacChecklistStatus,
+    //   canClickIf: ['READY'].includes(firstPacChecklistStatus),
+    // },
     {
-      text: '1. Termo de Consentimento Livre e Esclarecido',
-      href: '/startup/terms',
-      status: termsStatus,
-      canClickIf: true,
-    },
-    {
-      text: '2. Teste do Processamento Auditivo',
-      href: '/startup/pac/begin',
-      status: firstPacChecklistStatus,
-      canClickIf: ['READY'].includes(firstPacChecklistStatus),
-    },
-    {
-      text: '3. Treinamento de Avaliação Perceptivo-Auditiva da Voz',
+      text: '1. Treinamento de Avaliação Perceptivo-Auditiva da Voz',
       href: '?show=progress',
       status: trainingStatus,
-      canClickIf: ['DONE'].includes(firstPacChecklistStatus),
+      canClickIf: true,
+      // canClickIf: ['DONE'].includes(firstPacChecklistStatus),
     },
+    // {
+    //   text: '2. Teste do Processamento Auditivo',
+    //   href: '/startup/pac/begin',
+    //   status: finalPacChecklistStatus,
+    //   canClickIf: ['READY'].includes(finalPacChecklistStatus),
+    // },
     {
-      text: '4. Teste do Processamento Auditivo',
-      href: '/startup/pac/begin',
-      status: finalPacChecklistStatus,
-      canClickIf: ['READY'].includes(finalPacChecklistStatus),
-    },
-    {
-      text: 'Resultados',
+      text: '2. Resultados',
       href: '/startup/results',
       status:
         firstPacStatus === 'DONE' ? CheckListStatus.DONE : CheckListStatus.UNAVAILABLE,
